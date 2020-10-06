@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Van Utsav 2.51"
+            android:text="E-NIWAS"
             android:textColor="@color/colorPrimary"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -87,6 +87,7 @@
 
         <TextView
             android:id="@+id/tv_signup"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

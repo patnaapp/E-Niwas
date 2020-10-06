@@ -60,19 +60,22 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userName = (EditText) findViewById(R.id.et_username);
-                userPass = (EditText) findViewById(R.id.et_password);
-                param = new String[2];
-                param[0] = userName.getText().toString();
-                param[1] = userPass.getText().toString();
+                Intent i=new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(i);
 
-                if (param[0].length() < 1){
-                    Toast.makeText(LoginActivity.this, "Enter Valid User Id", Toast.LENGTH_SHORT).show();
-                }else if (param[1].length() < 1){
-                    Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
-                }else{
-                    new LoginTask(param[0], param[1]).execute(param);
-                }
+//                userName = (EditText) findViewById(R.id.et_username);
+//                userPass = (EditText) findViewById(R.id.et_password);
+//                param = new String[2];
+//                param[0] = userName.getText().toString();
+//                param[1] = userPass.getText().toString();
+//
+//                if (param[0].length() < 1){
+//                    Toast.makeText(LoginActivity.this, "Enter Valid User Id", Toast.LENGTH_SHORT).show();
+//                }else if (param[1].length() < 1){
+//                    Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    new LoginTask(param[0], param[1]).execute(param);
+//                }
 
             }
         });
@@ -280,7 +283,7 @@ public class LoginActivity extends Activity {
     public void start() {
         //getUserDetail();
         //new SyncPanchayatData().execute("");
-        Intent iUserHome = new Intent(getApplicationContext(), MainActivity.class);
+        Intent iUserHome = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(iUserHome);
         finish();
     }
