@@ -17,10 +17,14 @@ public class NewEntryForm_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry_form_);
+        initialisation();
 
-        btn_proceed.setOnClickListener(new View.OnClickListener() {
+
+        btn_proceed.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
                 startActivity(i);
 
