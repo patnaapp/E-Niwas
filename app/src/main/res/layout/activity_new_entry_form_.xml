@@ -67,6 +67,7 @@
 
         android:id="@+id/reg_form"
         android:layout_below="@+id/tv_desc"
+        android:layout_above="@+id/btn_proceed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
@@ -805,22 +806,26 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <Button
-                        android:layout_gravity="center"
-                        android:id="@+id/btn_proceed"
-                        android:layout_width="150dp"
-                        android:layout_height="36dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/buttonshape"
-                        android:text="    आगे बढे   "
-                        android:textColor="#ffff"
-                        android:textSize="17sp" />
+
 
 
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
+    <Button
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/btn_proceed"
+        android:layout_above="@+id/footer"
+        android:layout_width="150dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
+        android:text="    आगे बढे   "
+        android:textColor="#ffff"
+        android:textSize="17sp" />
     <include
         android:id="@+id/footer"
         layout="@layout/footer"
