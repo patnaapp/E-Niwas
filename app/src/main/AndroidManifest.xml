@@ -52,6 +52,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="bih.in.e_niwas.ui.BuildingDetails_Activity"></activity>
         <activity android:name="bih.in.e_niwas.ui.NewEntryForm_Activity" />
+        <activity android:name="bih.in.e_niwas.ui.CameraActivity" />
         <activity android:name="bih.in.e_niwas.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

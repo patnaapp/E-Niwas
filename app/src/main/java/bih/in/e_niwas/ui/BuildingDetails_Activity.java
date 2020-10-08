@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -38,6 +39,74 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_details_);
         initialise();
+
+        chk_judicial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_non_judicial.setChecked(false);
+
+
+                }
+            }
+        });
+        chk_non_judicial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_judicial.setChecked(false);
+
+                }
+            }
+        });
+
+
+        chk_residential.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_non_residential.setChecked(false);
+                }
+            }
+        });
+        chk_non_residential.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_residential.setChecked(false);
+                }
+            }
+        });
+
+        chk_gazetted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_non_gazetted.setChecked(false);
+                    chk_mixedd.setChecked(false);
+                                    }
+            }
+        });
+        chk_non_gazetted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_gazetted.setChecked(false);
+                    chk_mixedd.setChecked(false);
+                                }
+            }
+        });
+
+        chk_mixedd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chk_gazetted.setChecked(false);
+                    chk_non_gazetted.setChecked(false);
+
+                }
+            }
+        });
     }
 
     public void initialise()

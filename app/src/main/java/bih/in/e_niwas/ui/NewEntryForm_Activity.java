@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.exp.e_niwas.R;
 
@@ -49,6 +51,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String Is_Building_Name="",Is_building_Code="";
     ArrayAdapter ben_type_aangan_aaray;
     LinearLayout ll_admindept;
+    String area_type_id="",property_type_id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +68,17 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             throw new Error("Unable to create database");
         }
 
-        try {
-
+        try
+        {
             dataBaseHelper.openDataBase();
             //createTable();
             //modifyTable();
-        } catch (SQLException sqle) {
-
-            throw sqle;
-
         }
+        catch (SQLException sqle)
+        {
+            throw sqle;
+        }
+
         initialisation();
         sp_bulding_check.setOnItemSelectedListener(this);
         loadDivisionSpinnerdata();
@@ -110,8 +114,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_dist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                if (arg2 > 0) {
-
+                if (arg2 > 0)
+                {
                     District dist = DistrictList.get(arg2-1);
                     _vardistID = dist.get_DistCode();
                     _vardistName = dist.get_DistName();
@@ -209,25 +213,25 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
         });
 
-
-
         chk_open_land.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b)
+                {
+                    property_type_id="1";
                     chk_existing_building.setChecked(false);
                     btn_proceed.setText("Save");
-
                 }
             }
         });
         chk_existing_building.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b)
+                {
+                    property_type_id="2";
                     chk_open_land.setChecked(false);
                     btn_proceed.setText("Add Building Details");
-
                 }
             }
         });
@@ -235,16 +239,19 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         chk_urban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b)
+                {
+                    area_type_id="U";
                     chk_rural.setChecked(false);
-
                 }
             }
         });
         chk_rural.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b)
+                {
+                    area_type_id="R";
                     chk_urban.setChecked(false);
 
                 }
@@ -258,11 +265,18 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             {
                 if (chk_existing_building.isChecked())
                 {
-                    Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
-                    startActivity(i);
+                    if(validateData())
+                    {
+                        Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
+                        startActivity(i);
+                    }
                 }
                 else if (chk_open_land.isChecked())
                 {
+                    if(validateData())
+                    {
+
+                    }
 
                 }
 
@@ -307,7 +321,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         String[] typeNameArray = new String[DivList.size() + 1];
         typeNameArray[0] = "-Select-";
         int i = 1;
-        for (DivisionList type : DivList) {
+        for (DivisionList type : DivList)
+        {
             typeNameArray[i] = type.getDivName();
             i++;
         }
@@ -315,13 +330,15 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         divtadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_building_div.setAdapter(divtadapter);
         int setID=0;
-        for ( i = 0; i < DivList.size(); i++) {
-
-         //   if (DivList.get(i).getDivId().equalsIgnoreCase(CommonPref.getUserDetails(NewEntryForm_Activity.this).get_DivisionID())) {
-            if (DivList.get(i).getDivId().equalsIgnoreCase("213")) {
+        for ( i = 0; i < DivList.size(); i++)
+        {
+            //   if (DivList.get(i).getDivId().equalsIgnoreCase(CommonPref.getUserDetails(NewEntryForm_Activity.this).get_DivisionID())) {
+            if (DivList.get(i).getDivId().equalsIgnoreCase("213"))
+            {
                 setID = i;
             }
-            if(setID!=0) {
+            if(setID!=0)
+            {
                 sp_building_div.setSelection(setID+1);
                 sp_building_div.setEnabled(false);
             }
@@ -340,7 +357,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         String[] typeNameArray = new String[DistrictList.size() + 1];
         typeNameArray[0] = "-Select-";
         int i = 1;
-        for (District type : DistrictList) {
+        for (District type : DistrictList)
+        {
             typeNameArray[i] = type.get_DistName();
             i++;
         }
@@ -348,13 +366,15 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         distadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_dist.setAdapter(distadapter);
         int setID=0;
-        for ( i = 0; i < DistrictList.size(); i++) {
-
+        for ( i = 0; i < DistrictList.size(); i++)
+        {
             //   if (DivList.get(i).getDivId().equalsIgnoreCase(CommonPref.getUserDetails(NewEntryForm_Activity.this).get_DivisionID())) {
-            if (DistrictList.get(i).get_DistCode().equalsIgnoreCase("213")) {
+            if (DistrictList.get(i).get_DistCode().equalsIgnoreCase("213"))
+            {
                 setID = i;
             }
-            if(setID!=0) {
+            if(setID!=0)
+            {
                 sp_dist.setSelection(setID+1);
                 sp_dist.setEnabled(false);
             }
@@ -384,7 +404,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 //            spn_block_name.setSelection(((ArrayAdapter<String>) spn_block_name.getAdapter()).getPosition(benDetails.getBlockName()));
 //
 //        }
-      //  sp_block.setEnabled(false);
+        //  sp_block.setEnabled(false);
     }
 
     public void loadPanchayatSpinnerData(String blockid)
@@ -414,6 +434,57 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private boolean validateData() {
+        View focusView = null;
+        boolean validate = true;
+
+        if(_vardivID.equalsIgnoreCase(""))
+        {
+            Toast.makeText(getApplicationContext(), "Please select building division", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+        if(_vardistID.equalsIgnoreCase(""))
+        {
+            Toast.makeText(getApplicationContext(), "Please select district", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+        if(block_id.equalsIgnoreCase(""))
+        {
+            Toast.makeText(getApplicationContext(), "Please select block", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+
+        if(edt_pincode.getText().toString().length()<6){
+            Toast.makeText(getApplicationContext(), "Please enter correct pincode", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+        if(edt_land_area.getText().toString().equalsIgnoreCase("")){
+            Toast.makeText(getApplicationContext(), "Please enter area of land in sq feet", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+        if(area_type_id.equalsIgnoreCase("")){
+            Toast.makeText(getApplicationContext(), "Please select area type", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+        if(property_type_id.equalsIgnoreCase("")){
+            Toast.makeText(getApplicationContext(), "Please select property type", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+
+
+        if(focusView != null && focusView.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+        return validate;
 
     }
 }
