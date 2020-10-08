@@ -30,17 +30,21 @@ import bih.in.e_niwas.entity.DivisionList;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.PanchayatData;
 import bih.in.e_niwas.entity.PanchayatEntity;
+import bih.in.e_niwas.entity.Sub_DivisionList;
+import bih.in.e_niwas.entity.WardList;
 import bih.in.e_niwas.utility.CommonPref;
 
 public class NewEntryForm_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     Button btn_proceed;
-    Spinner sp_building_div,sp_dist,sp_subdiv,sp_block,sp_ward_pan,sp_bulding_check;
+    Spinner sp_building_div,sp_dist,sp_subdiv,sp_block,sp_ward_pan,sp_bulding_check,sp_ward;
     CheckBox chk_open_land,chk_existing_building,chk_urban,chk_rural;
     EditText edt_pincode,edt_thana,edt_khata,edt_khesra,edt_nrth_chauhaddi,edt_south_chauhaddi,edt_neast_chauhaddi,edt_west_chauhaddi,edt_land_area,edt_trees_no,et_trees_details,edt_admin_dept;
     ArrayList<DivisionList> DivList = new ArrayList<DivisionList>();
     ArrayList<District> DistrictList = new ArrayList<District>();
     ArrayList<PanchayatData> PanchayatList = new ArrayList<PanchayatData>();
+    ArrayList<WardList> WardList = new ArrayList<WardList>();
+    ArrayList<Sub_DivisionList> SubDivList = new ArrayList<Sub_DivisionList>();
     ArrayList<Block> BlockList = new ArrayList<Block>();
     DataBaseHelper dataBaseHelper;
     ArrayAdapter<String> divtadapter;
@@ -55,6 +59,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     LinearLayout ll_admindept;
     String area_type_id="",property_type_id="";
     NiwasInspectionEntity assetDetails;
+    String ward_id="",ward_nm="";
 
 
     @Override
@@ -87,6 +92,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_bulding_check.setOnItemSelectedListener(this);
         loadDivisionSpinnerdata();
         loadDistrictSpinnerdata();
+        loadWardSpinnerData();
 
         sp_building_div.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,6 +130,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     _vardistID = dist.get_DistCode();
                     _vardistName = dist.get_DistName();
                     loadBlockSpinnerData(_vardistID);
+                    loadSubDivSpinnerData(_vardistID);
                     //setBlockSpinnerData();
 //                    packageList = dataBaseHelper.getPackageLocal();
 //                    if (packageList.size() <= 0) {
@@ -209,6 +216,28 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
         });
 
+        sp_ward.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    ward_id = WardList.get(position-1).getWard_code();
+                    ward_nm = WardList.get(position-1).getWard_name();
+
+                } else {
+                    ward_id = "";
+                    ward_nm = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ward_id = "";
+                ward_nm = "";
+
+            }
+
+        });
+
         sp_bulding_check.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -267,8 +296,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
+                    sp_ward_pan.setVisibility(View.GONE);
+                    sp_ward.setVisibility(View.VISIBLE);
                     area_type_id="U";
                     chk_rural.setChecked(false);
+
                 }
             }
         });
@@ -277,6 +309,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
+                    sp_ward_pan.setVisibility(View.VISIBLE);
+                    sp_ward.setVisibility(View.GONE);
                     area_type_id="R";
                     chk_urban.setChecked(false);
 
@@ -322,6 +356,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_ward_pan=findViewById(R.id.sp_ward_pan);
         ll_admindept=findViewById(R.id.ll_admindept);
         sp_bulding_check=findViewById(R.id.sp_bulding_check);
+        sp_ward=findViewById(R.id.sp_ward);
 
         ben_type_aangan_aaray = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ben_type_aangan);
         sp_bulding_check.setAdapter(ben_type_aangan_aaray);
@@ -456,6 +491,46 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 //        }
     }
 
+    public void loadWardSpinnerData()
+    {
+        WardList = dataBaseHelper.getWardLocal();
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("-Select-");
+        int index = 0;
+        for (WardList info: WardList){
+            list.add(info.getWard_name());
+            //if(benDetails.get)
+        }
+        ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
+        adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_ward.setAdapter(adaptor);
+//        if(benDetails.getPanchayatName()!=null)
+//        {
+//            spn_panch_name.setSelection(((ArrayAdapter<String>) spn_panch_name.getAdapter()).getPosition(benDetails.getPanchayatName()));
+//
+//        }
+    }
+
+    public void loadSubDivSpinnerData(String blockid)
+    {
+        SubDivList = dataBaseHelper.getSubDivLocal(blockid);
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("-Select-");
+        int index = 0;
+        for (Sub_DivisionList info: SubDivList){
+            list.add(info.getSub_div_name());
+            //if(benDetails.get)
+        }
+        ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
+        adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_subdiv.setAdapter(adaptor);
+//        if(benDetails.getPanchayatName()!=null)
+//        {
+//            spn_panch_name.setSelection(((ArrayAdapter<String>) spn_panch_name.getAdapter()).getPosition(benDetails.getPanchayatName()));
+//
+//        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -485,11 +560,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 //            }
 //        }
 
-//        if(subdiv_id.equalsIgnoreCase(""))
-//        {
-//            Toast.makeText(getApplicationContext(), "Please select sub division", Toast.LENGTH_LONG).show();
-//            validate = false;
-//        }
+        if(subdiv_id.equalsIgnoreCase(""))
+        {
+            Toast.makeText(getApplicationContext(), "Please select sub division", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
 
         if(_vardistID.equalsIgnoreCase(""))
         {
@@ -502,11 +577,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             Toast.makeText(getApplicationContext(), "Please select block", Toast.LENGTH_LONG).show();
             validate = false;
         }
-        if(panch_id.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select ward/panchayat", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
+//        if(panch_id.equalsIgnoreCase(""))
+//        {
+//            Toast.makeText(getApplicationContext(), "Please select ward/panchayat", Toast.LENGTH_LONG).show();
+//            validate = false;
+//        }
 
 
         if(edt_pincode.getText().toString().length()<6){

@@ -33,9 +33,11 @@ import bih.in.e_niwas.entity.PanchayatWeb;
 import bih.in.e_niwas.entity.PondEncroachmentEntity;
 import bih.in.e_niwas.entity.PondInspectionDetail;
 import bih.in.e_niwas.entity.SectorWeb;
+import bih.in.e_niwas.entity.Sub_DivisionList;
 import bih.in.e_niwas.entity.SurfaceSchemeEntity;
 import bih.in.e_niwas.entity.UserDetails;
 import bih.in.e_niwas.entity.VillageListEntity;
+import bih.in.e_niwas.entity.WardList;
 import bih.in.e_niwas.entity.WellInspectionEntity;
 import bih.in.e_niwas.entity.ward;
 import bih.in.e_niwas.ui.BuildingDetails_Activity;
@@ -1991,6 +1993,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return update;
     }
 
+    public ArrayList<WardList> getWardLocal() {
+        ArrayList<WardList> deptList = new ArrayList<WardList>();
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+          //  String[] params = new String[] { Pan_Code };
+
+            Cursor cur = db
+                    .rawQuery(
+                            "SELECT * from Ward_Master ", null);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                WardList dept = new WardList();
+                dept.setWard_code(cur.getString(cur.getColumnIndex("Item_ID")));
+                dept.setWard_name(cur.getString(cur.getColumnIndex("Item_Name")));
+//                dept.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+//                dept.setAreaType(cur.getString(cur.getColumnIndex("AreaType")));
+
+                deptList.add(dept);
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return deptList;
+    }
+
 
 
     public ArrayList<ward> getWardList(String Pan_Code) {
@@ -2258,6 +2294,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 PanchayatData panchayat = new PanchayatData();
                 panchayat.setPcode(cur.getString(cur.getColumnIndex("PanchayatCode")));
                 panchayat.setPname((cur.getString(cur.getColumnIndex("PanchayatName"))));
+                pdetail.add(panchayat);
+            }
+            cur.close();
+            db.close();
+        }
+        catch (Exception e) {
+        }
+        return pdetail;
+    }
+
+    public ArrayList<Sub_DivisionList> getSubDivLocal(String distid) {
+        //CREATE TABLE `Panchayat1` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `DistCode` TEXT,
+        // `BlockCode` TEXT, `PanchayatCode` TEXT, `PanchayatName` TEXT )
+        ArrayList<Sub_DivisionList> pdetail = new ArrayList<Sub_DivisionList>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur = db.rawQuery("SELECT * FROM  Sub_division_master where DistCode='" + distid + "' order by Sd_Name_En", null);
+            int x = cur.getCount();
+            while (cur.moveToNext()) {
+                Sub_DivisionList panchayat = new Sub_DivisionList();
+                panchayat.setSub_div_code(cur.getString(cur.getColumnIndex("Sd_Code2")));
+                panchayat.setSub_div_name((cur.getString(cur.getColumnIndex("Sd_Name_En"))));
+                panchayat.setSub_div_unique_code((cur.getString(cur.getColumnIndex("Unique_SD_Code"))));
                 pdetail.add(panchayat);
             }
             cur.close();
