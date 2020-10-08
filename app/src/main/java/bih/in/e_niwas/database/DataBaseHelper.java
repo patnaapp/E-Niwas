@@ -2243,7 +2243,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Block> getBlock(String distCode) {
+    public ArrayList<Block> getBlock(String distCode,String subdivid) {
 
         ArrayList<Block> blockList = new ArrayList<Block>();
 //CREATE TABLE `Block` ( `slno` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
@@ -2251,10 +2251,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
 
             SQLiteDatabase db = this.getReadableDatabase();
-            String[] params = new String[] { distCode };
+            String[] params = new String[] { distCode,subdivid };
             Cursor cur = db
                     .rawQuery(
-                            "SELECT BlockCode,DistCode,BlockName from Blocks WHERE DistCode = ? ORDER BY BlockName ",
+                            "SELECT BlockCode,DistCode,BlockName from Block_Master WHERE DistCode = ? AND SubDivCode = ? ORDER BY BlockName ",
                             params);
             int x = cur.getCount();
 
@@ -2576,12 +2576,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public long InsertAssetEntry_New(BuildingDetails_Activity newEntryActivity, NiwasInspectionEntity result,NiwasInspectionEntity assetdetails) {
+    public long InsertAssetEntry_New(NiwasInspectionEntity result) {
 
         long c = -1;
         try {
-            DataBaseHelper placeData = new DataBaseHelper(newEntryActivity);
-            SQLiteDatabase db = placeData.getWritableDatabase();
+            //DataBaseHelper placeData = new DataBaseHelper(c);
+            SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
 
             values.put("building_div", result.getDiv_code());

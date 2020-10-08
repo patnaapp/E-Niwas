@@ -349,31 +349,34 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         DataBaseHelper placeData = new DataBaseHelper(BuildingDetails_Activity.this);
         NiwasInspectionEntity newEntryEntity=new NiwasInspectionEntity();
 
-        newEntryEntity.setBuilding_name(edt_building_name.getText().toString());
-        newEntryEntity.setBuilding_type(_var_type_of_building);
-        newEntryEntity.setBuilding_is(_var_building_is);
-        newEntryEntity.setGazeted_nongazeted(var_gazetted_nongazetted);
-        newEntryEntity.setBuilding_type_class(building_type_class_id);
-        newEntryEntity.setPool_building(building_pool_id);
-        newEntryEntity.setPlinth_area(edt_plinth_area.getText().toString());
-        newEntryEntity.setBuiltup_area(edt_builtup_area.getText().toString());
-        newEntryEntity.setOffice_details(edt_ofc_detail.getText().toString());
-        newEntryEntity.setYear_of_completion(edt_building_year.getText().toString());
-        newEntryEntity.setBuilding_status(building_status_id);
-        newEntryEntity.setRemarks(edt_remarks.getText().toString());
-        newEntryEntity.setImage1(img1String);
-        newEntryEntity.setImage2(img2String);
-        newEntryEntity.setLat1(latitude);
-        newEntryEntity.setLong1(longitude);
-        newEntryEntity.setLat2(latitude2);
-        newEntryEntity.setLong2(longitude2);
+        assetDetails.setBuilding_name(edt_building_name.getText().toString());
+        assetDetails.setBuilding_type(_var_type_of_building);
+        assetDetails.setBuilding_is(_var_building_is);
+        assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
+        assetDetails.setBuilding_type_class(building_type_class_id);
+        assetDetails.setPool_building(building_pool_id);
+        assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
+        assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
+        assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
+        assetDetails.setYear_of_completion(edt_building_year.getText().toString());
+        assetDetails.setBuilding_status(building_status_id);
+        assetDetails.setRemarks(edt_remarks.getText().toString());
+        assetDetails.setImage1(img1String);
+        assetDetails.setImage2(img2String);
+        assetDetails.setLat1(latitude);
+        assetDetails.setLong1(longitude);
+        assetDetails.setLat2(latitude2);
+        assetDetails.setLong2(longitude2);
+
+
+
 
         newEntryEntity.setEntryby(CommonPref.getUserDetails(getApplicationContext()).getUserID());
         if(str_img.equalsIgnoreCase("Y")) {
 
 
 
-                id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(BuildingDetails_Activity.this, newEntryEntity,assetDetails);
+                id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(assetDetails);
 
                 if (id > 0) {
 

@@ -2,6 +2,8 @@ package bih.in.e_niwas.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -129,7 +131,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     District dist = DistrictList.get(arg2-1);
                     _vardistID = dist.get_DistCode();
                     _vardistName = dist.get_DistName();
-                    loadBlockSpinnerData(_vardistID);
+
                     loadSubDivSpinnerData(_vardistID);
                     //setBlockSpinnerData();
 //                    packageList = dataBaseHelper.getPackageLocal();
@@ -154,9 +156,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-//                    subdiv_id = BlockList.get(position-1).getBlockCode();
-//                    subdiv_Nm = BlockList.get(position-1).getBlockName();
-
+                    subdiv_id = SubDivList.get(position-1).getSub_div_code();
+                    subdiv_Nm = SubDivList.get(position-1).getSub_div_name();
+                    loadBlockSpinnerData(_vardistID,subdiv_id);
 
                 } else {
                     subdiv_id = "";
@@ -296,6 +298,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
+                    panch_id="";
+                    panch_name="";
+                    loadWardSpinnerData();
                     sp_ward_pan.setVisibility(View.GONE);
                     sp_ward.setVisibility(View.VISIBLE);
                     area_type_id="U";
@@ -309,6 +314,10 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
+
+                    loadPanchayatSpinnerData(block_id);
+                    ward_id="";
+                    ward_nm="";
                     sp_ward_pan.setVisibility(View.VISIBLE);
                     sp_ward.setVisibility(View.GONE);
                     area_type_id="R";
@@ -335,9 +344,30 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 }
                 else if (chk_open_land.isChecked())
                 {
+                    long id = 0;
                     if(validateData())
                     {
+                        id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
 
+                        if (id > 0) {
+
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(NewEntryForm_Activity.this);
+                            alertDialog.setTitle("Saved");
+                            alertDialog.setMessage("Data saved successfully");
+
+                            alertDialog.setNegativeButton("[OK]", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "Data saved successfully", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                            alertDialog.show();
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Not Success", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                 }
@@ -451,9 +481,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
     }
 
-    public void loadBlockSpinnerData(String district){
+    public void loadBlockSpinnerData(String district,String subdiv){
         BlockList.clear();
-        BlockList = dataBaseHelper.getBlock(district);
+        BlockList = dataBaseHelper.getBlock(district,subdiv);
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
