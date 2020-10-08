@@ -344,9 +344,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 }
                 else if (chk_open_land.isChecked())
                 {
+                    setdataforintent();
                     long id = 0;
                     if(validateData())
                     {
+
                         id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
 
                         if (id > 0) {
