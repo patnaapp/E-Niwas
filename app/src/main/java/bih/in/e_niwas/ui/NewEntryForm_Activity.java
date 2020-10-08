@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.exp.e_niwas.R;
@@ -47,6 +48,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String ben_type_aangan[] = {"-select-","YES","NO"};
     String Is_Building_Name="",Is_building_Code="";
     ArrayAdapter ben_type_aangan_aaray;
+    LinearLayout ll_admindept;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,12 +187,14 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 if (position > 0) {
                     Is_Building_Name = ben_type_aangan[position].toString();
 
-                    if (Is_Building_Name.equals("पुरुष")) {
+                    if (Is_Building_Name.equals("YES")) {
 
                         Is_building_Code = "Y";
-                    } else if (Is_Building_Name.equals("महिला")) {
+                        ll_admindept.setVisibility(View.VISIBLE);
+                    } else if (Is_Building_Name.equals("NO")) {
 
                         Is_building_Code = "N";
+                        ll_admindept.setVisibility(View.GONE);
                     }
 
                 }
@@ -264,6 +268,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_subdiv=findViewById(R.id.sp_subdiv);
         sp_block=findViewById(R.id.sp_block);
         sp_ward_pan=findViewById(R.id.sp_ward_pan);
+        ll_admindept=findViewById(R.id.ll_admindept);
         sp_bulding_check=findViewById(R.id.sp_bulding_check);
 
         ben_type_aangan_aaray = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ben_type_aangan);

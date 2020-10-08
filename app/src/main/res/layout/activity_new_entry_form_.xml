@@ -152,7 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
-                            android:text="Property Type :"
+                            android:text="Property Type : [*]"
                             android:textStyle="bold" />
                         <LinearLayout
                             android:id="@+id/chk_property_type"
@@ -190,7 +190,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
-                            android:text="Area:"
+                            android:text="Area: [*]"
                             android:textStyle="bold" />
                         <LinearLayout
                             android:id="@+id/chk_area_type"
@@ -340,7 +340,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Ward/Panchayat :[*]"
+                                    android:text="Ward/Panchayat :"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="13sp"
                                     android:textStyle="normal"
@@ -423,7 +423,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Thana No : [*]"
+                                    android:text="Thana No :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -464,7 +464,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Khata : [*]"
+                                    android:text="Khata :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -497,7 +497,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Khesra No : [*]"
+                                    android:text="Khesra No :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -538,7 +538,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Chauhaddi North : [*]"
+                                    android:text="Chauhaddi North :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -571,7 +571,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Chauhaddi South : [*]"
+                                    android:text="Chauhaddi South :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -612,7 +612,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Chauhaddi East : [*]"
+                                    android:text="Chauhaddi East :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -645,7 +645,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Chauhaddi West : [*]"
+                                    android:text="Chauhaddi West :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -720,7 +720,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="No of big trees on th land : [*]"
+                                    android:text="No of big trees on th land :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 
@@ -750,7 +750,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Details of trees: [*]"
+                                android:text="Details of trees:"
                                 android:textColor="@color/color_black"
                                 android:textSize="12sp"/>
 
@@ -803,6 +803,39 @@
                                     android:layout_height="36dp" />
                             </LinearLayout>
 
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/ll_admindept"
+                            android:visibility="gone"
+                            android:layout_marginBottom="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Name of administrative department :"
+                                android:textColor="@color/color_black"
+                                android:textSize="12sp"/>
+
+                            <EditText
+                                android:layout_marginTop="4dp"
+                                android:id="@+id/edt_admin_dept"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/textboxshape"
+                                android:hint="Name of administrative department"
+                                android:padding="10dp"
+                                android:inputType="textCapWords"
+                                android:maxLength="20"
+                                android:singleLine="true"
+                                android:textColor="#222222"
+                                android:focusableInTouchMode="true"
+                                android:textSize="15sp" />
                         </LinearLayout>
                     </LinearLayout>
 
