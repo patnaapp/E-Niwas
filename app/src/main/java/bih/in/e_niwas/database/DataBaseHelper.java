@@ -2642,4 +2642,54 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return c;
 
     }
+
+    public ArrayList<NiwasInspectionEntity> getAllNewEntryDetail() {
+        //public ArrayList<FillQC_Report> getAllQCEntryDetail() {
+        ArrayList<NiwasInspectionEntity> basicdetail = new ArrayList<NiwasInspectionEntity>();
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+           // String[] args = {Userid};
+
+            //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
+            //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
+            //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
+            Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry ORDER BY Id  DESC", null);
+            int x = cursor.getCount();
+
+            while (cursor.moveToNext()) {
+                NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
+                basicInfo.setDiv_code((cursor.getString(cursor.getColumnIndex("building_div"))));
+                basicInfo.setProperty_type((cursor.getString(cursor.getColumnIndex("property_type"))));
+                basicInfo.setArea_type((cursor.getString(cursor.getColumnIndex("area_type"))));
+                basicInfo.setDist_code((cursor.getString(cursor.getColumnIndex("distcode"))));
+                basicInfo.setDist_name((cursor.getString(cursor.getColumnIndex("distname"))));
+                basicInfo.setBlk_code((cursor.getString(cursor.getColumnIndex("block_id"))));
+                basicInfo.setBlk_name((cursor.getString(cursor.getColumnIndex("block_nm"))));
+                basicInfo.setWard_id((cursor.getString(cursor.getColumnIndex("ward_id"))));
+                basicInfo.setWard_name((cursor.getString(cursor.getColumnIndex("ward_nm"))));
+                basicInfo.setPanchayat_code((cursor.getString(cursor.getColumnIndex("Pan_id"))));
+                basicInfo.setPanchayat_name((cursor.getString(cursor.getColumnIndex("pan_nm"))));
+                basicInfo.setPincode((cursor.getString(cursor.getColumnIndex("pincode"))));
+                basicInfo.setThana_no((cursor.getString(cursor.getColumnIndex("thana_no"))));
+                basicInfo.setKahta_no((cursor.getString(cursor.getColumnIndex("khata"))));
+                basicInfo.setKhesra_no((cursor.getString(cursor.getColumnIndex("khesra"))));
+
+
+                basicdetail.add(basicInfo);
+
+            }
+            this.getReadableDatabase().close();
+            cursor.close();
+            sqLiteDatabase.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return basicdetail;
+    }
+
 }

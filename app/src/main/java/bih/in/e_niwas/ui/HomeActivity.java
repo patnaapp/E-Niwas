@@ -25,6 +25,7 @@ public class HomeActivity extends Activity {
 
     public void on_EditEntry(View view)
     {
-
+        Intent i=new Intent(HomeActivity.this,EditAssetEntry_Activity.class);
+        startActivity(i);
     }
 }
