@@ -27,6 +27,7 @@ import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.Block;
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.DivisionList;
+import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.PanchayatData;
 import bih.in.e_niwas.entity.PanchayatEntity;
 import bih.in.e_niwas.utility.CommonPref;
@@ -36,7 +37,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     Button btn_proceed;
     Spinner sp_building_div,sp_dist,sp_subdiv,sp_block,sp_ward_pan,sp_bulding_check;
     CheckBox chk_open_land,chk_existing_building,chk_urban,chk_rural;
-    EditText edt_pincode,edt_thana,edt_khata,edt_khesra,edt_nrth_chauhaddi,edt_south_chauhaddi,edt_neast_chauhaddi,edt_west_chauhaddi,edt_land_area,edt_trees_no,et_trees_details;
+    EditText edt_pincode,edt_thana,edt_khata,edt_khesra,edt_nrth_chauhaddi,edt_south_chauhaddi,edt_neast_chauhaddi,edt_west_chauhaddi,edt_land_area,edt_trees_no,et_trees_details,edt_admin_dept;
     ArrayList<DivisionList> DivList = new ArrayList<DivisionList>();
     ArrayList<District> DistrictList = new ArrayList<District>();
     ArrayList<PanchayatData> PanchayatList = new ArrayList<PanchayatData>();
@@ -46,12 +47,14 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> distadapter;
     ArrayAdapter<String> blockadapter;
     ArrayAdapter<String> panchayatadapter;
-    String _vardivID="",_vardivName="",_vardistID="",_vardistName="",block_id="",block_name="",panch_id="",panch_name="";
+    String _vardivID="",_vardivName="",_vardistID="",subdiv_id="",subdiv_Nm="",_vardistName="",block_id="",block_name="",panch_id="",panch_name="";
     String ben_type_aangan[] = {"-select-","YES","NO"};
     String Is_Building_Name="",Is_building_Code="";
     ArrayAdapter ben_type_aangan_aaray;
     LinearLayout ll_admindept;
     String area_type_id="",property_type_id="";
+    NiwasInspectionEntity assetDetails;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +140,28 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
+        });
+
+        sp_subdiv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+//                    subdiv_id = BlockList.get(position-1).getBlockCode();
+//                    subdiv_Nm = BlockList.get(position-1).getBlockName();
+
+
+                } else {
+                    subdiv_id = "";
+                    subdiv_Nm = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                subdiv_id = "";
+                subdiv_Nm = "";
+            }
+
         });
 
         sp_block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -267,7 +292,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 {
                     if(validateData())
                     {
+                        setdataforintent();
                         Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
+                        i.putExtra("data",assetDetails);
                         startActivity(i);
                     }
                 }
@@ -313,6 +340,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         edt_land_area=findViewById(R.id.edt_land_area);
         edt_trees_no=findViewById(R.id.edt_trees_no);
         et_trees_details=findViewById(R.id.et_trees_details);
+        edt_admin_dept=findViewById(R.id.edt_admin_dept);
     }
 
     public void loadDivisionSpinnerdata() {
@@ -485,6 +513,36 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
         return validate;
+
+    }
+
+    public void setdataforintent()
+    {
+        assetDetails=new NiwasInspectionEntity();
+        assetDetails.setDiv_code(_vardivID);
+        assetDetails.setProperty_type(property_type_id);
+        assetDetails.setArea_type(area_type_id);
+        assetDetails.setDist_code(_vardistID);
+        assetDetails.setDist_name(_vardistName);
+        assetDetails.setBlk_code(block_id);
+        assetDetails.setBlk_name(block_name);
+        assetDetails.setSub_Div_code(subdiv_id);
+        assetDetails.setWard_id(panch_id);
+        assetDetails.setWard_name(panch_name);
+        assetDetails.setIs_there_building(Is_building_Code);
+        assetDetails.setPincode(edt_pincode.getText().toString());
+        assetDetails.setThana_no(edt_thana.getText().toString());
+        assetDetails.setKahta_no(edt_khata.getText().toString());
+        assetDetails.setKhesra_no(edt_khesra.getText().toString());
+        assetDetails.setChauhaddi_north(edt_nrth_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_south(edt_nrth_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_east(edt_neast_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_west(edt_west_chauhaddi.getText().toString());
+        assetDetails.setLand_area(edt_land_area.getText().toString());
+        assetDetails.setNo_of_trees(edt_trees_no.getText().toString());
+        assetDetails.setTree_details(et_trees_details.getText().toString());
+        assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
+
 
     }
 }

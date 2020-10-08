@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import com.exp.e_niwas.R;
 
 import bih.in.e_niwas.database.DataBaseHelper;
+import bih.in.e_niwas.entity.NiwasInspectionEntity;
 
 public class BuildingDetails_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -33,12 +34,14 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     Bitmap bmp,bmp1;
     private String latitude = "";
     private String longitude = "";
+    NiwasInspectionEntity assetDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_details_);
         initialise();
+        assetDetails=(NiwasInspectionEntity)getIntent().getSerializableExtra("data");
 
         chk_judicial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

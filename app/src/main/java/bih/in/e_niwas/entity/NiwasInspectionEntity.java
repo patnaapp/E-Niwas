@@ -56,6 +56,11 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
     private String Lat2;
     private String Long2;
 
+    public NiwasInspectionEntity() {
+
+
+    }
+
     public NiwasInspectionEntity(SoapObject res1) {
 
 //        this.sancrachnaId=res1.getProperty("Types_OfSarchnaId").toString();
