@@ -55,6 +55,7 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
     private String Long1;
     private String Lat2;
     private String Long2;
+    private String entryby;
 
     public NiwasInspectionEntity() {
 
@@ -426,6 +427,14 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public void setLong2(String long2) {
         Long2 = long2;
+    }
+
+    public String getEntryby() {
+        return entryby;
+    }
+
+    public void setEntryby(String entryby) {
+        this.entryby = entryby;
     }
 
     @Override

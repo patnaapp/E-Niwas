@@ -48,7 +48,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> blockadapter;
     ArrayAdapter<String> panchayatadapter;
     String _vardivID="",_vardivName="",_vardistID="",subdiv_id="",subdiv_Nm="",_vardistName="",block_id="",block_name="",panch_id="",panch_name="";
-    String ben_type_aangan[] = {"-select-","YES","NO"};
+ String ben_type_aangan[] = {"-select-","YES","NO"};
+
     String Is_Building_Name="",Is_building_Code="";
     ArrayAdapter ben_type_aangan_aaray;
     LinearLayout ll_admindept;
@@ -475,6 +476,21 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             validate = false;
         }
 
+//        if((sp_bulding_check != null && sp_bulding_check.getSelectedItem() !=null ))
+//        {
+//            if((String)sp_building_div.getSelectedItem()=="-select-")
+//            {
+//                Toast.makeText(NewEntryForm_Activity.this, "Please Select is there building", Toast.LENGTH_LONG).show();
+//                validate = false;
+//            }
+//        }
+
+//        if(subdiv_id.equalsIgnoreCase(""))
+//        {
+//            Toast.makeText(getApplicationContext(), "Please select sub division", Toast.LENGTH_LONG).show();
+//            validate = false;
+//        }
+
         if(_vardistID.equalsIgnoreCase(""))
         {
             Toast.makeText(getApplicationContext(), "Please select district", Toast.LENGTH_LONG).show();
@@ -484,6 +500,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         if(block_id.equalsIgnoreCase(""))
         {
             Toast.makeText(getApplicationContext(), "Please select block", Toast.LENGTH_LONG).show();
+            validate = false;
+        }
+        if(panch_id.equalsIgnoreCase(""))
+        {
+            Toast.makeText(getApplicationContext(), "Please select ward/panchayat", Toast.LENGTH_LONG).show();
             validate = false;
         }
 
