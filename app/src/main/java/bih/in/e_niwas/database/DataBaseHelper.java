@@ -23,6 +23,7 @@ import java.util.Calendar;
 
 import bih.in.e_niwas.entity.Block;
 import bih.in.e_niwas.entity.District;
+import bih.in.e_niwas.entity.DivisionList;
 import bih.in.e_niwas.entity.FilterOptionEntity;
 import bih.in.e_niwas.entity.LocalSpinnerData;
 import bih.in.e_niwas.entity.PanchayatData;
@@ -629,7 +630,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         {
             SQLiteDatabase db = this.getReadableDatabase();
             String[] params = new String[]{"0"};
-               //Cursor cur = db.rawQuery("Select * from SurfaceSchemeDetail WHERE "+ whereCondition +" AND Updated=?",params);
+            //Cursor cur = db.rawQuery("Select * from SurfaceSchemeDetail WHERE "+ whereCondition +" AND Updated=?",params);
             Cursor cur = db.rawQuery("Select * from SurfaceSchemeDetail WHERE Updated=? "+ whereCondition +" ",params);
             int x = cur.getCount();
             // db1.execSQL("Delete from UserDetail");
@@ -2140,7 +2141,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             Cursor cur = db
                     .rawQuery(
-                            "SELECT DistCode,DistName,DistCode3,Zone,Circle from DistrictMwrd ORDER BY DistName",
+                            "SELECT DistCode,DistName,DistCode3 from Districts ORDER BY DistName",
                             null);
             int x = cur.getCount();
 
@@ -2150,8 +2151,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 district.set_DistCode(cur.getString(cur.getColumnIndex("DistCode")));
                 district.set_DistName(cur.getString(cur.getColumnIndex("DistName")));
                 district.setDistCode3(cur.getString(cur.getColumnIndex("DistCode3")));
-                district.setZone(cur.getString(cur.getColumnIndex("Zone")));
-                district.setCircle(cur.getString(cur.getColumnIndex("Circle")));
+//                district.setZone(cur.getString(cur.getColumnIndex("Zone")));
+//                district.setCircle(cur.getString(cur.getColumnIndex("Circle")));
 
                 districtList.add(district);
             }
@@ -2249,7 +2250,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         ArrayList<PanchayatData> pdetail = new ArrayList<PanchayatData>();
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cur = db.rawQuery("SELECT * FROM  Panchayat1 where BlockCode='" + blkId + "' order by PanchayatName", null);
+            Cursor cur = db.rawQuery("SELECT * FROM  Panchayat where BlockCode='" + blkId + "' order by PanchayatName", null);
             int x = cur.getCount();
             while (cur.moveToNext()) {
                 PanchayatData panchayat = new PanchayatData();
@@ -2383,8 +2384,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if(!finyr.equalsIgnoreCase("0"))
         {
-           subWhere += "AND FINANCIAL_YEAR='"+finyr+"'";
-           // subWhere += "FINANCIAL_YEAR='"+finyr+"'";
+            subWhere += "AND FINANCIAL_YEAR='"+finyr+"'";
+            // subWhere += "FINANCIAL_YEAR='"+finyr+"'";
         }
         if(!schemeid.equalsIgnoreCase(""))
         {
@@ -2475,5 +2476,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //info = null;
         }
         return infoList;
+    }
+
+    public ArrayList<DivisionList> getDivisionLocal()
+    {
+
+        ArrayList<DivisionList> districtList = new ArrayList<DivisionList>();
+
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cur = db.rawQuery("SELECT DistCode,DistName from Districts ORDER BY DistName",null);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                DivisionList district = new DivisionList();
+                district.setDivId(cur.getString(cur
+                        .getColumnIndex("DistCode")));
+                district.setDivName(cur.getString(cur
+                        .getColumnIndex("DistName")));
+
+                districtList.add(district);
+            }
+
+            cur.close();
+            db.close();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return districtList;
+
     }
 }
