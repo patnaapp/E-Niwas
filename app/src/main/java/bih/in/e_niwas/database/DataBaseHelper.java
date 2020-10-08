@@ -2585,6 +2585,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
 
             values.put("building_div", result.getDiv_code());
+            values.put("Div_name", result.getDiv_name());
             values.put("property_type", result.getProperty_type());
             values.put("area_type", result.getArea_type());
             values.put("distcode", result.getDist_code());
@@ -2655,12 +2656,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
-            Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry ORDER BY Id  DESC", null);
+            Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry", null);
             int x = cursor.getCount();
 
             while (cursor.moveToNext()) {
                 NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
                 basicInfo.setDiv_code((cursor.getString(cursor.getColumnIndex("building_div"))));
+                basicInfo.setDiv_name((cursor.getString(cursor.getColumnIndex("Div_name"))));
                 basicInfo.setProperty_type((cursor.getString(cursor.getColumnIndex("property_type"))));
                 basicInfo.setArea_type((cursor.getString(cursor.getColumnIndex("area_type"))));
                 basicInfo.setDist_code((cursor.getString(cursor.getColumnIndex("distcode"))));

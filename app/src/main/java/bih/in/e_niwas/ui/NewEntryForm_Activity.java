@@ -648,6 +648,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     {
         assetDetails=new NiwasInspectionEntity();
         assetDetails.setDiv_code(_vardivID);
+        assetDetails.setDist_name(_vardivName);
         assetDetails.setProperty_type(property_type_id);
         assetDetails.setArea_type(area_type_id);
         assetDetails.setDist_code(_vardistID);

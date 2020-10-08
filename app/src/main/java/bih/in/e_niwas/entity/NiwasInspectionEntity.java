@@ -13,6 +13,7 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     private String Asset_Id;
     private String Div_code;
+    private String Div_name;
     private String Sub_Div_code;
     private String property_type;
     private String area_type;
@@ -91,6 +92,14 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public void setDiv_code(String div_code) {
         Div_code = div_code;
+    }
+
+    public String getDiv_name() {
+        return Div_name;
+    }
+
+    public void setDiv_name(String div_name) {
+        Div_name = div_name;
     }
 
     public String getSub_Div_code() {
