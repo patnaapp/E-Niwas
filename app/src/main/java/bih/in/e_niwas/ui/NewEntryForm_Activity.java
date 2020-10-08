@@ -216,6 +216,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_existing_building.setChecked(false);
+                    btn_proceed.setText("Save");
 
                 }
             }
@@ -225,6 +226,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_open_land.setChecked(false);
+                    btn_proceed.setText("Add Building Details");
 
                 }
             }
@@ -254,8 +256,16 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v)
             {
-                Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
-                startActivity(i);
+                if (chk_existing_building.isChecked())
+                {
+                    Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
+                    startActivity(i);
+                }
+                else if (chk_open_land.isChecked())
+                {
+
+                }
+
             }
         });
     }
