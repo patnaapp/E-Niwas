@@ -771,20 +771,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
     }
 
-    public void ShowEditEntryKhesra() {
+    public void ShowEditEntryKhesra()
+    {
 
-//        UserId = PreferenceManager.getDefaultSharedPreferences(NewEntryActivity.this).getString("USERID", "");
-//        NewEntryInfoList = dataBaseHelper.getAllNewEntryDetailForEdit(UserId, keyid);
-
-//            _spin_div_nm = dewormingEntity.getDiv_Nm();
-//            _spin_package = dewormingEntity.getPackage_Id();
-//            loadpackageSpinnerData(UserId,dewormingEntity.getDiv_Id());
-//            _spin_road = dewormingEntity.getRoad_NM();
-//            loadroadSpinnerData(UserId,_spin_package);
-//            _spin_non_compliances = dewormingEntity.get_compliance_Nm();
-//            loadDivisionSpinnerdata();
-//            loadComplianceSpinnerdata();
-//            edt_km.setText(dewormingEntity.get_kilometers());
         subdiv=dataBaseHelper.getNameFor("Sub_division_master","Sd_Code2","Sd_Name_En",assetDetails_edit.getSub_Div_code());
         wardname=assetDetails_edit.getWard_name();
         pan_name=assetDetails_edit.getPanchayat_name();
@@ -802,7 +791,6 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
         loadSubDivSpinnerData(assetDetails_edit.getBlk_code());
         loadBlockSpinnerData(assetDetails_edit.getDist_code(),assetDetails_edit.getSub_Div_code());
-
 
         if (assetDetails_edit.getProperty_type().equals("1")){
             chk_open_land.setChecked(true);
