@@ -83,6 +83,19 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
 
             }
         });
+        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(activity, NewEntryForm_Activity.class);
+                // i.putExtra("assetdata",ThrList.get(position));
+                i.putExtra("KeyId",info.getId());
+                i.putExtra("isEdit", "Yes");
+                activity.startActivity(i);
+
+            }
+        });
+
+
     }
 
     @Override
@@ -93,7 +106,7 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
 
     public class ViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_slno,tv_skill_cat,tv_skill_name,tv_no_perosn,tv_gendar,tv_start_date,tv_exp,tv_exp_max,tv_salary,tv_salary_max,tv_status1;
-        ImageView iv_edit;
+        ImageView iv_edit,iv_delete,iv_upload;
         TextView tv_div_name,tv_areaType,tv_property_TYpe,tv_pincode,tv_thana,tv_khata,tv_khesra;
 
         ViewHolder(View itemView) {
@@ -107,6 +120,8 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
             tv_khata=itemView.findViewById(R.id.tv_khata);
             tv_khesra=itemView.findViewById(R.id.tv_khesra);
             iv_edit=itemView.findViewById(R.id.iv_edit);
+            iv_delete=itemView.findViewById(R.id.iv_delete);
+            iv_upload=itemView.findViewById(R.id.iv_upload);
 
         }
 

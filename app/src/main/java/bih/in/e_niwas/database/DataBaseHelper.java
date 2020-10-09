@@ -2830,10 +2830,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("is_there_building", result.getIs_there_building());
             values.put("Building_dept", result.getAdmin_dept());
             values.put("building_name", result.getBuilding_name());
-            values.put("typ_of_building", result.getProperty_type());
+            values.put("typ_of_building", result.getBuilding_type());
             values.put("building_is", result.getBuilding_is());
             values.put("gazetedor_not", result.getGazeted_nongazeted());
-            values.put("building_type", result.getBuilding_type());
+            values.put("building_type", result.getBuilding_type_class());
             values.put("pool_of_building_id", result.getPool_building());
             values.put("plinth_area", result.getPlinth_area());
 
