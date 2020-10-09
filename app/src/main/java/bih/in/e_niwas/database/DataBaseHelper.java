@@ -388,20 +388,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
                 userInfo = new UserDetails();
-//                userInfo.setUserId(cur.getString(cur.getColumnIndex("UserID")));
-//                userInfo.setUserId(cur.getString(cur.getColumnIndex("UserName")));
-//                userInfo.setPassword(cur.getString(cur.getColumnIndex("UserPassword")));
-//
-////                userInfo.setPassword(cur.getString(cur.getColumnIndex("MobileNo")));
-////                userInfo.setPassword(cur.getString(cur.getColumnIndex("Email")));
-//
-//                userInfo.setRoleId(cur.getString(cur.getColumnIndex("RoleId")));
-//                userInfo.setRoleName(cur.getString(cur.getColumnIndex("Role")));
-//                //userInfo.setAuthenticated(true);
-//                userInfo.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
-//                userInfo.setDistName(cur.getString(cur.getColumnIndex("DistName")));
-//                userInfo.setDivisionCode(cur.getString(cur.getColumnIndex("DivisionCode")));
-//                userInfo.setDivisionName(cur.getString(cur.getColumnIndex("DivisionName")));
+                userInfo.setUserID(cur.getString(cur.getColumnIndex("UserID")));
+                //userInfo.setUserId(cur.getString(cur.getColumnIndex("UserName")));
+                userInfo.setPassword(cur.getString(cur.getColumnIndex("UserPassword")));
+
+//                userInfo.setPassword(cur.getString(cur.getColumnIndex("MobileNo")));
+//                userInfo.setPassword(cur.getString(cur.getColumnIndex("Email")));
+
+                userInfo.setIMEI(cur.getString(cur.getColumnIndex("IMEI")));
+                userInfo.setUserrole(cur.getString(cur.getColumnIndex("Role")));
+                //userInfo.setAuthenticated(true);
+                userInfo.setDistrictCode(cur.getString(cur.getColumnIndex("DistCode")));
+                userInfo.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+                userInfo.setDivision(cur.getString(cur.getColumnIndex("DivisionCode")));
+                userInfo.setDivisionName(cur.getString(cur.getColumnIndex("DivisionName")));
 //                userInfo.setZoneCode(cur.getString(cur.getColumnIndex("ZoneCode")));
 //                userInfo.setZoneName(cur.getString(cur.getColumnIndex("ZoneName")));
             }

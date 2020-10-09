@@ -40,7 +40,7 @@ public class WebServiceHelper {
 
 
     public static final String APPVERSION_METHOD = "getAppLatest";
-    public static final String AUTHENTICATE_METHOD = "Login";
+    public static final String AUTHENTICATE_METHOD = "Authenticate";
 
     //e-Niwas
     public static final String ITEM_MASTER = "getItemMasterList";
@@ -150,7 +150,7 @@ public class WebServiceHelper {
     public static UserDetails Login(String User_ID, String Pwd, String userType) {
         try {
             SoapObject res1;
-            res1=getServerData(AUTHENTICATE_METHOD, UserDetails.getUserClass(),"user_ID","Password","user_type",User_ID,Pwd, userType);
+            res1=getServerData(AUTHENTICATE_METHOD, UserDetails.getUserClass(),"UserID","Password",User_ID,Pwd);
             if (res1 != null) {
                 return new UserDetails(res1);
             } else

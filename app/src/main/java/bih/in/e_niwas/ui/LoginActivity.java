@@ -60,22 +60,22 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(LoginActivity.this,HomeActivity.class);
-                startActivity(i);
+//                Intent i=new Intent(LoginActivity.this,HomeActivity.class);
+//                startActivity(i);
 
-//                userName = (EditText) findViewById(R.id.et_username);
-//                userPass = (EditText) findViewById(R.id.et_password);
-//                param = new String[2];
-//                param[0] = userName.getText().toString();
-//                param[1] = userPass.getText().toString();
-//
-//                if (param[0].length() < 1){
-//                    Toast.makeText(LoginActivity.this, "Enter Valid User Id", Toast.LENGTH_SHORT).show();
-//                }else if (param[1].length() < 1){
-//                    Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    new LoginTask(param[0], param[1]).execute(param);
-//                }
+                userName = (EditText) findViewById(R.id.et_username);
+                userPass = (EditText) findViewById(R.id.et_password);
+                param = new String[2];
+                param[0] = userName.getText().toString();
+                param[1] = userPass.getText().toString();
+
+                if (param[0].length() < 1){
+                    Toast.makeText(LoginActivity.this, "Enter Valid User Id", Toast.LENGTH_SHORT).show();
+                }else if (param[1].length() < 1){
+                    Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
+                }else{
+                    new LoginTask(param[0], param[1]).execute(param);
+                }
 
             }
         });
@@ -159,7 +159,8 @@ public class LoginActivity extends Activity {
                 alertDialog.show();
 
             } else if (!(result != null)) {
-                AlertDialog.Builder ab = new AlertDialog.Builder(context);
+
+                AlertDialog.Builder ab = new AlertDialog.Builder(LoginActivity.this);
                 ab.setTitle(getResources().getString(R.string.server_down_title));
                 ab.setMessage(getResources().getString(R.string.server_down_text));
                 ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -266,22 +267,23 @@ public class LoginActivity extends Activity {
         SharedPreferences.Editor editor = SplashActivity.prefs.edit();
         editor.putBoolean("username", true);
         editor.putBoolean("password", true);
-        editor.putString("uid", uid.toLowerCase());
+        editor.putString("uid", details.getUserID());
         editor.putString("pass", pass);
         editor.putString("role", details.getUserrole());
         editor.commit();
         //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("USER_ID", uid).commit();
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("uid", uid).commit();
+        //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("uid", uid).commit();
         localDBHelper = new DataBaseHelper(getApplicationContext());
         long c = localDBHelper.insertUserDetails(details);
 
-        return 0;
+        return c;
     }
 
     public void start() {
         //getUserDetail();
         //new SyncPanchayatData().execute("");
         Intent iUserHome = new Intent(getApplicationContext(), HomeActivity.class);
+        iUserHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(iUserHome);
         finish();
     }
