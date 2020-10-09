@@ -72,6 +72,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String subdiv="",wardname="",pan_name="";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,10 +100,6 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         }
         initialisation();
         sp_bulding_check.setOnItemSelectedListener(this);
-        loadDivisionSpinnerdata();
-        loadDistrictSpinnerdata();
-        loadWardSpinnerData();
-
 
         try {
 
@@ -113,7 +110,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
-                assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
+
+                assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid).get(0);
+         //       assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
                 ShowEditEntryKhesra();
 
             }
@@ -122,6 +121,12 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        loadDivisionSpinnerdata();
+        loadDistrictSpinnerdata();
+        loadWardSpinnerData();
+
+
 
 
         sp_building_div.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -367,6 +372,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                         Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
                         i.putExtra("assetdata_edit",assetDetails_edit);
                         i.putExtra("KeyId",keyid);
+                        i.putExtra("isEdit", "Yes");
                         startActivity(i);
                     }
                     else {

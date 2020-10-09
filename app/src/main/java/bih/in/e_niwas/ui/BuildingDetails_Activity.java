@@ -59,8 +59,12 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     NiwasInspectionEntity assetDetails_edit;
     int ThumbnailSize =500;
     ArrayList<Item_MasterEntity> Item_List = new ArrayList<Item_MasterEntity>();
+    ArrayList<Item_MasterEntity> Item_List1 = new ArrayList<Item_MasterEntity>();
     DataBaseHelper dataBaseHelper;
     String pool_id="",pool_nm="",buildintype_id="",buildintype_nm="";
+
+    String var_buildingpool="",building_type="",status="";
+    String _groupid="",_second_grupi_id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +72,6 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         setContentView(R.layout.activity_building_details_);
         dataBaseHelper = new DataBaseHelper(BuildingDetails_Activity.this);
         initialise();
-
-        loadpoolOfBuildingSpinnerData();
         try {
 
 
@@ -79,7 +81,10 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
+                NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid);
                 assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_edit");
+                assetDetails_edit.setImage1(assetDetails_editImage.getImage1());
+                assetDetails_edit.setImage2(assetDetails_editImage.getImage2());
                 ShowEditEntryKhesra();
 
             }
@@ -88,6 +93,8 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         catch (Exception e) {
             e.printStackTrace();
         }
+        loadpoolOfBuildingSpinnerData();
+
 
 
         assetDetails=(NiwasInspectionEntity)getIntent().getSerializableExtra("data");
@@ -117,8 +124,8 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    pool_id = Item_List.get(position-1).getItem_ID();
-                    pool_nm = Item_List.get(position-1).getItem_Name();
+                    pool_id = Item_List1.get(position-1).getItem_ID();
+                    pool_nm = Item_List1.get(position-1).getItem_Name();
 
                 } else {
                     pool_id = "";
@@ -180,7 +187,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_non_judicial.setChecked(false);
 
-
+                    _var_type_of_building="1";
                 }
             }
         });
@@ -189,7 +196,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_judicial.setChecked(false);
-
+                    _var_type_of_building="2";
                 }
             }
         });
@@ -200,6 +207,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_non_residential.setChecked(false);
+                    _var_building_is="1";
                 }
             }
         });
@@ -208,6 +216,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_residential.setChecked(false);
+                    _var_building_is="2";
                     loadBuildingTypeSpinnerData("17","0");
                 }
             }
@@ -218,6 +227,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_non_gazetted.setChecked(false);
+                    var_gazetted_nongazetted="3";
                     chk_mixedd.setChecked(false);
                     loadBuildingTypeSpinnerData("3","0");
                 }
@@ -229,6 +239,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_gazetted.setChecked(false);
                     chk_mixedd.setChecked(false);
+                    var_gazetted_nongazetted="6";
                     loadBuildingTypeSpinnerData("6","0");
                 }
             }
@@ -240,6 +251,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_gazetted.setChecked(false);
                     chk_non_gazetted.setChecked(false);
+                    var_gazetted_nongazetted="M";
                     loadBuildingTypeSpinnerData("6","3");
                 }
             }
@@ -390,7 +402,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         View focusView = null;
         boolean validate = true;
 
-        if(building_type_class_id.equalsIgnoreCase(""))
+        if(buildintype_id.equalsIgnoreCase(""))
         {
             Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
             validate = false;
@@ -441,13 +453,13 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         assetDetails.setBuilding_type(_var_type_of_building);
         assetDetails.setBuilding_is(_var_building_is);
         assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
-        assetDetails.setBuilding_type_class(building_type_class_id);
-        assetDetails.setPool_building(building_pool_id);
+        assetDetails.setBuilding_type_class(buildintype_id);
+        assetDetails.setPool_building(pool_id);
         assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
         assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
         assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
         assetDetails.setYear_of_completion(edt_building_year.getText().toString());
-        assetDetails.setBuilding_status(building_status_id);
+        assetDetails.setBuilding_status(status_id);
         assetDetails.setRemarks(edt_remarks.getText().toString());
         assetDetails.setImage1(img1String);
         assetDetails.setImage2(img2String);
@@ -461,8 +473,6 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
         newEntryEntity.setEntryby(CommonPref.getUserDetails(getApplicationContext()).getUserID());
         if(str_img.equalsIgnoreCase("Y")) {
-
-
 
             id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(assetDetails);
 
@@ -496,16 +506,46 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     public void ShowEditEntryKhesra() {
 
         btn_save.setText("UPDATE ASSET RECORD");
-
-
+//        building_type=dataBaseHelper.getNameFor("Item_Master","Item_Id","Item_Name",assetDetails_edit.getBuilding_type_class());
+//        var_buildingpool=dataBaseHelper.getNameFor("Item_Master","Item_Id","Item_Name",assetDetails_edit.getPool_building());
         edt_building_name.setText(assetDetails_edit.getBuilding_name());
         edt_plinth_area.setText(assetDetails_edit.getPlinth_area());
         edt_builtup_area.setText(assetDetails_edit.getBuiltup_area());
         edt_ofc_detail.setText(assetDetails_edit.getOffice_details());
         edt_building_year.setText(assetDetails_edit.getYear_of_completion());
         edt_remarks.setText(assetDetails_edit.getRemarks());
+        if (assetDetails_edit.getBuilding_type().equals("1")){
+            chk_judicial.setChecked(true);
+        }
+        else if(assetDetails_edit.getBuilding_type().equals("2")){
+            chk_non_judicial.setChecked(true);
+        }
+        if (assetDetails_edit.getBuilding_is().equals("1")){
+            chk_residential.setChecked(true);
+        }
+        else if(assetDetails_edit.getBuilding_is().equals("2")){
+            chk_non_residential.setChecked(true);
+            _groupid="17";
+            _second_grupi_id="0";
+        }
 
 
+        if (assetDetails_edit.getGazeted_nongazeted().equals("3")){
+            chk_gazetted.setChecked(true);
+            _groupid="3";
+            _second_grupi_id="0";
+        }
+        else if(assetDetails_edit.getGazeted_nongazeted().equals("6")){
+            chk_non_gazetted.setChecked(true);
+            _groupid="6";
+            _second_grupi_id="0";
+        }
+
+        else if(assetDetails_edit.getGazeted_nongazeted().equals("M")){
+            chk_mixedd.setChecked(true);
+            _groupid="6";
+            _second_grupi_id="3";
+        }
         latitude = assetDetails_edit.getLat1();
         latitude2 = assetDetails_edit.getLat2();
 
@@ -536,13 +576,28 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             {
                 Bitmap bmpImg2 = BitmapFactory.decodeByteArray(imgnew, 0, imgnew.length);
                 img2.setScaleType(ImageView.ScaleType.FIT_XY);
-                img1.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg2, ThumbnailSize, ThumbnailSize));
+                img2.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg2, ThumbnailSize, ThumbnailSize));
 
             }
 
 
         }
 
+        if (assetDetails_edit.getBuilding_status().equals("1")){
+            sp_buildin_status.setSelection(1);
+        }
+        else if (assetDetails_edit.getBuilding_status().equals("2")){
+            sp_buildin_status.setSelection(2);
+        }
+        else if (assetDetails_edit.getBuilding_status().equals("3")){
+            sp_buildin_status.setSelection(3);
+        }
+        else if (assetDetails_edit.getBuilding_status().equals("4")){
+            sp_buildin_status.setSelection(4);
+        }
+        loadpoolOfBuildingSpinnerData();
+
+        loadBuildingTypeSpinnerData(_groupid,_second_grupi_id);
     }
 
     public void UpdateIntoLocal() {
@@ -557,13 +612,13 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         assetDetails.setBuilding_type(_var_type_of_building);
         assetDetails.setBuilding_is(_var_building_is);
         assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
-        assetDetails.setBuilding_type_class(building_type_class_id);
-        assetDetails.setPool_building(building_pool_id);
+        assetDetails.setBuilding_type_class(buildintype_id);
+        assetDetails.setPool_building(pool_id);
         assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
         assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
         assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
         assetDetails.setYear_of_completion(edt_building_year.getText().toString());
-        assetDetails.setBuilding_status(building_status_id);
+        assetDetails.setBuilding_status(status_id);
         assetDetails.setRemarks(edt_remarks.getText().toString());
         assetDetails.setImage1(img1String);
         assetDetails.setImage2(img2String);
@@ -588,23 +643,27 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
 
     public void loadpoolOfBuildingSpinnerData(){
-        Item_List.clear();
-        Item_List = dataBaseHelper.getItemList("8","0");
+        Item_List1.clear();
+        Item_List1 = dataBaseHelper.getItemList("8","0");
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
-        for (Item_MasterEntity info: Item_List){
+        String name="";
+        for (Item_MasterEntity info: Item_List1){
+            if(getIntent().hasExtra("KeyId") && info.getItem_ID().equals(assetDetails_edit.getPool_building())){
+                name= info.getItem_Name();
+            }
             list.add(info.getItem_Name());
             //if(benDetails.get)
         }
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_poolof_building.setAdapter(adaptor);
-      //  if(getIntent().hasExtra("KeyId"))
-//        {
-//            sp_poolof_building.setSelection(((ArrayAdapter<String>) sp_poolof_building.getAdapter()).getPosition(assetDetails_edit.getBlk_name()));
-//
-//        }
+        if(getIntent().hasExtra("KeyId"))
+        {
+            sp_poolof_building.setSelection(((ArrayAdapter<String>) sp_poolof_building.getAdapter()).getPosition(name));
+
+        }
         //  sp_block.setEnabled(false);
     }
 
@@ -615,18 +674,22 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
+   String name="";
         for (Item_MasterEntity info: Item_List){
+            if(getIntent().hasExtra("KeyId") && info.getItem_ID().equals(assetDetails_edit.getBuilding_type_class())){
+                name= info.getItem_Name();
+            }
             list.add(info.getItem_Name());
             //if(benDetails.get)
         }
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_buildingtype.setAdapter(adaptor);
-        //  if(getIntent().hasExtra("KeyId"))
-//        {
-//            sp_poolof_building.setSelection(((ArrayAdapter<String>) sp_poolof_building.getAdapter()).getPosition(assetDetails_edit.getBlk_name()));
-//
-//        }
+        if(getIntent().hasExtra("KeyId"))
+        {
+            sp_buildingtype.setSelection(((ArrayAdapter<String>) sp_poolof_building.getAdapter()).getPosition(name));
+
+        }
         //  sp_block.setEnabled(false);
     }
 

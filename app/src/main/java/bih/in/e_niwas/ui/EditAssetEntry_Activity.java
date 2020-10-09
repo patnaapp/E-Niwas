@@ -35,7 +35,7 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
 
         initialise();
 
-        assetList=dataBaseHelper.getAllNewEntryDetail();
+        assetList=dataBaseHelper.getAllNewEntryDetail("0");
         populateData();
     }
 
@@ -69,7 +69,7 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        assetList=dataBaseHelper.getAllNewEntryDetail();
+        assetList=dataBaseHelper.getAllNewEntryDetail("0");
         populateData();
     }
 }
