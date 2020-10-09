@@ -6,7 +6,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -61,7 +65,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     LinearLayout ll_admindept;
     String area_type_id="",property_type_id="";
     NiwasInspectionEntity assetDetails;
+    NiwasInspectionEntity assetDetails_edit;
     String ward_id="",ward_nm="";
+    String keyid = "";
+    boolean edit;
+    String subdiv="",wardname="",pan_name="";
 
 
     @Override
@@ -89,12 +97,32 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         {
             throw sqle;
         }
-
         initialisation();
         sp_bulding_check.setOnItemSelectedListener(this);
         loadDivisionSpinnerdata();
         loadDistrictSpinnerdata();
         loadWardSpinnerData();
+
+
+        try {
+
+
+            keyid = getIntent().getExtras().getString("KeyId");
+            String isEdit = "";
+            isEdit = getIntent().getExtras().getString("isEdit");
+            Log.d("kvfrgv", "" + keyid + "" + isEdit);
+            if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+                edit = true;
+                assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
+                ShowEditEntryKhesra();
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         sp_building_div.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -496,10 +524,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_block.setAdapter(adaptor);
-//        if(benDetails.getBlockName()!=null){
-//            spn_block_name.setSelection(((ArrayAdapter<String>) spn_block_name.getAdapter()).getPosition(benDetails.getBlockName()));
-//
-//        }
+        if(getIntent().hasExtra("KeyId"))
+        {
+            sp_block.setSelection(((ArrayAdapter<String>) sp_block.getAdapter()).getPosition(assetDetails_edit.getBlk_name()));
+
+        }
         //  sp_block.setEnabled(false);
     }
 
@@ -516,11 +545,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_ward_pan.setAdapter(adaptor);
-//        if(benDetails.getPanchayatName()!=null)
-//        {
-//            spn_panch_name.setSelection(((ArrayAdapter<String>) spn_panch_name.getAdapter()).getPosition(benDetails.getPanchayatName()));
-//
-//        }
+        if(getIntent().hasExtra("KeyId"))
+        {
+            sp_ward_pan.setSelection(((ArrayAdapter<String>) sp_ward_pan.getAdapter()).getPosition(pan_name));
+
+        }
     }
 
     public void loadWardSpinnerData()
@@ -536,11 +565,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_ward.setAdapter(adaptor);
-//        if(benDetails.getPanchayatName()!=null)
-//        {
-//            spn_panch_name.setSelection(((ArrayAdapter<String>) spn_panch_name.getAdapter()).getPosition(benDetails.getPanchayatName()));
-//
-//        }
+        if(getIntent().hasExtra("KeyId"))
+        {
+            sp_ward.setSelection(((ArrayAdapter<String>) sp_ward.getAdapter()).getPosition(wardname));
+
+        }
     }
 
     public void loadSubDivSpinnerData(String blockid)
@@ -556,11 +585,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_subdiv.setAdapter(adaptor);
-//        if(benDetails.getPanchayatName()!=null)
-//        {
-//            spn_panch_name.setSelection(((ArrayAdapter<String>) spn_panch_name.getAdapter()).getPosition(benDetails.getPanchayatName()));
-//
-//        }
+       // if(benDetails.getPanchayatName()!=null)
+        if(getIntent().hasExtra("KeyId"))
+
+        {
+            sp_subdiv.setSelection(((ArrayAdapter<String>) sp_subdiv.getAdapter()).getPosition(subdiv));
+
+        }
     }
 
     @Override
@@ -648,7 +679,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     {
         assetDetails=new NiwasInspectionEntity();
         assetDetails.setDiv_code(_vardivID);
-        assetDetails.setDist_name(_vardivName);
+        assetDetails.setDiv_name(_vardivName);
         assetDetails.setProperty_type(property_type_id);
         assetDetails.setArea_type(area_type_id);
         assetDetails.setDist_code(_vardistID);
@@ -656,8 +687,10 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setBlk_code(block_id);
         assetDetails.setBlk_name(block_name);
         assetDetails.setSub_Div_code(subdiv_id);
-        assetDetails.setWard_id(panch_id);
-        assetDetails.setWard_name(panch_name);
+        assetDetails.setPanchayat_code(panch_id);
+        assetDetails.setPanchayat_name(panch_name);
+        assetDetails.setWard_id(ward_id);
+        assetDetails.setWard_name(ward_nm);
         assetDetails.setIs_there_building(Is_building_Code);
         assetDetails.setPincode(edt_pincode.getText().toString());
         assetDetails.setThana_no(edt_thana.getText().toString());
@@ -671,6 +704,82 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setNo_of_trees(edt_trees_no.getText().toString());
         assetDetails.setTree_details(et_trees_details.getText().toString());
         assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
+
+
+    }
+
+    public void ShowEditEntryKhesra() {
+
+//        UserId = PreferenceManager.getDefaultSharedPreferences(NewEntryActivity.this).getString("USERID", "");
+//        NewEntryInfoList = dataBaseHelper.getAllNewEntryDetailForEdit(UserId, keyid);
+
+//            _spin_div_nm = dewormingEntity.getDiv_Nm();
+//            _spin_package = dewormingEntity.getPackage_Id();
+//            loadpackageSpinnerData(UserId,dewormingEntity.getDiv_Id());
+//            _spin_road = dewormingEntity.getRoad_NM();
+//            loadroadSpinnerData(UserId,_spin_package);
+//            _spin_non_compliances = dewormingEntity.get_compliance_Nm();
+//            loadDivisionSpinnerdata();
+//            loadComplianceSpinnerdata();
+//            edt_km.setText(dewormingEntity.get_kilometers());
+        subdiv=dataBaseHelper.getNameFor("Sub_division_master","Sd_Code2","Sd_Name_En",assetDetails_edit.getSub_Div_code());
+        wardname=assetDetails_edit.getWard_name();
+        pan_name=assetDetails_edit.getPanchayat_name();
+        edt_khata.setText(assetDetails_edit.getKahta_no());
+        edt_khesra.setText(assetDetails_edit.getKhesra_no());
+        edt_thana.setText(assetDetails_edit.getThana_no());
+        edt_pincode.setText(assetDetails_edit.getPincode());
+        edt_nrth_chauhaddi.setText(assetDetails_edit.getChauhaddi_north());
+        edt_south_chauhaddi.setText(assetDetails_edit.getChauhaddi_south());
+        edt_neast_chauhaddi.setText(assetDetails_edit.getChauhaddi_east());
+        edt_west_chauhaddi.setText(assetDetails_edit.getChauhaddi_west());
+        edt_trees_no.setText(assetDetails_edit.getNo_of_trees());
+        edt_land_area.setText(assetDetails_edit.getLand_area());
+        et_trees_details.setText(assetDetails_edit.getTree_details());
+
+        loadSubDivSpinnerData(assetDetails_edit.getBlk_code());
+        loadBlockSpinnerData(assetDetails_edit.getDist_code(),assetDetails_edit.getSub_Div_code());
+
+
+        if (assetDetails_edit.getProperty_type().equals("1")){
+            chk_open_land.setChecked(true);
+            property_type_id="1";
+            btn_proceed.setText("Save");
+        }
+        else if (assetDetails_edit.getProperty_type().equals("2"))
+        {
+            chk_existing_building.setChecked(true);
+            property_type_id="2";
+            btn_proceed.setText("Add Building Details");
+        }
+
+        if (assetDetails_edit.getArea_type().equals("U")){
+            chk_urban.setChecked(true);
+            area_type_id="U";
+            sp_ward_pan.setVisibility(View.GONE);
+            sp_ward.setVisibility(View.VISIBLE);
+            loadWardSpinnerData();
+        }
+        else if (assetDetails_edit.getProperty_type().equals("R"))
+        {
+            chk_rural.setChecked(true);
+            area_type_id="R";
+            sp_ward_pan.setVisibility(View.VISIBLE);
+            sp_ward.setVisibility(View.GONE);
+            loadPanchayatSpinnerData(assetDetails_edit.getBlk_code());
+        }
+
+
+        if (assetDetails_edit.getIs_there_building().equals("Y")){
+            sp_bulding_check.setSelection(1);
+            ll_admindept.setVisibility(View.VISIBLE);
+            edt_admin_dept.setText(assetDetails_edit.getAdmin_dept());
+        }
+        else if (assetDetails_edit.getIs_there_building().equals("N"))
+        {
+            sp_bulding_check.setSelection(2);
+            ll_admindept.setVisibility(View.GONE);
+        }
 
 
     }

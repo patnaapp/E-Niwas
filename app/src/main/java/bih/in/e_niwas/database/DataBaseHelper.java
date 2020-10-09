@@ -1998,7 +1998,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
 
             SQLiteDatabase db = this.getReadableDatabase();
-          //  String[] params = new String[] { Pan_Code };
+            //  String[] params = new String[] { Pan_Code };
 
             Cursor cur = db
                     .rawQuery(
@@ -2591,7 +2591,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("distcode", result.getDist_code());
             values.put("distname", result.getDist_name());
             values.put("sub_div_id", result.getSub_Div_code());
-           // values.put("sub_div_nm", result.get_compliance_Nm());
+            // values.put("sub_div_nm", result.get_compliance_Nm());
             values.put("block_id", result.getBlk_code());
             values.put("block_nm", result.getBlk_name());
             values.put("ward_id", result.getWard_id());
@@ -2651,7 +2651,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
 
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-           // String[] args = {Userid};
+            // String[] args = {Userid};
 
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
@@ -2661,12 +2661,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             while (cursor.moveToNext()) {
                 NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
+                basicInfo.setId((cursor.getString(cursor.getColumnIndex("Id"))));
                 basicInfo.setDiv_code((cursor.getString(cursor.getColumnIndex("building_div"))));
                 basicInfo.setDiv_name((cursor.getString(cursor.getColumnIndex("Div_name"))));
                 basicInfo.setProperty_type((cursor.getString(cursor.getColumnIndex("property_type"))));
                 basicInfo.setArea_type((cursor.getString(cursor.getColumnIndex("area_type"))));
                 basicInfo.setDist_code((cursor.getString(cursor.getColumnIndex("distcode"))));
                 basicInfo.setDist_name((cursor.getString(cursor.getColumnIndex("distname"))));
+                basicInfo.setSub_Div_code((cursor.getString(cursor.getColumnIndex("sub_div_id"))));
                 basicInfo.setBlk_code((cursor.getString(cursor.getColumnIndex("block_id"))));
                 basicInfo.setBlk_name((cursor.getString(cursor.getColumnIndex("block_nm"))));
                 basicInfo.setWard_id((cursor.getString(cursor.getColumnIndex("ward_id"))));
@@ -2677,6 +2679,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 basicInfo.setThana_no((cursor.getString(cursor.getColumnIndex("thana_no"))));
                 basicInfo.setKahta_no((cursor.getString(cursor.getColumnIndex("khata"))));
                 basicInfo.setKhesra_no((cursor.getString(cursor.getColumnIndex("khesra"))));
+
+                basicInfo.setChauhaddi_north((cursor.getString(cursor.getColumnIndex("north"))));
+                basicInfo.setChauhaddi_south((cursor.getString(cursor.getColumnIndex("south"))));
+                basicInfo.setChauhaddi_west((cursor.getString(cursor.getColumnIndex("west"))));
+                basicInfo.setChauhaddi_east((cursor.getString(cursor.getColumnIndex("east"))));
+
+                basicInfo.setLand_area((cursor.getString(cursor.getColumnIndex("land_area"))));
+                basicInfo.setNo_of_trees((cursor.getString(cursor.getColumnIndex("no_of_trees"))));
+                basicInfo.setTree_details((cursor.getString(cursor.getColumnIndex("tree_details"))));
+                basicInfo.setIs_there_building((cursor.getString(cursor.getColumnIndex("is_there_building"))));
+                basicInfo.setBuilding_name((cursor.getString(cursor.getColumnIndex("building_name"))));
+                basicInfo.setBuilding_type((cursor.getString(cursor.getColumnIndex("typ_of_building"))));
+                basicInfo.setBuilding_is((cursor.getString(cursor.getColumnIndex("building_is"))));
+                basicInfo.setGazeted_nongazeted((cursor.getString(cursor.getColumnIndex("gazetedor_not"))));
+                basicInfo.setBuilding_type_class((cursor.getString(cursor.getColumnIndex("building_type"))));
+                basicInfo.setPool_building((cursor.getString(cursor.getColumnIndex("pool_of_building_id"))));
+                basicInfo.setPlinth_area((cursor.getString(cursor.getColumnIndex("plinth_area"))));
+                basicInfo.setBuiltup_area((cursor.getString(cursor.getColumnIndex("builtup_area"))));
+                basicInfo.setOffice_details((cursor.getString(cursor.getColumnIndex("ofc_details"))));
+                basicInfo.setYear_of_completion((cursor.getString(cursor.getColumnIndex("completion_years"))));
+                basicInfo.setBuilding_status((cursor.getString(cursor.getColumnIndex("building_status"))));
+                basicInfo.setRemarks((cursor.getString(cursor.getColumnIndex("remarks"))));
+                basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
+                basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
 
 
                 basicdetail.add(basicInfo);
@@ -2693,5 +2719,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return basicdetail;
     }
+
+    public String getNameFor(String tblName, String whereColumnName, String returnColumnValue, String thisID) {
+        String thisValue = "";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur = db.rawQuery("select * from " + tblName + " WHERE " + whereColumnName + "='" + thisID.trim() + "'", null);
+            int x = cur.getCount();
+            while (cur.moveToNext()) {
+                thisValue = cur.getString(cur.getColumnIndex(returnColumnValue));
+            }
+            cur.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return thisValue.trim();
+    }
+
 
 }

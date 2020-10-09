@@ -27,7 +27,7 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
     ArrayList<NiwasInspectionEntity> ThrList=new ArrayList<>();
 
     Boolean isShowDetail = false;
-   // WorkReqrmntListener listener;
+    // WorkReqrmntListener listener;
 
     public WorkSiteEditAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist) {
         this.activity=listViewshowedit;
@@ -47,7 +47,7 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
         final NiwasInspectionEntity info = ThrList.get(position);
 
         holder.tv_slno.setText(String.valueOf(position+1));
-        holder.tv_div_name.setText(info.getDiv_code());
+        holder.tv_div_name.setText(info.getDiv_name());
         if (info.getArea_type().equals("U"))
         {
             holder.tv_areaType.setText("Urban");
@@ -76,8 +76,8 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(activity, NewEntryForm_Activity.class);
-//                i.putExtra("workdata",ThrList.get(position));
-//                i.putExtra("KeyId",info.getWorksId());
+                i.putExtra("assetdata",ThrList.get(position));
+                i.putExtra("KeyId",info.getId());
                 i.putExtra("isEdit", "Yes");
                 activity.startActivity(i);
 

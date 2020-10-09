@@ -11,6 +11,7 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public static Class<NiwasInspectionEntity> Asset_CLASS = NiwasInspectionEntity.class;
 
+    private String Id;
     private String Asset_Id;
     private String Div_code;
     private String Div_name;
@@ -76,6 +77,14 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public static void setAsset_CLASS(Class<NiwasInspectionEntity> asset_CLASS) {
         Asset_CLASS = asset_CLASS;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public String getAsset_Id() {
