@@ -48,6 +48,7 @@
         android:icon="@drawable/eniwaslogo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/eniwaslogo"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="bih.in.e_niwas.ui.EditAssetEntry_Activity"></activity>

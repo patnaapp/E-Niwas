@@ -25,6 +25,7 @@ import bih.in.e_niwas.entity.Block;
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.DivisionList;
 import bih.in.e_niwas.entity.FilterOptionEntity;
+import bih.in.e_niwas.entity.Item_MasterEntity;
 import bih.in.e_niwas.entity.LocalSpinnerData;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.PanchayatData;
@@ -2804,6 +2805,64 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         return c;
+
+    }
+
+
+    public long setItem_Master(ArrayList<Item_MasterEntity> list) {
+
+
+        long c = -1;
+
+
+        DataBaseHelper dh = new DataBaseHelper(myContext);
+
+        try {
+            dh.createDataBase();
+
+
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+            return -1;
+        }
+
+        ArrayList<Item_MasterEntity> info = list;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.delete("Item_Master",null,null);
+        if (info != null) {
+            try {
+                for (int i = 0; i < info.size(); i++) {
+
+                    values.put("Group_Id", info.get(i).getGroup_ID());
+                    values.put("Item_Id", info.get(i).getItem_ID());
+                    values.put("Item_Name", info.get(i).getItem_Name());
+                    values.put("Item_Order", info.get(i).getItem_Order());
+
+
+                    String[] whereArgs = new String[]{info.get(i).getItem_ID()};
+
+                    c = db.update("Item_Master", values, "Item_Id=?", whereArgs);
+                    if (!(c > 0)) {
+
+                        c = db.insert("Item_Master", null, values);
+                    }
+
+                    //c = db.insert("Financial_Year", null, values);
+
+
+                }
+                db.close();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return c;
+            }
+        }
+        return c;
+
 
     }
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.FilterOptionEntity;
+import bih.in.e_niwas.entity.Item_MasterEntity;
 import bih.in.e_niwas.entity.PanchayatEntity;
 import bih.in.e_niwas.entity.PlantationDetail;
 import bih.in.e_niwas.entity.PlantationReportEntity;
@@ -33,13 +34,16 @@ import bih.in.e_niwas.entity.ward;
 public class WebServiceHelper {
 
     //public static final String SERVICENAMESPACE = "http://minorirrigation.bihar.gov.in/";
-    public static final String SERVICENAMESPACE = "http://tempuri.org/";
+    public static final String SERVICENAMESPACE = "http://10.133.20.159/";
 
-    public static final String SERVICEURL1 = "http://minorirrigation.bihar.gov.in/tubewell/webservice.asmx";
+    public static final String SERVICEURL1 = "http://10.133.20.159/TestService/EniwasNewWebService.asmx";
 
 
     public static final String APPVERSION_METHOD = "getAppLatest";
     public static final String AUTHENTICATE_METHOD = "Login";
+
+    //e-Niwas
+    public static final String ITEM_MASTER = "getItemMasterList";
 
 
 
@@ -642,7 +646,8 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -763,6 +768,38 @@ public class WebServiceHelper {
             return null;
         }
         return res1;
+    }
+
+
+    public static ArrayList<Item_MasterEntity> getItem_Master()
+    {
+
+        SoapObject res1;
+        res1=getServerData(ITEM_MASTER, Item_MasterEntity.ITEMMASTER_CLASS);
+        int TotalProperty=0;
+        if(res1!=null) TotalProperty= res1.getPropertyCount();
+
+        ArrayList<Item_MasterEntity> fieldList = new ArrayList<Item_MasterEntity>();
+
+        for (int i = 0; i < TotalProperty; i++)
+        {
+            if (res1.getProperty(i) != null)
+            {
+                Object property = res1.getProperty(i);
+                if (property instanceof SoapObject)
+                {
+                    SoapObject final_object = (SoapObject) property;
+                    Item_MasterEntity block= new Item_MasterEntity(final_object);
+                    fieldList.add(block);
+                }
+            }
+            else{
+                return fieldList;
+            }
+
+        }
+
+        return fieldList;
     }
 
 }
