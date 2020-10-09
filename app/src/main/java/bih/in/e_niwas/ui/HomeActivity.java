@@ -60,7 +60,6 @@ public class HomeActivity extends Activity
         }
         catch (SQLException sqle)
         {
-            throw sqle;
         }
 
         new Sync_Item_Master().execute();
@@ -83,7 +82,8 @@ public class HomeActivity extends Activity
 
     public void on_NewEntry(View view)
     {
-        Intent i=new Intent(HomeActivity.this,NewEntryForm_Activity.class);
+        Intent i=new Intent(HomeActivity.this,AssetListActivity.class);
+        i.putExtra("user", userInfo);
         startActivity(i);
     }
 
@@ -130,7 +130,6 @@ public class HomeActivity extends Activity
 
         @Override
         protected void onPreExecute() {
-
             this.dialog.setCanceledOnTouchOutside(false);
             this.dialog.setMessage("Loading...");
             this.dialog.show();

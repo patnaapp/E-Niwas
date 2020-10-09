@@ -290,7 +290,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_generate_lbl"
                     android:textColor="@color/colorPrimary"
-                    android:text="New Entry"/>
+                    android:text="Asset Entry"/>
 
             </LinearLayout>
 
