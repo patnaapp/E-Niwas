@@ -2867,5 +2867,36 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Item_MasterEntity> getItemList(String groupid,String scnd_gruopid) {
+        //CREATE TABLE `Panchayat1` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `DistCode` TEXT,
+        // `BlockCode` TEXT, `PanchayatCode` TEXT, `PanchayatName` TEXT )
+        ArrayList<Item_MasterEntity> pdetail = new ArrayList<Item_MasterEntity>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur;
+            if (scnd_gruopid.equals("0")){
+                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' order by Item_Name", null);
+            }
+            else {
+                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' or Group_Id='" + scnd_gruopid + "' order by Item_Name", null);
+            }
+
+            int x = cur.getCount();
+            while (cur.moveToNext()) {
+                Item_MasterEntity panchayat = new Item_MasterEntity();
+                panchayat.setGroup_ID(cur.getString(cur.getColumnIndex("Group_Id")));
+                panchayat.setItem_ID((cur.getString(cur.getColumnIndex("Item_Id"))));
+                panchayat.setItem_Name((cur.getString(cur.getColumnIndex("Item_Name"))));
+
+                pdetail.add(panchayat);
+            }
+            cur.close();
+            db.close();
+        }
+        catch (Exception e) {
+        }
+        return pdetail;
+    }
+
 
 }
