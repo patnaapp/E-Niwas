@@ -30,6 +30,9 @@ public class UserDetails implements KvmSerializable, Serializable {
     private String Userrole = "";
     private String UserroleId = "";
     private String Name = "";
+    private String Division = "";
+    private String DivisionName = "";
+    private String IMEI = "";
 
 
     public UserDetails() {
@@ -37,21 +40,23 @@ public class UserDetails implements KvmSerializable, Serializable {
 
     @SuppressWarnings("deprecation")
     public UserDetails(SoapObject obj) {
-        this.setAuthenticated(Boolean.parseBoolean(obj.getProperty("IS_authenticate").toString()));
-        this.setUserID(obj.getProperty("ID").toString());
-        //this.setPassword(obj.getProperty("Password").toString());
+        this.setAuthenticated(Boolean.parseBoolean(obj.getProperty("isAuthenticated").toString()));
+        this.setUserID(obj.getProperty("UserID").toString());
+        this.setPassword(obj.getProperty("Password").toString());
 
-        this.setName(obj.getProperty("Name").toString());
-        this.setMobileNo(obj.getProperty("Phone").toString());
-        this.setEmail(obj.getProperty("Email").toString());
-//        this.setDistrictCode(obj.getProperty("DistrictCode").toString());
-//        this.setDistName(obj.getProperty("DistName").toString());
+//        this.setName(obj.getProperty("Name").toString());
+//        this.setMobileNo(obj.getProperty("Phone").toString());
+//        this.setEmail(obj.getProperty("Email").toString());
+        this.setDistrictCode(obj.getProperty("DistCode").toString());
+        this.setDistName(obj.getProperty("DistName").toString());
 //        this.setBlockCode(obj.getProperty("BlockCode").toString());
 //        this.setBlockName(obj.getProperty("BlockName").toString());
 //        this.setPanchayatCode(obj.getProperty("PanchayatCode").toString());
 //        this.setPanchayatName(obj.getProperty("PanchayatName").toString());
 //        //this.setDegignation(obj.getProperty("Degignation").toString());
-//        this.setUserrole(obj.getProperty("Userrole").toString());
+        this.setUserrole(obj.getProperty("UserRole").toString());
+        this.setDivision(obj.getProperty("Division").toString());
+        this.setDivisionName(obj.getProperty("DivisionName").toString());
 //        this.setName(obj.getProperty("Name").toString());
     }
 
@@ -287,6 +292,30 @@ public class UserDetails implements KvmSerializable, Serializable {
                 break;
             }
         }
+    }
+
+    public String getIMEI() {
+        return IMEI;
+    }
+
+    public void setIMEI(String IMEI) {
+        this.IMEI = IMEI;
+    }
+
+    public String getDivision() {
+        return Division;
+    }
+
+    public void setDivision(String division) {
+        Division = division;
+    }
+
+    public String getDivisionName() {
+        return DivisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        DivisionName = divisionName;
     }
 
     public String getUserroleId() {

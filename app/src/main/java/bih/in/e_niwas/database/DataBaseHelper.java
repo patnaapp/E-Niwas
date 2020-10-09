@@ -282,7 +282,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return x;
     }
 
-    public long insertSurfaceUserDetails(UserDetails result) {
+    public long insertUserDetails(UserDetails result) {
 
         long c = 0;
         try {
@@ -294,13 +294,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("UserID", result.getUserID());
             values.put("UserName", result.getName());
             values.put("UserPassword", result.getPassword());
-            //values.put("IMEI", result.getIMEI());
-            values.put("RoleId", result.getUserroleId());
+            values.put("IMEI", result.getIMEI());
+            //values.put("RoleId", result.getUserroleId());
             values.put("Role", result.getUserrole());
 
-            values.put("MobileNo", result.getMobileNo());
-            values.put("Email", result.getEmail());
-
+            values.put("DivisionCode", result.getDivision());
+            values.put("DivisionName", result.getDivisionName());
+            values.put("DistCode", result.getDistrictCode());
+            values.put("DistName", result.getDistName());
 
             String[] whereArgs = new String[]{result.getUserID()};
 

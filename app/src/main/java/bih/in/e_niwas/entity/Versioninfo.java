@@ -29,12 +29,9 @@ public class Versioninfo implements KvmSerializable {
 
 	public Versioninfo(SoapObject obj) {
 
-		this.isVerUpdated = Boolean.valueOf(obj.getProperty("IsUpdated")
-				.toString().toLowerCase());
-		this.isValidDevice = Boolean.valueOf(obj.getProperty("IsValidDevice")
-				.toString().toLowerCase());
-		this.priority = Integer.valueOf(obj.getProperty("Priority")
-				.toString().trim());
+		this.isVerUpdated = Boolean.valueOf(obj.getProperty("IsUpdated").toString().toLowerCase());
+		this.isValidDevice = Boolean.valueOf(obj.getProperty("IsValidDevice").toString().toLowerCase());
+		this.priority = Integer.valueOf(obj.getProperty("Priority").toString().trim());
 		this.adminTitle = obj.getProperty("AdminTitle").toString();
 		this.adminMsg = obj.getProperty("AdminMsg").toString();
 		this.updateTile = obj.getProperty("UpdateTile").toString();

@@ -167,7 +167,6 @@ public class LoginActivity extends Activity {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         dialog.dismiss();
-
                     }
                 });
 
@@ -211,7 +210,6 @@ public class LoginActivity extends Activity {
                                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
                                         Toast.LENGTH_SHORT).show();
                             }
-
 
                         }
                         catch (Exception ex) {
@@ -275,7 +273,7 @@ public class LoginActivity extends Activity {
         //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("USER_ID", uid).commit();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("uid", uid).commit();
         localDBHelper = new DataBaseHelper(getApplicationContext());
-        //long c = localDBHelper.insertUserDetails(details);
+        long c = localDBHelper.insertUserDetails(details);
 
         return 0;
     }

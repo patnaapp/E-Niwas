@@ -556,10 +556,9 @@ public class SplashActivity extends Activity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Intent i;
-//        if(prefs.getBoolean("username", false) && prefs.getBoolean("password",false))
-//        {
-//            String userType = prefs.getString("userType", "");
-//
+        if(prefs.getBoolean("username", false) && prefs.getBoolean("password",false))
+        {
+
 //            if (userType.equals("tubewell")){
 //                i = new Intent(getApplicationContext(), TubeWellHomeActivity.class);
 //                startActivity(i);
@@ -569,17 +568,17 @@ public class SplashActivity extends Activity {
 //                startActivity(i);
 //                finish();
 //            }else{
-//                i = new Intent(getApplicationContext(), MultipleLoginActivity.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        }
-//        else
-//        {
+                i = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i);
+                finish();
+           // }
+        }
+        else
+        {
             i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
             finish();
-       // }
+       }
     }
 
     public  boolean hasPermissions(Context context, String... allPermissionNeeded)
