@@ -2737,5 +2737,75 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return thisValue.trim();
     }
 
+    public long updateNewEntryKhesradetails(NiwasInspectionEntity result) {
+
+        long c = -1;
+        try {
+           // DataBaseHelper placeData = new DataBaseHelper(newEntryActivity);
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            values.put("Id", result.getId());
+            values.put("building_div", result.getDiv_code());
+            values.put("Div_name", result.getDiv_name());
+            values.put("property_type", result.getProperty_type());
+            values.put("area_type", result.getArea_type());
+            values.put("distcode", result.getDist_code());
+            values.put("distname", result.getDist_name());
+            values.put("sub_div_id", result.getSub_Div_code());
+            // values.put("sub_div_nm", result.get_compliance_Nm());
+            values.put("block_id", result.getBlk_code());
+            values.put("block_nm", result.getBlk_name());
+            values.put("ward_id", result.getWard_id());
+            values.put("ward_nm", result.getWard_name());
+            values.put("Pan_id", result.getPanchayat_code());
+            values.put("pan_nm", result.getPanchayat_name());
+
+            values.put("pincode", result.getPincode());
+            values.put("thana_no", result.getThana_no());
+            values.put("khata", result.getKahta_no());
+            values.put("khesra", result.getKhesra_no());
+            values.put("north", result.getChauhaddi_north());
+            values.put("south", result.getChauhaddi_south());
+            values.put("east", result.getChauhaddi_east());
+            values.put("west", result.getChauhaddi_west());
+            values.put("land_area", result.getLand_area());
+            values.put("no_of_trees", result.getNo_of_trees());
+            values.put("tree_details", result.getTree_details());
+            values.put("is_there_building", result.getIs_there_building());
+            values.put("building_name", result.getBuilding_name());
+            values.put("typ_of_building", result.getProperty_type());
+            values.put("building_is", result.getBuilding_is());
+            values.put("gazetedor_not", result.getGazeted_nongazeted());
+            values.put("building_type", result.getBuilding_type());
+            values.put("pool_of_building_id", result.getPool_building());
+            values.put("plinth_area", result.getPlinth_area());
+
+            values.put("builtup_area", result.getBuiltup_area());
+            values.put("ofc_details", result.getOffice_details());
+            values.put("completion_years", result.getYear_of_completion());
+            values.put("building_status", result.getBuilding_status());
+            values.put("remarks", result.getRemarks());
+            values.put("image1", result.getImage1());
+            values.put("image2", result.getImage2());
+            values.put("Lat1", result.getLat1());
+            values.put("Long1", result.getLong1());
+            values.put("Lat2", result.getLat2());
+            values.put("Long2", result.getLong2());
+            values.put("entryby", result.getEntryby());
+
+            String[] whereArgs = new String[]{(String.valueOf(result.getId()))};
+            c = db.update("AssetNewEntry", values, "Id=?", whereArgs);
+
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return c;
+        }
+
+        return c;
+
+    }
+
 
 }

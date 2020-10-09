@@ -29,6 +29,7 @@ import com.exp.e_niwas.R;
 import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.utility.CommonPref;
+import bih.in.e_niwas.utility.Utiilties;
 
 public class BuildingDetails_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -49,12 +50,39 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     String status_id="",status_Nm="";
     ArrayAdapter ben_type_status_aaray;
     String str_img="N",img1String="",img2String="";
+    String keyid = "";
+    boolean edit;
+    NiwasInspectionEntity assetDetails_edit;
+    int ThumbnailSize =500;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_details_);
         initialise();
+
+
+        try {
+
+
+            keyid = getIntent().getExtras().getString("KeyId");
+            String isEdit = "";
+            isEdit = getIntent().getExtras().getString("isEdit");
+            Log.d("kvfrgv", "" + keyid + "" + isEdit);
+            if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+                edit = true;
+                assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_edit");
+                ShowEditEntryKhesra();
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         assetDetails=(NiwasInspectionEntity)getIntent().getSerializableExtra("data");
 
         sp_buildin_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -170,10 +198,18 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateData())
+
+                if (btn_save.getText().toString().equals("UPDATE ASSET RECORD"))
                 {
-                   InsertIntoLocal();
+                    UpdateIntoLocal();
                 }
+                else {
+                    if(validateData())
+                    {
+                        InsertIntoLocal();
+                    }
+                }
+
             }
         });
     }
@@ -402,6 +438,100 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         }else {
             Toast.makeText(BuildingDetails_Activity.this,"Please Take photo",Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public void ShowEditEntryKhesra() {
+
+        btn_save.setText("UPDATE ASSET RECORD");
+
+
+        edt_building_name.setText(assetDetails_edit.getBuilding_name());
+        edt_plinth_area.setText(assetDetails_edit.getPlinth_area());
+        edt_builtup_area.setText(assetDetails_edit.getBuiltup_area());
+        edt_ofc_detail.setText(assetDetails_edit.getOffice_details());
+        edt_building_year.setText(assetDetails_edit.getYear_of_completion());
+        edt_remarks.setText(assetDetails_edit.getRemarks());
+
+
+        latitude = assetDetails_edit.getLat1();
+        latitude2 = assetDetails_edit.getLat2();
+
+        longitude = assetDetails_edit.getLong1();
+        longitude2 = assetDetails_edit.getLong2();
+
+        if (assetDetails_edit != null) {
+
+            str_img = "N";
+
+            img1String = assetDetails_edit.getImage1();
+            img2String = assetDetails_edit.getImage2();
+
+            img = Base64.decode(img1String, Base64.DEFAULT);
+            imgnew = Base64.decode(img2String, Base64.DEFAULT);
+
+
+
+            if (!img.equals(null))
+            {
+                Bitmap bmpImg = BitmapFactory.decodeByteArray(img, 0, img.length);
+                img1.setScaleType(ImageView.ScaleType.FIT_XY);
+                img1.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg, ThumbnailSize, ThumbnailSize));
+
+            }
+
+            if (!imgnew.equals(null))
+            {
+                Bitmap bmpImg2 = BitmapFactory.decodeByteArray(imgnew, 0, imgnew.length);
+                img2.setScaleType(ImageView.ScaleType.FIT_XY);
+                img1.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg2, ThumbnailSize, ThumbnailSize));
+
+            }
+
+
+        }
+
+    }
+
+    public void UpdateIntoLocal() {
+
+        long id = 0;
+              DataBaseHelper placeData = new DataBaseHelper(BuildingDetails_Activity.this);
+        NiwasInspectionEntity newEntryEntity=new NiwasInspectionEntity();
+
+        assetDetails.setId(keyid);
+
+        assetDetails.setBuilding_name(edt_building_name.getText().toString());
+        assetDetails.setBuilding_type(_var_type_of_building);
+        assetDetails.setBuilding_is(_var_building_is);
+        assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
+        assetDetails.setBuilding_type_class(building_type_class_id);
+        assetDetails.setPool_building(building_pool_id);
+        assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
+        assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
+        assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
+        assetDetails.setYear_of_completion(edt_building_year.getText().toString());
+        assetDetails.setBuilding_status(building_status_id);
+        assetDetails.setRemarks(edt_remarks.getText().toString());
+        assetDetails.setImage1(img1String);
+        assetDetails.setImage2(img2String);
+        assetDetails.setLat1(latitude);
+        assetDetails.setLong1(longitude);
+        assetDetails.setLat2(latitude2);
+        assetDetails.setLong2(longitude2);
+
+        id = new DataBaseHelper(BuildingDetails_Activity.this).updateNewEntryKhesradetails(assetDetails);
+
+        if (id > 0) {
+            Toast.makeText(getApplicationContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
+
+            finish();
+
+        } else {
+            Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
 }

@@ -362,6 +362,15 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             {
                 if (chk_existing_building.isChecked())
                 {
+                    if (btn_proceed.getText().toString().equals("Update building details"))
+                    {
+                        Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
+                        i.putExtra("assetdata_edit",assetDetails_edit);
+                        i.putExtra("KeyId",keyid);
+                        startActivity(i);
+                    }
+                    else {
+
                     if(validateData())
                     {
                         setdataforintent();
@@ -369,14 +378,32 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                         i.putExtra("data",assetDetails);
                         startActivity(i);
                     }
+                    }
                 }
                 else if (chk_open_land.isChecked())
                 {
-                    setdataforintent();
+
                     long id = 0;
+                    if (btn_proceed.getText().toString().equals("Update"))
+                    {
+                        updateData();
+                        id = new DataBaseHelper(NewEntryForm_Activity.this).updateNewEntryKhesradetails(assetDetails);
+
+                        if (id > 0) {
+                            Toast.makeText(getApplicationContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
+
+                            finish();
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else {
+
+
                     if(validateData())
                     {
-
+                        setdataforintent();
                         id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
 
                         if (id > 0) {
@@ -399,7 +426,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                             Toast.makeText(getApplicationContext(), "Not Success", Toast.LENGTH_LONG).show();
                         }
                     }
-
+                    }
                 }
 
             }
@@ -675,6 +702,42 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
     }
 
+
+    public void updateData()
+    {
+        assetDetails=new NiwasInspectionEntity();
+
+        assetDetails.setId(keyid);
+        assetDetails.setDiv_code(_vardivID);
+        assetDetails.setDiv_name(_vardivName);
+        assetDetails.setProperty_type(property_type_id);
+        assetDetails.setArea_type(area_type_id);
+        assetDetails.setDist_code(_vardistID);
+        assetDetails.setDist_name(_vardistName);
+        assetDetails.setBlk_code(block_id);
+        assetDetails.setBlk_name(block_name);
+        assetDetails.setSub_Div_code(subdiv_id);
+        assetDetails.setPanchayat_code(panch_id);
+        assetDetails.setPanchayat_name(panch_name);
+        assetDetails.setWard_id(ward_id);
+        assetDetails.setWard_name(ward_nm);
+        assetDetails.setIs_there_building(Is_building_Code);
+        assetDetails.setPincode(edt_pincode.getText().toString());
+        assetDetails.setThana_no(edt_thana.getText().toString());
+        assetDetails.setKahta_no(edt_khata.getText().toString());
+        assetDetails.setKhesra_no(edt_khesra.getText().toString());
+        assetDetails.setChauhaddi_north(edt_nrth_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_south(edt_nrth_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_east(edt_neast_chauhaddi.getText().toString());
+        assetDetails.setChauhaddi_west(edt_west_chauhaddi.getText().toString());
+        assetDetails.setLand_area(edt_land_area.getText().toString());
+        assetDetails.setNo_of_trees(edt_trees_no.getText().toString());
+        assetDetails.setTree_details(et_trees_details.getText().toString());
+        assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
+
+
+    }
+
     public void setdataforintent()
     {
         assetDetails=new NiwasInspectionEntity();
@@ -744,13 +807,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         if (assetDetails_edit.getProperty_type().equals("1")){
             chk_open_land.setChecked(true);
             property_type_id="1";
-            btn_proceed.setText("Save");
+            btn_proceed.setText("Update");
         }
         else if (assetDetails_edit.getProperty_type().equals("2"))
         {
             chk_existing_building.setChecked(true);
             property_type_id="2";
-            btn_proceed.setText("Add Building Details");
+            btn_proceed.setText("Update building details");
         }
 
         if (assetDetails_edit.getArea_type().equals("U")){
@@ -760,7 +823,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             sp_ward.setVisibility(View.VISIBLE);
             loadWardSpinnerData();
         }
-        else if (assetDetails_edit.getProperty_type().equals("R"))
+        else if (assetDetails_edit.getArea_type().equals("R"))
         {
             chk_rural.setChecked(true);
             area_type_id="R";
