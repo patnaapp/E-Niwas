@@ -2647,24 +2647,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<NiwasInspectionEntity> getAllNewEntryDetail(String id) {
+    public ArrayList<NiwasInspectionEntity> getAllNewEntryDetail(String id,String uid) {
         //public ArrayList<FillQC_Report> getAllQCEntryDetail() {
         ArrayList<NiwasInspectionEntity> basicdetail = new ArrayList<NiwasInspectionEntity>();
 
         try {
 
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-             String[] args = {id};
+             String[] args = {id,uid};
+             String[] args1 = {uid};
             Cursor cursor;
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
 
             if (id.equals("0")){
-                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry", null);
+                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where entryby=?", args1);
             }
             else {
-                 cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=?", args);
+                 cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
             }
 
             int x = cursor.getCount();
@@ -2699,6 +2700,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 basicInfo.setNo_of_trees((cursor.getString(cursor.getColumnIndex("no_of_trees"))));
                 basicInfo.setTree_details((cursor.getString(cursor.getColumnIndex("tree_details"))));
                 basicInfo.setIs_there_building((cursor.getString(cursor.getColumnIndex("is_there_building"))));
+                basicInfo.setAdmin_dept((cursor.getString(cursor.getColumnIndex("Building_dept"))));
                 basicInfo.setBuilding_name((cursor.getString(cursor.getColumnIndex("building_name"))));
                 basicInfo.setBuilding_type((cursor.getString(cursor.getColumnIndex("typ_of_building"))));
                 basicInfo.setBuilding_is((cursor.getString(cursor.getColumnIndex("building_is"))));
@@ -2735,21 +2737,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return basicdetail;
     }
 
-    public  NiwasInspectionEntity getimage(String id) {
+    public  NiwasInspectionEntity getimage(String id,String user_id) {
         //public ArrayList<FillQC_Report> getAllQCEntryDetail() {
         ArrayList<NiwasInspectionEntity> basicdetail = new ArrayList<NiwasInspectionEntity>();
         NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
         try {
 
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-            String[] args = {id};
+            String[] args = {id,user_id};
             Cursor cursor;
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
 
 
-                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=?", args);
+                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
 
 
             int x = cursor.getCount();

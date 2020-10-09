@@ -69,7 +69,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String ward_id="",ward_nm="";
     String keyid = "";
     boolean edit;
-    String subdiv="",wardname="",pan_name="";
+    String subdiv="",wardname="",pan_name="",user_id="";
 
 
 
@@ -77,6 +77,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry_form_);
+
+        user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
 
         dataBaseHelper = new DataBaseHelper(NewEntryForm_Activity.this);
         try
@@ -111,7 +113,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
 
-                assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid).get(0);
+                assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid,user_id).get(0);
          //       assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
                 ShowEditEntryKhesra();
 
@@ -740,6 +742,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setNo_of_trees(edt_trees_no.getText().toString());
         assetDetails.setTree_details(et_trees_details.getText().toString());
         assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
+        assetDetails.setEntryby(user_id);
 
 
     }
@@ -773,6 +776,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setNo_of_trees(edt_trees_no.getText().toString());
         assetDetails.setTree_details(et_trees_details.getText().toString());
         assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
+        assetDetails.setEntryby(user_id);
 
 
     }

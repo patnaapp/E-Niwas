@@ -1,8 +1,11 @@
 package bih.in.e_niwas.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.exp.e_niwas.R;
 
 import java.util.ArrayList;
 
+import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.ui.NewEntryForm_Activity;
 
@@ -27,6 +31,7 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
     ArrayList<NiwasInspectionEntity> ThrList=new ArrayList<>();
 
     Boolean isShowDetail = false;
+    String singlerowid="",user_id="";
     // WorkReqrmntListener listener;
 
     public WorkSiteEditAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist) {
@@ -45,6 +50,8 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final NiwasInspectionEntity info = ThrList.get(position);
+        user_id = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext()).getString("uid", "");
+
 
         holder.tv_slno.setText(String.valueOf(position+1));
         holder.tv_div_name.setText(info.getDiv_name());
@@ -86,13 +93,51 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(activity, NewEntryForm_Activity.class);
-                // i.putExtra("assetdata",ThrList.get(position));
-                i.putExtra("KeyId",info.getId());
-                i.putExtra("isEdit", "Yes");
-                activity.startActivity(i);
 
             }
+        });
+
+        holder.iv_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                builder.setTitle("Data upload");
+                builder.setMessage("Are you sure want to Upload the Record");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataBaseHelper dataBaseHelper = new DataBaseHelper(activity);
+                        singlerowid = (ThrList.get(position).getId());
+                        DataBaseHelper dbHelper = new DataBaseHelper(activity);
+                        dialog.dismiss();
+
+                        ArrayList<NiwasInspectionEntity> dataProgress = dbHelper.getAllNewEntryDetail(singlerowid, user_id);
+                        if (dataProgress.size() > 0) {
+
+                            for (NiwasInspectionEntity data : dataProgress) {
+
+                               // new UPLOADDATA(data).execute();
+                            }
+
+                        }
+                    }
+
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
+
         });
 
 

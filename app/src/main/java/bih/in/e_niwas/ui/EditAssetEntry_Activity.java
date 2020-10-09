@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,16 +27,18 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     ArrayList<NiwasInspectionEntity> assetList = new ArrayList<>();
     WorkSiteEditAdapter labourSearchAdaptor;
+    String user_id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_edit_asset_entry_);
+        user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
 
         initialise();
 
-        assetList=dataBaseHelper.getAllNewEntryDetail("0");
+        assetList=dataBaseHelper.getAllNewEntryDetail("0",user_id);
         populateData();
     }
 
@@ -69,7 +72,7 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        assetList=dataBaseHelper.getAllNewEntryDetail("0");
+        assetList=dataBaseHelper.getAllNewEntryDetail("0",user_id);
         populateData();
     }
 }

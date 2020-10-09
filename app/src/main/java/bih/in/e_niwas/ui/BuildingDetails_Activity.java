@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -65,12 +66,15 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
     String var_buildingpool="",building_type="",status="";
     String _groupid="",_second_grupi_id="";
+    String user_id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_details_);
         dataBaseHelper = new DataBaseHelper(BuildingDetails_Activity.this);
+        user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
+
         initialise();
         try {
 
@@ -81,7 +85,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
-                NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid);
+                NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid,user_id);
                 assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_edit");
                 assetDetails_edit.setImage1(assetDetails_editImage.getImage1());
                 assetDetails_edit.setImage2(assetDetails_editImage.getImage2());
@@ -469,6 +473,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         assetDetails.setLong1(longitude);
         assetDetails.setLat2(latitude2);
         assetDetails.setLong2(longitude2);
+        assetDetails.setEntryby(user_id);
 
 
 
@@ -628,6 +633,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         assetDetails_edit.setLong1(longitude);
         assetDetails_edit.setLat2(latitude2);
         assetDetails_edit.setLong2(longitude2);
+        assetDetails_edit.setEntryby(user_id);
 
         id = new DataBaseHelper(BuildingDetails_Activity.this).updateNewEntryKhesradetails(assetDetails_edit);
 
