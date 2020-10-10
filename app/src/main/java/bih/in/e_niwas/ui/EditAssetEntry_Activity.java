@@ -28,6 +28,7 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
     ArrayList<NiwasInspectionEntity> assetList = new ArrayList<>();
     WorkSiteEditAdapter labourSearchAdaptor;
     String user_id="";
+    String assetlistnew="N";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class EditAssetEntry_Activity extends AppCompatActivity {
             tv_Norecord.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
 
-            labourSearchAdaptor = new WorkSiteEditAdapter(this, assetList);
+            labourSearchAdaptor = new WorkSiteEditAdapter(this, assetList,assetlistnew);
             listView.setLayoutManager(new LinearLayoutManager(this));
             listView.setAdapter(labourSearchAdaptor);
 

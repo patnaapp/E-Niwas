@@ -66,9 +66,44 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public NiwasInspectionEntity(SoapObject res1) {
 
-//        this.sancrachnaId=res1.getProperty("Types_OfSarchnaId").toString();
-//        this.sancrachnaName=res1.getProperty("Types_OfSarchnaName").toString();
-//        this.sub_Execution_DeptID=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.Asset_Id=res1.getProperty("id").toString();
+//        this.Div_code=res1.getProperty("Types_OfSarchnaName").toString();
+//        this.Div_name=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.Sub_Div_code=res1.getProperty("SubDivisionName").toString();
+        this.property_type=res1.getProperty("Land_Type").toString();
+        this.area_type=res1.getProperty("AreaType").toString();
+       // this.dist_code=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.dist_name=res1.getProperty("DistName").toString();
+        this.blk_name=res1.getProperty("AssetBlockName").toString();
+     //   this.blk_code=res1.getProperty("Sub_Execution_DeptID").toString();
+     //   this.panchayat_code=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.panchayat_name=res1.getProperty("Panchayat").toString();
+       // this.ward_id=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.ward_name=res1.getProperty("Ward").toString();
+        this.pincode=res1.getProperty("PINCode").toString();
+        this.thana_no=res1.getProperty("ThanaNo").toString();
+        this.kahta_no=res1.getProperty("Khata").toString();
+        this.khesra_no=res1.getProperty("Khesra").toString();
+        this.chauhaddi_north=res1.getProperty("Chauhaddi_N").toString();
+        this.chauhaddi_south=res1.getProperty("Chauhaddi_S").toString();
+        this.chauhaddi_east=res1.getProperty("Chauhaddi_E").toString();
+        this.chauhaddi_west=res1.getProperty("Chauhaddi_W").toString();
+        this.land_area=res1.getProperty("AreaInSqMeter").toString();
+        this.no_of_trees=res1.getProperty("NoOfBigTree").toString();
+        this.tree_details=res1.getProperty("DetailOfTree").toString();
+        this.is_there_building=res1.getProperty("Boundary").toString();
+        this.admin_dept=res1.getProperty("Admin_Dept").toString();
+        this.building_name=res1.getProperty("Building_Name").toString();
+        this.building_type=res1.getProperty("TypeofBuilding").toString();
+        this.building_is=res1.getProperty("BuildingIs").toString();
+        this.gazeted_nongazeted=res1.getProperty("OfficeType").toString();
+        this.building_type_class=res1.getProperty("BuildingType").toString();
+        this.pool_building=res1.getProperty("Pool").toString();
+        this.plinth_area=res1.getProperty("PlinthArea").toString();
+        //this.builtup_area=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.office_details=res1.getProperty("OfficeDetail").toString();
+        this.year_of_completion=res1.getProperty("YearofCompl").toString();
+        this.building_status=res1.getProperty("Building_Status").toString();
     }
 
     public static Class<NiwasInspectionEntity> getAsset_CLASS() {

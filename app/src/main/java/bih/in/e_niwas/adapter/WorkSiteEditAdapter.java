@@ -45,12 +45,14 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
     // WorkReqrmntListener listener;
     DataBaseHelper dataBaseupload;
     String version;
+    String asset_new="";
 
-    public WorkSiteEditAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist) {
+    public WorkSiteEditAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist,String assetlistnew) {
         this.activity=listViewshowedit;
         this.ThrList=rlist;
         mInflater = (LayoutInflater)activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         //this.listener = listener;
+        asset_new = assetlistnew;
     }
 
     @Override
@@ -90,6 +92,14 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
         holder.tv_khata.setText(info.getKahta_no());
         holder.tv_khesra.setText(info.getKhesra_no());
 
+        if (asset_new.equals("Y")){
+holder.iv_delete.setVisibility(View.GONE);
+holder.iv_upload.setVisibility(View.GONE);
+        }
+        else if (asset_new.equals("N")){
+            holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_upload.setVisibility(View.VISIBLE);
+        }
 
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +225,7 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
             iv_edit=itemView.findViewById(R.id.iv_edit);
             iv_delete=itemView.findViewById(R.id.iv_delete);
             iv_upload=itemView.findViewById(R.id.iv_upload);
+
 
         }
 

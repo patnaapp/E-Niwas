@@ -47,6 +47,7 @@ public class WebServiceHelper {
     //e-Niwas
     public static final String ITEM_MASTER = "getItemMasterList";
     public static final String Upload_Asset = "InsertAssetEntry";
+    public static final String Get_Asset = "getASSetMasterDetailsList";
 
 
 
@@ -872,4 +873,50 @@ public class WebServiceHelper {
         }
     }
 
+
+    public static ArrayList<NiwasInspectionEntity> GetAssetList(String userid) {
+
+        SoapObject request = new SoapObject(SERVICENAMESPACE, Get_Asset);
+
+
+        request.addProperty("_EnteredByLoginID",userid);
+
+        SoapObject res1;
+        try {
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            envelope.addMapping(SERVICENAMESPACE,
+                    NiwasInspectionEntity.Asset_CLASS.getSimpleName(), NiwasInspectionEntity.Asset_CLASS);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
+            androidHttpTransport.call(SERVICENAMESPACE + Get_Asset, envelope);
+
+            res1 = (SoapObject) envelope.getResponse();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        int TotalProperty = res1.getPropertyCount();
+        ArrayList<NiwasInspectionEntity> pvmArrayList = new ArrayList<NiwasInspectionEntity>();
+        if(TotalProperty>0) {
+
+
+            for (int ii = 0; ii < TotalProperty; ii++) {
+                if (res1.getProperty(ii) != null) {
+                    Object property = res1.getProperty(ii);
+                    if (property instanceof SoapObject) {
+                        SoapObject final_object = (SoapObject) property;
+                        NiwasInspectionEntity state = new NiwasInspectionEntity(final_object);
+                        pvmArrayList.add(state);
+                    }
+                } else
+                    return pvmArrayList;
+            }
+        }
+
+
+        return pvmArrayList;
+    }
 }

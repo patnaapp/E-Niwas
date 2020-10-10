@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import bih.in.e_niwas.adapter.WorkSiteEditAdapter;
 import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.UserDetails;
+import bih.in.e_niwas.web_services.WebServiceHelper;
 
 public class AssetListActivity extends AppCompatActivity {
 
@@ -26,8 +30,10 @@ public class AssetListActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     ArrayList<NiwasInspectionEntity> assetList = new ArrayList<>();
     WorkSiteEditAdapter labourSearchAdaptor;
-
+String  user_id="";
     UserDetails userInfo;
+    String assetlistnew="Y";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +41,11 @@ public class AssetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_list);
 
         initialise();
+        user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
 
-        assetList=dataBaseHelper.getAllNewEntryDetail("0", userInfo.getUserID());
-        populateData();
+        new SyncAssetList().execute();
+       // assetList=dataBaseHelper.getAllNewEntryDetail("0", user_id);
+      //  populateData();
 
     }
 
@@ -66,7 +74,7 @@ public class AssetListActivity extends AppCompatActivity {
             tv_Norecord.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
 
-            labourSearchAdaptor = new WorkSiteEditAdapter(this, assetList);
+            labourSearchAdaptor = new WorkSiteEditAdapter(this, assetList,assetlistnew);
             listView.setLayoutManager(new LinearLayoutManager(this));
             listView.setAdapter(labourSearchAdaptor);
 
@@ -79,7 +87,39 @@ public class AssetListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        assetList=dataBaseHelper.getAllNewEntryDetail("0", userInfo.getUserID());
-        populateData();
+        new SyncAssetList().execute();
+      //  assetList=dataBaseHelper.getAllNewEntryDetail("0", userInfo.getUserID());
+        //populateData();
+    }
+
+    private class SyncAssetList extends AsyncTask<String, Void, ArrayList<NiwasInspectionEntity>> {
+        private final ProgressDialog dialog = new ProgressDialog(AssetListActivity.this);
+        int optionType;
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setCanceledOnTouchOutside(false);
+            this.dialog.setMessage("लोड हो रहा है...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected ArrayList<NiwasInspectionEntity> doInBackground(String...arg) {
+            return WebServiceHelper.GetAssetList(user_id);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<NiwasInspectionEntity> result) {
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
+
+            if(result!=null) {
+                assetList=result;
+
+                populateData();
+            }
+
+        }
     }
 }
