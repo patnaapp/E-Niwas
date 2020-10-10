@@ -338,7 +338,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     loadWardSpinnerData();
                     sp_ward_pan.setVisibility(View.GONE);
                     sp_ward.setVisibility(View.VISIBLE);
-                    area_type_id="U";
+                    area_type_id="1";
                     chk_rural.setChecked(false);
 
                 }
@@ -355,7 +355,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     ward_nm="";
                     sp_ward_pan.setVisibility(View.VISIBLE);
                     sp_ward.setVisibility(View.GONE);
-                    area_type_id="R";
+                    area_type_id="2";
                     chk_urban.setChecked(false);
 
                 }
@@ -814,17 +814,17 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             btn_proceed.setText("Update building details");
         }
 
-        if (assetDetails_edit.getArea_type().equals("U")){
+        if (assetDetails_edit.getArea_type().equals("1")){
             chk_urban.setChecked(true);
-            area_type_id="U";
+            area_type_id="1";
             sp_ward_pan.setVisibility(View.GONE);
             sp_ward.setVisibility(View.VISIBLE);
             loadWardSpinnerData();
         }
-        else if (assetDetails_edit.getArea_type().equals("R"))
+        else if (assetDetails_edit.getArea_type().equals("2"))
         {
             chk_rural.setChecked(true);
-            area_type_id="R";
+            area_type_id="2";
             sp_ward_pan.setVisibility(View.VISIBLE);
             sp_ward.setVisibility(View.GONE);
             loadPanchayatSpinnerData(assetDetails_edit.getBlk_code());

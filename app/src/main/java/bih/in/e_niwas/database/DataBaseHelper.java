@@ -2661,16 +2661,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
 
-            if (id.equals("0")){
+            if (id.equals("0"))
+            {
                 cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where entryby=?", args1);
             }
-            else {
+            else
+                {
                  cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
             }
 
             int x = cursor.getCount();
 
-            while (cursor.moveToNext()) {
+            while (cursor.moveToNext())
+            {
                 NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
                 basicInfo.setId((cursor.getString(cursor.getColumnIndex("Id"))));
                 basicInfo.setDiv_code((cursor.getString(cursor.getColumnIndex("building_div"))));
@@ -2713,6 +2716,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 basicInfo.setYear_of_completion((cursor.getString(cursor.getColumnIndex("completion_years"))));
                 basicInfo.setBuilding_status((cursor.getString(cursor.getColumnIndex("building_status"))));
                 basicInfo.setRemarks((cursor.getString(cursor.getColumnIndex("remarks"))));
+                basicInfo.setLat1((cursor.getString(cursor.getColumnIndex("Lat1"))));
+                basicInfo.setLat2((cursor.getString(cursor.getColumnIndex("Lat2"))));
+                basicInfo.setLong1((cursor.getString(cursor.getColumnIndex("Long1"))));
+                basicInfo.setLong2((cursor.getString(cursor.getColumnIndex("Long2"))));
+
 //                basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
 //                basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
                 if (id.equals("0"))
@@ -2936,6 +2944,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             else {
                 cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' or Group_Id='" + scnd_gruopid + "' order by Item_Name", null);
             }
+            if (scnd_gruopid.equals("0") && groupid.equals("0")){
+                cur = db.rawQuery("SELECT * FROM  Item_Master  order by Item_Name", null);
+            }
 
             int x = cur.getCount();
             while (cur.moveToNext()) {
@@ -2954,5 +2965,45 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return pdetail;
     }
 
+
+    public long deleteRec(String id) {
+        long c = -1;
+
+        try {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            String[] DeleteWhere = {String.valueOf(id)};
+            c = db.delete("AssetNewEntry", "Id=?", DeleteWhere);
+
+            this.getWritableDatabase().close();
+            db.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            return c;
+        }
+        return c;
+
+    }
+
+    public long deleteEditRec(String id, String EntryBy) {
+        long c = -1;
+
+        try {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            String[] DeleteWhere = {String.valueOf(EntryBy), String.valueOf(id)};
+            c = db.delete("AssetNewEntry", "entryby=? and Id=?", DeleteWhere);
+
+            this.getWritableDatabase().close();
+            db.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            return c;
+        }
+        return c;
+
+    }
 
 }

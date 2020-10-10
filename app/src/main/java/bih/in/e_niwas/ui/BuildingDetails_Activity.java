@@ -193,7 +193,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_non_judicial.setChecked(false);
 
-                    _var_type_of_building="1";
+                    _var_type_of_building="Y";
                 }
             }
         });
@@ -202,7 +202,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_judicial.setChecked(false);
-                    _var_type_of_building="2";
+                    _var_type_of_building="N";
                 }
             }
         });
@@ -233,7 +233,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_non_gazetted.setChecked(false);
-                    var_gazetted_nongazetted="3";
+                    var_gazetted_nongazetted="G";
                     chk_mixedd.setChecked(false);
                     loadBuildingTypeSpinnerData("3","0");
                 }
@@ -245,7 +245,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_gazetted.setChecked(false);
                     chk_mixedd.setChecked(false);
-                    var_gazetted_nongazetted="6";
+                    var_gazetted_nongazetted="N";
                     loadBuildingTypeSpinnerData("6","0");
                 }
             }
@@ -537,12 +537,12 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         }
 
 
-        if (assetDetails_edit.getGazeted_nongazeted().equals("3")){
+        if (assetDetails_edit.getGazeted_nongazeted().equals("G")){
             chk_gazetted.setChecked(true);
             _groupid="3";
             _second_grupi_id="0";
         }
-        else if(assetDetails_edit.getGazeted_nongazeted().equals("6")){
+        else if(assetDetails_edit.getGazeted_nongazeted().equals("N")){
             chk_non_gazetted.setChecked(true);
             _groupid="6";
             _second_grupi_id="0";

@@ -3,6 +3,7 @@ package bih.in.e_niwas.web_services;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.FilterOptionEntity;
 import bih.in.e_niwas.entity.Item_MasterEntity;
+import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.PanchayatEntity;
 import bih.in.e_niwas.entity.PlantationDetail;
 import bih.in.e_niwas.entity.PlantationReportEntity;
@@ -44,6 +46,7 @@ public class WebServiceHelper {
 
     //e-Niwas
     public static final String ITEM_MASTER = "getItemMasterList";
+    public static final String Upload_Asset = "InsertAssetEntry";
 
 
 
@@ -800,6 +803,73 @@ public class WebServiceHelper {
         }
 
         return fieldList;
+    }
+
+
+    public static String UploadBasicDetails(NiwasInspectionEntity data, String app_ver,String useid) {
+        try {
+            SoapObject request = new SoapObject(SERVICENAMESPACE, Upload_Asset);
+            request.addProperty("_Division", data.getDiv_code());
+            request.addProperty("_Land_Type", data.getProperty_type());
+            request.addProperty("_AreaType", data.getArea_type());
+            request.addProperty("_District", data.getDist_code());
+            request.addProperty("_SubDivision", data.getSub_Div_code());
+
+            request.addProperty("_AssetBlock", data.getBlk_code());
+            request.addProperty("_Ward", data.getWard_id());
+            request.addProperty("_Panchayat", data.getPanchayat_code());
+            request.addProperty("_PINCode", data.getPincode());
+            request.addProperty("_ThanaNo", data.getThana_no());
+            request.addProperty("_Khata", data.getKahta_no());
+            request.addProperty("_Khesra", data.getKhesra_no());
+            request.addProperty("_Chauhaddi_N", data.getChauhaddi_north());
+            request.addProperty("_Chauhaddi_S", data.getChauhaddi_south());
+            request.addProperty("_Chauhaddi_E", data.getChauhaddi_east());
+            request.addProperty("_Chauhaddi_W", data.getChauhaddi_west());
+            request.addProperty("_AreaInSqMeter", data.getLand_area());
+            request.addProperty("_NoOfBigTree", data.getNo_of_trees());
+            request.addProperty("_DetailOfTree", data.getTree_details());
+            request.addProperty("_Boundary",data.getIs_there_building());
+            request.addProperty("_Admin_Dept", data.getAdmin_dept());
+            request.addProperty("_Building_Name", data.getBuilding_name());
+            request.addProperty("_Building_Is", data.getBuilding_is());
+            request.addProperty("_BuildingType", data.getBuilding_type());
+            request.addProperty("_OfficeType", data.getGazeted_nongazeted());
+            request.addProperty("_Pool", data.getPool_building());
+            request.addProperty("_Building_Type", data.getBuilding_type_class());
+            request.addProperty("_PlinthArea", data.getPlinth_area());
+            request.addProperty("_OfficeDetail", data.getOffice_details());
+            request.addProperty("_YearofCompl", data.getYear_of_completion());
+            request.addProperty("_Building_Status", data.getBuilding_status());
+            request.addProperty("_Remark", data.getRemarks());
+            request.addProperty("_Image1", data.getImage1());
+            request.addProperty("_Image2", data.getImage2());
+            request.addProperty("_Id", data.getAsset_Id());
+            request.addProperty("_EnteredByLoginID",useid);
+            request.addProperty("_LatitudeImage1", data.getLat1());
+            request.addProperty("_LongitudeImage1", data.getLong1());
+            request.addProperty("_LatitudeImage2", data.getLat2());
+            request.addProperty("_LongitudeImage2", data.getLong2());
+            request.addProperty("_APPVERSION", app_ver);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+                    SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            envelope.addMapping(SERVICENAMESPACE,NiwasInspectionEntity.Asset_CLASS.getSimpleName(), NiwasInspectionEntity.Asset_CLASS);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
+            androidHttpTransport.call(SERVICENAMESPACE + Upload_Asset, envelope);
+            Object result = envelope.getResponse();
+            if (result != null)
+            {
+                // Log.d("", result.toString());
+                return result.toString();
+            } else
+                return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

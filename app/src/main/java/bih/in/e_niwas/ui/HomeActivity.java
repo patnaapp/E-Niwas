@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class HomeActivity extends Activity
     UserDetails userInfo;
 
     TextView tv_username,tv_district,tv_division;
+    ArrayList<Item_MasterEntity> Item_List = new ArrayList<Item_MasterEntity>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -61,8 +64,12 @@ public class HomeActivity extends Activity
         catch (SQLException sqle)
         {
         }
+        Item_List = dbHelper.getItemList("0","0");
+        if (Item_List.size() <= 0) {
+            new Sync_Item_Master().execute();
+        }
 
-        new Sync_Item_Master().execute();
+
 
         getUserDetail();
     }
@@ -165,4 +172,37 @@ public class HomeActivity extends Activity
             }
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // do something on back.
+            // Display alert message when back button has been pressed
+            backButtonHandler();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void backButtonHandler() {
+      AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+        alertDialog.setTitle("Exit?");
+        alertDialog.setMessage("Do you want to exit the app ?");
+        alertDialog.setPositiveButton("[NO]", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setNegativeButton("[YES]", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+//                Intent i=new Intent(HomeActivity.this,PreLoginActivity.class);
+//                startActivity(i);
+                finish();
+
+            }
+        });
+        alertDialog.show();
+    }
+
 }
