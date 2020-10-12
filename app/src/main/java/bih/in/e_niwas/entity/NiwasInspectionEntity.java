@@ -67,19 +67,19 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
     public NiwasInspectionEntity(SoapObject res1) {
 
         this.Asset_Id=res1.getProperty("id").toString();
-//        this.Div_code=res1.getProperty("Types_OfSarchnaName").toString();
+       this.Div_code=res1.getProperty("DivisionID").toString();
 //        this.Div_name=res1.getProperty("Sub_Execution_DeptID").toString();
-        this.Sub_Div_code=res1.getProperty("SubDivisionName").toString();
-        this.property_type=res1.getProperty("Land_Type").toString();
-        this.area_type=res1.getProperty("AreaType").toString();
-       // this.dist_code=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.Sub_Div_code=res1.getProperty("SubDivisionId").toString();
+        this.property_type=res1.getProperty("landid").toString();
+        this.area_type=res1.getProperty("AreaTypeId").toString();
+        this.dist_code=res1.getProperty("District").toString();
         this.dist_name=res1.getProperty("DistName").toString();
         this.blk_name=res1.getProperty("AssetBlockName").toString();
      //   this.blk_code=res1.getProperty("Sub_Execution_DeptID").toString();
-     //   this.panchayat_code=res1.getProperty("Sub_Execution_DeptID").toString();
+        this.panchayat_code=res1.getProperty("PanchayatCode").toString();
         this.panchayat_name=res1.getProperty("Panchayat").toString();
-       // this.ward_id=res1.getProperty("Sub_Execution_DeptID").toString();
-        this.ward_name=res1.getProperty("Ward").toString();
+        this.ward_id=res1.getProperty("WardID").toString();
+        //this.ward_name=res1.getProperty("Ward").toString();
         this.pincode=res1.getProperty("PINCode").toString();
         this.thana_no=res1.getProperty("ThanaNo").toString();
         this.kahta_no=res1.getProperty("Khata").toString();
@@ -94,7 +94,7 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
         this.is_there_building=res1.getProperty("Boundary").toString();
         this.admin_dept=res1.getProperty("Admin_Dept").toString();
         this.building_name=res1.getProperty("Building_Name").toString();
-        this.building_type=res1.getProperty("TypeofBuilding").toString();
+        this.building_type=res1.getProperty("BuildingTypeId").toString();
         this.building_is=res1.getProperty("BuildingIs").toString();
         this.gazeted_nongazeted=res1.getProperty("OfficeType").toString();
         this.building_type_class=res1.getProperty("BuildingType").toString();

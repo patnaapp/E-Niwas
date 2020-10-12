@@ -70,7 +70,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String keyid = "";
     boolean edit;
     String subdiv="",wardname="",pan_name="",user_id="";
-    String image1server="",image2server="";
+    String image1server="",image2server="",isServer="";
 
 
 
@@ -108,9 +108,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
 
             keyid = getIntent().getExtras().getString("KeyId");
-            String isEdit = "",isServer="";
+            String isEdit = "";
             isEdit = getIntent().getExtras().getString("isEdit");
-            isServer = getIntent().getExtras().getString("isEdit");
+            isServer = getIntent().getExtras().getString("isServer");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
@@ -322,7 +322,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
-                    property_type_id="1";
+                    property_type_id="0";
                     chk_existing_building.setChecked(false);
                     btn_proceed.setText("Save");
                 }
@@ -333,7 +333,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
                 {
-                    property_type_id="2";
+                    property_type_id="1";
                     chk_open_land.setChecked(false);
                     btn_proceed.setText("Add Building Details");
                 }
@@ -350,7 +350,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     loadWardSpinnerData();
                     sp_ward_pan.setVisibility(View.GONE);
                     sp_ward.setVisibility(View.VISIBLE);
-                    area_type_id="1";
+                    area_type_id="0";
                     chk_rural.setChecked(false);
 
                 }
@@ -367,7 +367,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     ward_nm="";
                     sp_ward_pan.setVisibility(View.VISIBLE);
                     sp_ward.setVisibility(View.GONE);
-                    area_type_id="2";
+                    area_type_id="1";
                     chk_urban.setChecked(false);
 
                 }
@@ -383,14 +383,26 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 {
                     if (btn_proceed.getText().toString().equals("Update building details"))
                     {
-                        Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
-                        i.putExtra("assetdata_edit",assetDetails_edit);
-                        i.putExtra("image1_server",image1server);
-                        i.putExtra("image2_server",image2server);
-                        i.putExtra("KeyId",keyid);
-                        i.putExtra("isEdit", "Yes");
-                        i.putExtra("isServer", "Yes");
-                        startActivity(i);
+                        if (isServer.equals("Yes")) {
+                            Intent i = new Intent(NewEntryForm_Activity.this, BuildingDetails_Activity.class);
+                            i.putExtra("assetdata_editserver", assetDetails_edit);
+                            i.putExtra("image1_server", image1server);
+                            i.putExtra("image2_server", image2server);
+                            i.putExtra("KeyId", keyid);
+                            i.putExtra("isEdit", "Yes");
+                            i.putExtra("isServer", "YEs");
+                            startActivity(i);
+                        }
+                        else {
+                            Intent i = new Intent(NewEntryForm_Activity.this, BuildingDetails_Activity.class);
+                            i.putExtra("assetdata_edit", assetDetails_edit);
+//                            i.putExtra("image1_server", image1server);
+//                            i.putExtra("image2_server", image2server);
+                            i.putExtra("KeyId", assetDetails_edit.getId());
+                            i.putExtra("isEdit", "Yes");
+                            i.putExtra("isServer", "No");
+                            startActivity(i);
+                        }
                     }
                     else {
 
@@ -399,6 +411,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                             setdataforintent();
                             Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
                             i.putExtra("data",assetDetails);
+                            i.putExtra("isEdit", "No");
+                            i.putExtra("isServer", "No");
                             startActivity(i);
                         }
                     }
@@ -409,16 +423,47 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     long id = 0;
                     if (btn_proceed.getText().toString().equals("Update"))
                     {
-                        updateData();
-                        id = new DataBaseHelper(NewEntryForm_Activity.this).updateNewEntryKhesradetails(assetDetails);
+                        if (isServer.equals("Yes")) {
+                            if(validateData())
+                            {
+                                setdataforintent();
+                                id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
 
-                        if (id > 0) {
-                            Toast.makeText(getApplicationContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
+                                if (id > 0) {
 
-                            finish();
+                                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(NewEntryForm_Activity.this);
+                                    alertDialog.setTitle("Saved");
+                                    alertDialog.setMessage("Data saved successfully");
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
+                                    alertDialog.setNegativeButton("[OK]", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(getApplicationContext(), "Data saved successfully", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                    alertDialog.show();
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Not Success", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+                        else {
+                            if(validateData()) {
+                                updateData();
+                                id = new DataBaseHelper(NewEntryForm_Activity.this).updateNewEntryKhesradetails(assetDetails);
+
+                                if (id > 0) {
+                                    Toast.makeText(getApplicationContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
+
+                                    finish();
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
+                                }
+                            }
                         }
                     }
                     else {
@@ -760,6 +805,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setEntryby(user_id);
 
 
+
     }
 
     public void setdataforintent()
@@ -792,6 +838,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         assetDetails.setTree_details(et_trees_details.getText().toString());
         assetDetails.setAdmin_dept(edt_admin_dept.getText().toString());
         assetDetails.setEntryby(user_id);
+        if (isServer.equals("Yes")){
+            assetDetails.setAsset_Id(assetDetails_edit.getAsset_Id());
+        }
+        else {
+            assetDetails.setAsset_Id("");
+        }
+
 
 
     }
@@ -817,26 +870,26 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         loadSubDivSpinnerData(assetDetails_edit.getBlk_code());
         loadBlockSpinnerData(assetDetails_edit.getDist_code(),assetDetails_edit.getSub_Div_code());
 
-        if (assetDetails_edit.getProperty_type().equals("1")){
+        if (assetDetails_edit.getProperty_type().equals("0")){
             chk_open_land.setChecked(true);
             property_type_id="1";
             btn_proceed.setText("Update");
         }
-        else if (assetDetails_edit.getProperty_type().equals("2"))
+        else if (assetDetails_edit.getProperty_type().equals("1"))
         {
             chk_existing_building.setChecked(true);
             property_type_id="2";
             btn_proceed.setText("Update building details");
         }
 
-        if (assetDetails_edit.getArea_type().equals("1")){
+        if (assetDetails_edit.getArea_type().equals("0")){
             chk_urban.setChecked(true);
             area_type_id="1";
             sp_ward_pan.setVisibility(View.GONE);
             sp_ward.setVisibility(View.VISIBLE);
             loadWardSpinnerData();
         }
-        else if (assetDetails_edit.getArea_type().equals("2"))
+        else if (assetDetails_edit.getArea_type().equals("1"))
         {
             chk_rural.setChecked(true);
             area_type_id="2";

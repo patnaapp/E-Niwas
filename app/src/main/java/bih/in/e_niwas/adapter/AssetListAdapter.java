@@ -79,7 +79,7 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
                 asset_server.setImage1("");
                 asset_server.setImage2("");
                  i.putExtra("assetdata_server",asset_server);
-                i.putExtra("KeyId",info.getId());
+                i.putExtra("KeyId",info.getAsset_Id());
                 i.putExtra("isEdit", "Yes");
                 i.putExtra("isServer", "Yes");
 

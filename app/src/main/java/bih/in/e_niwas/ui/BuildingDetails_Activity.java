@@ -66,7 +66,8 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
     String var_buildingpool="",building_type="",status="";
     String _groupid="",_second_grupi_id="";
-    String user_id="";
+    String user_id="",isServer="";
+    String image1server="",image2server="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +83,27 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             keyid = getIntent().getExtras().getString("KeyId");
             String isEdit = "";
             isEdit = getIntent().getExtras().getString("isEdit");
+            isServer = getIntent().getExtras().getString("isServer");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
-                NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid,user_id);
-                assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_edit");
-                assetDetails_edit.setImage1(assetDetails_editImage.getImage1());
-                assetDetails_edit.setImage2(assetDetails_editImage.getImage2());
+                if (isServer.equals("Yes")){
+                    assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_editserver");
+                    image1server = getIntent().getExtras().getString("image1");
+                    image2server = getIntent().getExtras().getString("image2");
 
-                Log.e("id", "" + assetDetails_edit.getId());
+                    assetDetails_edit.setImage1(image1server);
+                    assetDetails_edit.setImage2(image2server);
+                }
+                else {
+                    NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid,user_id);
+                    assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_edit");
+                    assetDetails_edit.setImage1(assetDetails_editImage.getImage1());
+                    assetDetails_edit.setImage2(assetDetails_editImage.getImage2());
+
+                    Log.e("id", "" + assetDetails_edit.getId());
+                }
+
                 ShowEditEntryKhesra();
 
             }
@@ -157,21 +170,21 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
                     if (status_Nm.equals("GOOD")) {
 
-                        status_id = "1";
+                        status_id = "0";
 
                     } else if (status_Nm.equals("Satisfactory-Normal Repair")) {
 
-                        status_id = "2";
+                        status_id = "1";
 
                     }
                     else if (status_Nm.equals("UnSatisfactory-Requires major repair")) {
 
-                        status_id = "3";
+                        status_id = "2";
 
                     }
                     else if (status_Nm.equals("Dilapidated/Abadoned-to be demolished")) {
 
-                        status_id = "4";
+                        status_id = "3";
 
                     }
 
@@ -193,7 +206,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_non_judicial.setChecked(false);
 
-                    _var_type_of_building="Y";
+                    _var_type_of_building="0";
                 }
             }
         });
@@ -202,7 +215,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_judicial.setChecked(false);
-                    _var_type_of_building="N";
+                    _var_type_of_building="1";
                 }
             }
         });
@@ -213,7 +226,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_non_residential.setChecked(false);
-                    _var_building_is="1";
+                    _var_building_is="0";
                 }
             }
         });
@@ -222,7 +235,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_residential.setChecked(false);
-                    _var_building_is="2";
+                    _var_building_is="1";
                     loadBuildingTypeSpinnerData("17","0");
                 }
             }
@@ -233,7 +246,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_non_gazetted.setChecked(false);
-                    var_gazetted_nongazetted="G";
+                    var_gazetted_nongazetted="0";
                     chk_mixedd.setChecked(false);
                     loadBuildingTypeSpinnerData("3","0");
                 }
@@ -245,7 +258,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_gazetted.setChecked(false);
                     chk_mixedd.setChecked(false);
-                    var_gazetted_nongazetted="N";
+                    var_gazetted_nongazetted="1";
                     loadBuildingTypeSpinnerData("6","0");
                 }
             }
@@ -257,7 +270,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 if (b) {
                     chk_gazetted.setChecked(false);
                     chk_non_gazetted.setChecked(false);
-                    var_gazetted_nongazetted="M";
+                    var_gazetted_nongazetted="2";
                     loadBuildingTypeSpinnerData("6","3");
                 }
             }
@@ -271,7 +284,13 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
                 if (btn_save.getText().toString().equals("UPDATE ASSET RECORD"))
                 {
-                    UpdateIntoLocal();
+
+                    if (isServer.equals("Yes")){
+                        InsertIntoLocal();
+                    }
+                    else {
+                        UpdateIntoLocal();
+                    }
                 }
                 else {
                     if(validateData())
@@ -474,7 +493,12 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         assetDetails.setLat2(latitude2);
         assetDetails.setLong2(longitude2);
         assetDetails.setEntryby(user_id);
-
+        if (isServer.equals("Yes")){
+            assetDetails.setAsset_Id(assetDetails_edit.getAsset_Id());
+        }
+        else {
+            assetDetails.setAsset_Id("");
+        }
 
 
 
@@ -521,34 +545,34 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         edt_ofc_detail.setText(assetDetails_edit.getOffice_details());
         edt_building_year.setText(assetDetails_edit.getYear_of_completion());
         edt_remarks.setText(assetDetails_edit.getRemarks());
-        if (assetDetails_edit.getBuilding_type().equals("1")){
+        if (assetDetails_edit.getBuilding_type().equals("0")){
             chk_judicial.setChecked(true);
         }
-        else if(assetDetails_edit.getBuilding_type().equals("2")){
+        else if(assetDetails_edit.getBuilding_type().equals("1")){
             chk_non_judicial.setChecked(true);
         }
-        if (assetDetails_edit.getBuilding_is().equals("1")){
+        if (assetDetails_edit.getBuilding_is().equals("0")){
             chk_residential.setChecked(true);
         }
-        else if(assetDetails_edit.getBuilding_is().equals("2")){
+        else if(assetDetails_edit.getBuilding_is().equals("1")){
             chk_non_residential.setChecked(true);
             _groupid="17";
             _second_grupi_id="0";
         }
 
 
-        if (assetDetails_edit.getGazeted_nongazeted().equals("G")){
+        if (assetDetails_edit.getGazeted_nongazeted().equals("0")){
             chk_gazetted.setChecked(true);
             _groupid="3";
             _second_grupi_id="0";
         }
-        else if(assetDetails_edit.getGazeted_nongazeted().equals("N")){
+        else if(assetDetails_edit.getGazeted_nongazeted().equals("1")){
             chk_non_gazetted.setChecked(true);
             _groupid="6";
             _second_grupi_id="0";
         }
 
-        else if(assetDetails_edit.getGazeted_nongazeted().equals("M")){
+        else if(assetDetails_edit.getGazeted_nongazeted().equals("2")){
             chk_mixedd.setChecked(true);
             _groupid="6";
             _second_grupi_id="3";
@@ -590,16 +614,16 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
         }
 
-        if (assetDetails_edit.getBuilding_status().equals("1")){
+        if (assetDetails_edit.getBuilding_status().equals("0")){
             sp_buildin_status.setSelection(1);
         }
-        else if (assetDetails_edit.getBuilding_status().equals("2")){
+        else if (assetDetails_edit.getBuilding_status().equals("1")){
             sp_buildin_status.setSelection(2);
         }
-        else if (assetDetails_edit.getBuilding_status().equals("3")){
+        else if (assetDetails_edit.getBuilding_status().equals("2")){
             sp_buildin_status.setSelection(3);
         }
-        else if (assetDetails_edit.getBuilding_status().equals("4")){
+        else if (assetDetails_edit.getBuilding_status().equals("3")){
             sp_buildin_status.setSelection(4);
         }
         loadpoolOfBuildingSpinnerData();

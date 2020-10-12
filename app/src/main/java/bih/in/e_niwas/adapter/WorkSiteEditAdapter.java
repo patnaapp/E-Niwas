@@ -108,6 +108,7 @@ holder.iv_upload.setVisibility(View.GONE);
                // i.putExtra("assetdata",ThrList.get(position));
                 i.putExtra("KeyId",info.getId());
                 i.putExtra("isEdit", "Yes");
+                i.putExtra("isServer", "No");
                 activity.startActivity(i);
 
             }

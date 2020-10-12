@@ -2586,6 +2586,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
 
+
             values.put("building_div", result.getDiv_code());
             values.put("Div_name", result.getDiv_name());
             values.put("property_type", result.getProperty_type());
@@ -2634,6 +2635,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("Lat2", result.getLat2());
             values.put("Long2", result.getLong2());
             values.put("entryby", result.getEntryby());
+            values.put("asset_id", result.getAsset_Id());
 
 
             c = db.insert("AssetNewEntry", null, values);
@@ -2720,6 +2722,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 basicInfo.setLat2((cursor.getString(cursor.getColumnIndex("Lat2"))));
                 basicInfo.setLong1((cursor.getString(cursor.getColumnIndex("Long1"))));
                 basicInfo.setLong2((cursor.getString(cursor.getColumnIndex("Long2"))));
+                basicInfo.setEntryby((cursor.getString(cursor.getColumnIndex("entryby"))));
 
 //                basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
 //                basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
