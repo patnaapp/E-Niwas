@@ -2,6 +2,8 @@ package bih.in.e_niwas.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.exp.e_niwas.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.ui.NewEntryForm_Activity;
+import bih.in.e_niwas.utility.Utiilties;
 
 public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.ViewHolder> {
 
@@ -46,20 +50,20 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
 
         holder.tv_slno.setText(String.valueOf(position+1));
         holder.tv_div_name.setText(info.getDiv_name());
-        if (info.getArea_type().equals("1"))
+        if (info.getArea_type().equals("0"))
         {
             holder.tv_areaType.setText("Urban");
         }
-        else if (info.getArea_type().equals("2"))
+        else if (info.getArea_type().equals("1"))
         {
             holder.tv_areaType.setText("Rural");
         }
 
-        if (info.getProperty_type().equals("1"))
+        if (info.getProperty_type().equals("0"))
         {
             holder.tv_property_TYpe.setText("Open Land");
         }
-        else if (info.getProperty_type().equals("2"))
+        else if (info.getProperty_type().equals("1"))
         {
             holder.tv_property_TYpe.setText("Land with existing building");
         }
@@ -74,11 +78,16 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
             public void onClick(View v) {
                 NiwasInspectionEntity asset_server=ThrList.get(position);
                 Intent i=new Intent(activity, NewEntryForm_Activity.class);
-                 i.putExtra("image1",asset_server.getImage1());
-                 i.putExtra("image2",asset_server.getImage2());
+
+//                byte[] image1Data = Base64.decode(asset_server.getImage1(), Base64.DEFAULT);
+//                byte[] image2Data = Base64.decode(asset_server.getImage2(), Base64.DEFAULT);
+               // Bitmap bmp1=Utiilties.StringToBitMap(asset_server.getImage1());
+
+                i.putExtra("image1",Utiilties.StringToBitMap(asset_server.getImage1()));
+                i.putExtra("image2",Utiilties.StringToBitMap(asset_server.getImage2()));
                 asset_server.setImage1("");
                 asset_server.setImage2("");
-                 i.putExtra("assetdata_server",asset_server);
+                i.putExtra("assetdata_server",asset_server);
                 i.putExtra("KeyId",info.getAsset_Id());
                 i.putExtra("isEdit", "Yes");
                 i.putExtra("isServer", "Yes");

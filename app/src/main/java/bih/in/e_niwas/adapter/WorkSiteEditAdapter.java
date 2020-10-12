@@ -69,20 +69,20 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
 
         holder.tv_slno.setText(String.valueOf(position+1));
         holder.tv_div_name.setText(info.getDiv_name());
-        if (info.getArea_type().equals("1"))
+        if (info.getArea_type().equals("0"))
         {
             holder.tv_areaType.setText("Urban");
         }
-        else if (info.getArea_type().equals("2"))
+        else if (info.getArea_type().equals("1"))
         {
             holder.tv_areaType.setText("Rural");
         }
 
-        if (info.getProperty_type().equals("1"))
+        if (info.getProperty_type().equals("0"))
         {
             holder.tv_property_TYpe.setText("Open Land");
         }
-        else if (info.getProperty_type().equals("2"))
+        else if (info.getProperty_type().equals("1"))
         {
             holder.tv_property_TYpe.setText("Land with existing building");
         }

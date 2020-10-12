@@ -67,7 +67,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     String var_buildingpool="",building_type="",status="";
     String _groupid="",_second_grupi_id="";
     String user_id="",isServer="";
-    String image1server="",image2server="";
+    byte[] image1server,image2server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +87,13 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
-                if (isServer.equals("Yes")){
+                if (isServer.contains("Yes")){
                     assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_editserver");
-                    image1server = getIntent().getExtras().getString("image1");
-                    image2server = getIntent().getExtras().getString("image2");
+                    image1server = getIntent().getByteArrayExtra("image1_server");
+                    image2server = getIntent().getByteArrayExtra("image2_server");
 
-                    assetDetails_edit.setImage1(image1server);
-                    assetDetails_edit.setImage2(image2server);
+                    assetDetails_edit.setImage1(Utiilties.BitArrayToString(image1server));
+                    assetDetails_edit.setImage2(Utiilties.BitArrayToString(image2server));
                 }
                 else {
                     NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(keyid,user_id);

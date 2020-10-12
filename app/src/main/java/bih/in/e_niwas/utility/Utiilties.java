@@ -407,11 +407,15 @@ public class Utiilties {
 //        }
 //    }
 
-    public static Bitmap StringToBitMap(String encodedString) {
+    public static byte[] StringToBitMap(String encodedString) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+
+            byte[] byte_arr = out.toByteArray();
+            return byte_arr;
         } catch (Exception e) {
             e.getMessage();
             return null;
@@ -484,4 +488,7 @@ public class Utiilties {
             return "NA";
         }
     }
+
+
+
 }

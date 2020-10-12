@@ -70,7 +70,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String keyid = "";
     boolean edit;
     String subdiv="",wardname="",pan_name="",user_id="";
-    String image1server="",image2server="",isServer="";
+    byte[] image1server,image2server;
+    String isServer="";
 
 
 
@@ -116,11 +117,11 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 edit = true;
                 if (isServer.equals("Yes")){
                     assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_server");
-                    image1server = getIntent().getExtras().getString("image1");
-                    image2server = getIntent().getExtras().getString("image2");
+                    image1server = getIntent().getByteArrayExtra("image1");
+                    image2server = getIntent().getByteArrayExtra("image2");
 
-                    assetDetails_edit.setImage1(image1server);
-                    assetDetails_edit.setImage2(image2server);
+//                    assetDetails_edit.setImage1(image1server);
+//                    assetDetails_edit.setImage2(image2server);
                 }
                 else {
                     assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid,user_id).get(0);
@@ -390,7 +391,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                             i.putExtra("image2_server", image2server);
                             i.putExtra("KeyId", keyid);
                             i.putExtra("isEdit", "Yes");
-                            i.putExtra("isServer", "YEs");
+                            i.putExtra("isServer", "Yes");
                             startActivity(i);
                         }
                         else {
@@ -612,16 +613,21 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
+        String name="";
         for (Block info: BlockList){
-            list.add(info.getBlockName());
-            //if(benDetails.get)
+            if(getIntent().hasExtra("KeyId") && info.getBlockCode().equals(assetDetails_edit.getBlk_code())) {
+                name= info.getBlockName();
+            }
+                list.add(info.getBlockName());
+                //if(benDetails.get)
+
         }
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_block.setAdapter(adaptor);
         if(getIntent().hasExtra("KeyId"))
         {
-            sp_block.setSelection(((ArrayAdapter<String>) sp_block.getAdapter()).getPosition(assetDetails_edit.getBlk_name()));
+            sp_block.setSelection(((ArrayAdapter<String>) sp_block.getAdapter()).getPosition(name));
 
         }
         //  sp_block.setEnabled(false);
@@ -633,8 +639,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
+        String name="";
         for (PanchayatData info: PanchayatList){
-            list.add(info.getPname());
+            if(getIntent().hasExtra("KeyId") && info.getPcode().equals(assetDetails_edit.getPanchayat_code())) {
+                name= info.getPname();
+            }
+
+                list.add(info.getPname());
             //if(benDetails.get)
         }
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
@@ -642,7 +653,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_ward_pan.setAdapter(adaptor);
         if(getIntent().hasExtra("KeyId"))
         {
-            sp_ward_pan.setSelection(((ArrayAdapter<String>) sp_ward_pan.getAdapter()).getPosition(pan_name));
+            sp_ward_pan.setSelection(((ArrayAdapter<String>) sp_ward_pan.getAdapter()).getPosition(name));
 
         }
     }
@@ -653,8 +664,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
+        String name="";
         for (WardList info: WardList){
-            list.add(info.getWard_name());
+            if(getIntent().hasExtra("KeyId") && info.getWard_code().equals(assetDetails_edit.getWard_id())) {
+                name= info.getWard_name();
+            }
+
+                list.add(info.getWard_name());
             //if(benDetails.get)
         }
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
@@ -662,7 +678,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         sp_ward.setAdapter(adaptor);
         if(getIntent().hasExtra("KeyId"))
         {
-            sp_ward.setSelection(((ArrayAdapter<String>) sp_ward.getAdapter()).getPosition(wardname));
+            sp_ward.setSelection(((ArrayAdapter<String>) sp_ward.getAdapter()).getPosition(name));
 
         }
     }
