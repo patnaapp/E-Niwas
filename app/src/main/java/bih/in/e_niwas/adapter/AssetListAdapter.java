@@ -27,7 +27,7 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
 
     Boolean isShowDetail = false;
 
-    public AssetListAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist) {
+    public AssetListAdapter(Activity listViewshowedit, ArrayList<NiwasInspectionEntity> rlist,String assetlistnew) {
         this.activity=listViewshowedit;
         this.ThrList=rlist;
         mInflater = (LayoutInflater)activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -46,11 +46,11 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
 
         holder.tv_slno.setText(String.valueOf(position+1));
         holder.tv_div_name.setText(info.getDiv_name());
-        if (info.getArea_type().equals("U"))
+        if (info.getArea_type().equals("1"))
         {
             holder.tv_areaType.setText("Urban");
         }
-        else if (info.getArea_type().equals("R"))
+        else if (info.getArea_type().equals("2"))
         {
             holder.tv_areaType.setText("Rural");
         }
@@ -72,10 +72,17 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
         holder.sblist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NiwasInspectionEntity asset_server=ThrList.get(position);
                 Intent i=new Intent(activity, NewEntryForm_Activity.class);
-                // i.putExtra("assetdata",ThrList.get(position));
+                 i.putExtra("image1",asset_server.getImage1());
+                 i.putExtra("image2",asset_server.getImage2());
+                asset_server.setImage1("");
+                asset_server.setImage2("");
+                 i.putExtra("assetdata_server",asset_server);
                 i.putExtra("KeyId",info.getId());
                 i.putExtra("isEdit", "Yes");
+                i.putExtra("isServer", "Yes");
+
                 activity.startActivity(i);
 
             }

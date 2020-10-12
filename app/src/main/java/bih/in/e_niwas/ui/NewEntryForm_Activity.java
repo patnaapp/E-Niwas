@@ -58,7 +58,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> blockadapter;
     ArrayAdapter<String> panchayatadapter;
     String _vardivID="",_vardivName="",_vardistID="",subdiv_id="",subdiv_Nm="",_vardistName="",block_id="",block_name="",panch_id="",panch_name="";
- String ben_type_aangan[] = {"-select-","YES","NO"};
+    String ben_type_aangan[] = {"-select-","YES","NO"};
 
     String Is_Building_Name="",Is_building_Code="";
     ArrayAdapter ben_type_aangan_aaray;
@@ -70,6 +70,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String keyid = "";
     boolean edit;
     String subdiv="",wardname="",pan_name="",user_id="";
+    String image1server="",image2server="";
 
 
 
@@ -107,14 +108,25 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
 
             keyid = getIntent().getExtras().getString("KeyId");
-            String isEdit = "";
+            String isEdit = "",isServer="";
             isEdit = getIntent().getExtras().getString("isEdit");
+            isServer = getIntent().getExtras().getString("isEdit");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
+                if (isServer.equals("Yes")){
+                    assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_server");
+                    image1server = getIntent().getExtras().getString("image1");
+                    image2server = getIntent().getExtras().getString("image2");
 
-                assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid,user_id).get(0);
-         //       assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
+                    assetDetails_edit.setImage1(image1server);
+                    assetDetails_edit.setImage2(image2server);
+                }
+                else {
+                    assetDetails_edit=dataBaseHelper.getAllNewEntryDetail(keyid,user_id).get(0);
+                }
+
+                //       assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata");
                 ShowEditEntryKhesra();
 
             }
@@ -373,19 +385,22 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     {
                         Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
                         i.putExtra("assetdata_edit",assetDetails_edit);
+                        i.putExtra("image1_server",image1server);
+                        i.putExtra("image2_server",image2server);
                         i.putExtra("KeyId",keyid);
                         i.putExtra("isEdit", "Yes");
+                        i.putExtra("isServer", "Yes");
                         startActivity(i);
                     }
                     else {
 
-                    if(validateData())
-                    {
-                        setdataforintent();
-                        Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
-                        i.putExtra("data",assetDetails);
-                        startActivity(i);
-                    }
+                        if(validateData())
+                        {
+                            setdataforintent();
+                            Intent i=new Intent(NewEntryForm_Activity.this,BuildingDetails_Activity.class);
+                            i.putExtra("data",assetDetails);
+                            startActivity(i);
+                        }
                     }
                 }
                 else if (chk_open_land.isChecked())
@@ -409,31 +424,31 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     else {
 
 
-                    if(validateData())
-                    {
-                        setdataforintent();
-                        id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
+                        if(validateData())
+                        {
+                            setdataforintent();
+                            id = new DataBaseHelper(NewEntryForm_Activity.this).InsertAssetEntry_New(assetDetails);
 
-                        if (id > 0) {
+                            if (id > 0) {
 
-                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(NewEntryForm_Activity.this);
-                            alertDialog.setTitle("Saved");
-                            alertDialog.setMessage("Data saved successfully");
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(NewEntryForm_Activity.this);
+                                alertDialog.setTitle("Saved");
+                                alertDialog.setMessage("Data saved successfully");
 
-                            alertDialog.setNegativeButton("[OK]", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getApplicationContext(), "Data saved successfully", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-                            alertDialog.show();
+                                alertDialog.setNegativeButton("[OK]", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(getApplicationContext(), "Data saved successfully", Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                                alertDialog.show();
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Not Success", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Not Success", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
                     }
                 }
 
@@ -620,7 +635,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         ArrayAdapter adaptor = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_subdiv.setAdapter(adaptor);
-       // if(benDetails.getPanchayatName()!=null)
+        // if(benDetails.getPanchayatName()!=null)
         if(getIntent().hasExtra("KeyId"))
 
         {

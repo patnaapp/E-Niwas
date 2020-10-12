@@ -104,6 +104,14 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
         this.office_details=res1.getProperty("OfficeDetail").toString();
         this.year_of_completion=res1.getProperty("YearofCompl").toString();
         this.building_status=res1.getProperty("Building_Status").toString();
+        this.remarks=res1.getProperty("Remark").toString();
+        this.image1=res1.getProperty("Image1").toString();
+        this.image2=res1.getProperty("Image2").toString();
+        this.Lat1=res1.getProperty("LatitudeImage1").toString();
+        this.Lat2=res1.getProperty("LatitudeImage2").toString();
+        this.Long1=res1.getProperty("LongitudeImage1").toString();
+        this.Long2=res1.getProperty("LongitudeImage2").toString();
+
     }
 
     public static Class<NiwasInspectionEntity> getAsset_CLASS() {

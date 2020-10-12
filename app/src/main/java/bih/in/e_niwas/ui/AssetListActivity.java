@@ -17,6 +17,7 @@ import com.exp.e_niwas.R;
 
 import java.util.ArrayList;
 
+import bih.in.e_niwas.adapter.AssetListAdapter;
 import bih.in.e_niwas.adapter.WorkSiteEditAdapter;
 import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
@@ -29,7 +30,7 @@ public class AssetListActivity extends AppCompatActivity {
     TextView tv_Norecord;
     DataBaseHelper dataBaseHelper;
     ArrayList<NiwasInspectionEntity> assetList = new ArrayList<>();
-    WorkSiteEditAdapter labourSearchAdaptor;
+    AssetListAdapter labourSearchAdaptor;
 String  user_id="";
     UserDetails userInfo;
     String assetlistnew="Y";
@@ -74,7 +75,7 @@ String  user_id="";
             tv_Norecord.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
 
-            labourSearchAdaptor = new WorkSiteEditAdapter(this, assetList,assetlistnew);
+            labourSearchAdaptor = new AssetListAdapter(this, assetList,assetlistnew);
             listView.setLayoutManager(new LinearLayoutManager(this));
             listView.setAdapter(labourSearchAdaptor);
 
