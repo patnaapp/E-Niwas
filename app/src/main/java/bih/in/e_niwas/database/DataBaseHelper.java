@@ -282,6 +282,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return x;
     }
 
+    public long getAssetCount(String assetid) {
+
+        long x = 0;
+        try {
+            String[] whereArgs = new String[]{assetid};
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur = db.rawQuery("Select * from AssetNewEntry where asset_id=?", whereArgs);
+
+            x = cur.getCount();
+
+            cur.close();
+            db.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return x;
+    }
+
     public long insertUserDetails(UserDetails result) {
 
         long c = 0;
@@ -2656,8 +2675,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
 
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-             String[] args = {id,uid};
-             String[] args1 = {uid};
+            String[] args = {id,uid};
+            String[] args1 = {uid};
             Cursor cursor;
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry  ORDER BY Id  DESC", null);
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From QcLabReportEntry where Lat_fieldfinal IS NOT NULL AND User_Id=? ORDER BY Id  DESC", args);
@@ -2668,8 +2687,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where entryby=?", args1);
             }
             else
-                {
-                 cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
+            {
+                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
             }
 
             int x = cursor.getCount();
@@ -2729,7 +2748,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 if (id.equals("0"))
                 {
                     basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
-                basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
+                    basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
                 }
 
 
@@ -2762,7 +2781,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //Cursor cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where  entryby=? ORDER BY Id  DESC", args);
 
 
-                cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
+            cursor = sqLiteDatabase.rawQuery("select * From AssetNewEntry where Id=? and entryby=?", args);
 
 
             int x = cursor.getCount();
@@ -2770,8 +2789,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
 
 
-                    basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
-                    basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
+                basicInfo.setImage1((cursor.getString(cursor.getColumnIndex("image1"))));
+                basicInfo.setImage2((cursor.getString(cursor.getColumnIndex("image2"))));
 
 
 
@@ -2809,7 +2828,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         long c = -1;
         try {
-           // DataBaseHelper placeData = new DataBaseHelper(newEntryActivity);
+            // DataBaseHelper placeData = new DataBaseHelper(newEntryActivity);
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
 
@@ -2924,31 +2943,36 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 db.close();
 
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
                 return c;
             }
         }
         return c;
 
-
     }
 
-    public ArrayList<Item_MasterEntity> getItemList(String groupid,String scnd_gruopid) {
+    public ArrayList<Item_MasterEntity> getItemList(String groupid,String scnd_gruopid)
+    {
         //CREATE TABLE `Panchayat1` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `DistCode` TEXT,
         // `BlockCode` TEXT, `PanchayatCode` TEXT, `PanchayatName` TEXT )
         ArrayList<Item_MasterEntity> pdetail = new ArrayList<Item_MasterEntity>();
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cur;
-            if (scnd_gruopid.equals("0")){
-                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' order by Item_Name", null);
+            if (scnd_gruopid.equals("0"))
+            {
+                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' order by Group_Id,Item_Order", null);
             }
-            else {
-                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' or Group_Id='" + scnd_gruopid + "' order by Item_Name", null);
+            else
+            {
+                cur = db.rawQuery("SELECT * FROM  Item_Master where Group_Id='" + groupid + "' or Group_Id='" + scnd_gruopid + "' order by Group_Id,Item_Order", null);
             }
-            if (scnd_gruopid.equals("0") && groupid.equals("0")){
-                cur = db.rawQuery("SELECT * FROM  Item_Master  order by Item_Name", null);
+            if (scnd_gruopid.equals("0") && groupid.equals("0"))
+            {
+                cur = db.rawQuery("SELECT * FROM  Item_Master  order by Group_Id,Item_Order", null);
             }
 
             int x = cur.getCount();

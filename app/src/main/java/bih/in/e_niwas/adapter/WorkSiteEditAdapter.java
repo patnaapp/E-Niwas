@@ -68,7 +68,8 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
 
 
         holder.tv_slno.setText(String.valueOf(position+1));
-        holder.tv_div_name.setText(info.getDiv_name());
+     //   holder.tv_div_name.setText(info.getDiv_name());
+        holder.tv_div_name.setText("Madhepura");
         if (info.getArea_type().equals("0"))
         {
             holder.tv_areaType.setText("Urban");

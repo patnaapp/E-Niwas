@@ -33,6 +33,8 @@ public class UserDetails implements KvmSerializable, Serializable {
     private String Division = "";
     private String DivisionName = "";
     private String IMEI = "";
+    private String _Utype = "";
+
 
 
     public UserDetails() {
@@ -41,7 +43,8 @@ public class UserDetails implements KvmSerializable, Serializable {
     @SuppressWarnings("deprecation")
     public UserDetails(SoapObject obj) {
         this.setAuthenticated(Boolean.parseBoolean(obj.getProperty("isAuthenticated").toString()));
-        this.setUserID(obj.getProperty("UserID").toString());
+       // this.setUserID(obj.getProperty("UserID").toString());
+        this.setName(obj.getProperty("UserID").toString());
         this.setPassword(obj.getProperty("Password").toString());
 
 //        this.setName(obj.getProperty("Name").toString());
@@ -57,6 +60,9 @@ public class UserDetails implements KvmSerializable, Serializable {
         this.setUserrole(obj.getProperty("UserRole").toString());
         this.setDivision(obj.getProperty("Division").toString());
         this.setDivisionName(obj.getProperty("DivisionName").toString());
+        this.setIMEI(obj.getProperty("IMEINO").toString());
+        this.setMobileNo(obj.getProperty("IMEINO").toString());
+        this.set_Utype(obj.getProperty("UType").toString());
 //        this.setName(obj.getProperty("Name").toString());
     }
 
@@ -142,6 +148,11 @@ public class UserDetails implements KvmSerializable, Serializable {
                 break;
 
             }
+            case 14: {
+                object = this._Utype;
+                break;
+
+            }
         }
         return object;
     }
@@ -221,6 +232,12 @@ public class UserDetails implements KvmSerializable, Serializable {
 
             case 13: {
                 propertyInfo.name = "Name";
+                propertyInfo.type = PropertyInfo.STRING_CLASS;
+                break;
+            }
+
+            case 14: {
+                propertyInfo.name = "UType";
                 propertyInfo.type = PropertyInfo.STRING_CLASS;
                 break;
             }
@@ -460,6 +477,14 @@ public class UserDetails implements KvmSerializable, Serializable {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String get_Utype() {
+        return _Utype;
+    }
+
+    public void set_Utype(String _Utype) {
+        this._Utype = _Utype;
     }
 }
 

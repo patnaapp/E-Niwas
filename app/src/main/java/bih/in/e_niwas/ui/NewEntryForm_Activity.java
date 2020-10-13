@@ -33,6 +33,7 @@ import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.Block;
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.DivisionList;
+import bih.in.e_niwas.entity.Item_MasterEntity;
 import bih.in.e_niwas.entity.NiwasInspectionEntity;
 import bih.in.e_niwas.entity.PanchayatData;
 import bih.in.e_niwas.entity.PanchayatEntity;
@@ -46,7 +47,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     Spinner sp_building_div,sp_dist,sp_subdiv,sp_block,sp_ward_pan,sp_bulding_check,sp_ward;
     CheckBox chk_open_land,chk_existing_building,chk_urban,chk_rural;
     EditText edt_pincode,edt_thana,edt_khata,edt_khesra,edt_nrth_chauhaddi,edt_south_chauhaddi,edt_neast_chauhaddi,edt_west_chauhaddi,edt_land_area,edt_trees_no,et_trees_details,edt_admin_dept;
-    ArrayList<DivisionList> DivList = new ArrayList<DivisionList>();
+    ArrayList<Item_MasterEntity> DivList = new ArrayList<Item_MasterEntity>();
     ArrayList<District> DistrictList = new ArrayList<District>();
     ArrayList<PanchayatData> PanchayatList = new ArrayList<PanchayatData>();
     ArrayList<WardList> WardList = new ArrayList<WardList>();
@@ -69,9 +70,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     String ward_id="",ward_nm="";
     String keyid = "";
     boolean edit;
-    String subdiv="",wardname="",pan_name="",user_id="";
+    String subdiv="",wardname="",pan_name="",user_id="",div_id="",dist_code="";
     byte[] image1server,image2server;
-    String isServer="";
+    String isServer="",div_name="",dist_name="";
 
 
 
@@ -81,6 +82,10 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         setContentView(R.layout.activity_new_entry_form_);
 
         user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
+        div_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("div_id", "");
+        dist_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_id", "");
+        dist_name = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_name", "");
+        div_name = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("div", "");
 
         dataBaseHelper = new DataBaseHelper(NewEntryForm_Activity.this);
         try
@@ -149,9 +154,9 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 if (arg2 > 0) {
 
-                    DivisionList dist = DivList.get(arg2-1);
-                    _vardivID = dist.getDivId();
-                    _vardivName = dist.getDivName();
+                    Item_MasterEntity dist = DivList.get(arg2-1);
+                    _vardivID = dist.getItem_ID();
+                    _vardivName = dist.getItem_Name();
                     //setBlockSpinnerData();
 //                    packageList = dataBaseHelper.getPackageLocal();
 //                    if (packageList.size() <= 0) {
@@ -537,13 +542,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
     public void loadDivisionSpinnerdata() {
 
-        DivList = dataBaseHelper.getDivisionLocal();
+        DivList = dataBaseHelper.getItemList("19","0");
         String[] typeNameArray = new String[DivList.size() + 1];
         typeNameArray[0] = "-Select-";
         int i = 1;
-        for (DivisionList type : DivList)
+        for (Item_MasterEntity type : DivList)
         {
-            typeNameArray[i] = type.getDivName();
+            typeNameArray[i] = type.getItem_Name();
             i++;
         }
         divtadapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, typeNameArray);
@@ -553,7 +558,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         for ( i = 0; i < DivList.size(); i++)
         {
             //   if (DivList.get(i).getDivId().equalsIgnoreCase(CommonPref.getUserDetails(NewEntryForm_Activity.this).get_DivisionID())) {
-            if (DivList.get(i).getDivId().equalsIgnoreCase("213"))
+          //  if (DivList.get(i).getItem_ID().equalsIgnoreCase("329"))
+            if (DivList.get(i).getItem_ID().equalsIgnoreCase(div_id))
             {
                 setID = i;
             }
@@ -589,7 +595,8 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         for ( i = 0; i < DistrictList.size(); i++)
         {
             //   if (DivList.get(i).getDivId().equalsIgnoreCase(CommonPref.getUserDetails(NewEntryForm_Activity.this).get_DivisionID())) {
-            if (DistrictList.get(i).get_DistCode().equalsIgnoreCase("213"))
+            //if (DistrictList.get(i).get_DistCode().equalsIgnoreCase("213"))
+            if (DistrictList.get(i).get_DistCode().equalsIgnoreCase(dist_code))
             {
                 setID = i;
             }

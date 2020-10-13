@@ -852,6 +852,7 @@ public class WebServiceHelper {
             request.addProperty("_LatitudeImage2", data.getLat2());
             request.addProperty("_LongitudeImage2", data.getLong2());
             request.addProperty("_APPVERSION", app_ver);
+            request.addProperty("_BuilpupArea", data.getBuiltup_area());
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
                     SoapEnvelope.VER11);

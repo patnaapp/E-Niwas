@@ -77,6 +77,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
 
         initialise();
+        img2.setEnabled(false);
         try {
 
 
@@ -87,7 +88,8 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
             if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
                 edit = true;
-                if (isServer.contains("Yes")){
+                if (isServer.contains("Yes"))
+                {
                     assetDetails_edit=(NiwasInspectionEntity)getIntent().getSerializableExtra("assetdata_editserver");
                     image1server = getIntent().getByteArrayExtra("image1_server");
                     image2server = getIntent().getByteArrayExtra("image2_server");
@@ -286,10 +288,14 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 {
 
                     if (isServer.equals("Yes")){
-                        InsertIntoLocal();
+                        if(validateData()) {
+                            InsertIntoLocal();
+                        }
                     }
                     else {
-                        UpdateIntoLocal();
+                        if(validateData()) {
+                            UpdateIntoLocal();
+                        }
                     }
                 }
                 else {
@@ -405,6 +411,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
                             latitude = String.valueOf(data.getStringExtra("Lat"));
                             longitude = String.valueOf(data.getStringExtra("Lng"));
+                            img2.setEnabled(true);
                             break;
                         case 2:
                             imgnew = imgData;
@@ -445,6 +452,13 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             validate = false;
         }
 
+        if(edt_building_year.getText().toString().length()>0){
+            if (edt_building_year.getText().toString().length()<4){
+                Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
+                validate = false;
+            }
+
+        }
 
         if(edt_building_name.getText().toString().equalsIgnoreCase("")){
             Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
@@ -474,38 +488,66 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         DataBaseHelper placeData = new DataBaseHelper(BuildingDetails_Activity.this);
         NiwasInspectionEntity newEntryEntity=new NiwasInspectionEntity();
 
-        assetDetails.setBuilding_name(edt_building_name.getText().toString());
-        assetDetails.setBuilding_type(_var_type_of_building);
-        assetDetails.setBuilding_is(_var_building_is);
-        assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
-        assetDetails.setBuilding_type_class(buildintype_id);
-        assetDetails.setPool_building(pool_id);
-        assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
-        assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
-        assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
-        assetDetails.setYear_of_completion(edt_building_year.getText().toString());
-        assetDetails.setBuilding_status(status_id);
-        assetDetails.setRemarks(edt_remarks.getText().toString());
-        assetDetails.setImage1(img1String);
-        assetDetails.setImage2(img2String);
-        assetDetails.setLat1(latitude);
-        assetDetails.setLong1(longitude);
-        assetDetails.setLat2(latitude2);
-        assetDetails.setLong2(longitude2);
-        assetDetails.setEntryby(user_id);
         if (isServer.equals("Yes")){
-            assetDetails.setAsset_Id(assetDetails_edit.getAsset_Id());
+            assetDetails_edit.setBuilding_name(edt_building_name.getText().toString());
+            assetDetails_edit.setBuilding_type(_var_type_of_building);
+            assetDetails_edit.setBuilding_is(_var_building_is);
+            assetDetails_edit.setGazeted_nongazeted(var_gazetted_nongazetted);
+            assetDetails_edit.setBuilding_type_class(buildintype_id);
+            assetDetails_edit.setPool_building(pool_id);
+            assetDetails_edit.setPlinth_area(edt_plinth_area.getText().toString());
+            assetDetails_edit.setBuiltup_area(edt_builtup_area.getText().toString());
+            assetDetails_edit.setOffice_details(edt_ofc_detail.getText().toString());
+            assetDetails_edit.setYear_of_completion(edt_building_year.getText().toString());
+            assetDetails_edit.setBuilding_status(status_id);
+            assetDetails_edit.setRemarks(edt_remarks.getText().toString());
+            assetDetails_edit.setImage1(img1String);
+            assetDetails_edit.setImage2(img2String);
+            assetDetails_edit.setLat1(latitude);
+            assetDetails_edit.setLong1(longitude);
+            assetDetails_edit.setLat2(latitude2);
+            assetDetails_edit.setLong2(longitude2);
+            assetDetails_edit.setEntryby(user_id);
+            assetDetails_edit.setAsset_Id(assetDetails_edit.getAsset_Id());
+
+
+
         }
         else {
+            assetDetails.setBuilding_name(edt_building_name.getText().toString());
+            assetDetails.setBuilding_type(_var_type_of_building);
+            assetDetails.setBuilding_is(_var_building_is);
+            assetDetails.setGazeted_nongazeted(var_gazetted_nongazetted);
+            assetDetails.setBuilding_type_class(buildintype_id);
+            assetDetails.setPool_building(pool_id);
+            assetDetails.setPlinth_area(edt_plinth_area.getText().toString());
+            assetDetails.setBuiltup_area(edt_builtup_area.getText().toString());
+            assetDetails.setOffice_details(edt_ofc_detail.getText().toString());
+            assetDetails.setYear_of_completion(edt_building_year.getText().toString());
+            assetDetails.setBuilding_status(status_id);
+            assetDetails.setRemarks(edt_remarks.getText().toString());
+            assetDetails.setImage1(img1String);
+            assetDetails.setImage2(img2String);
+            assetDetails.setLat1(latitude);
+            assetDetails.setLong1(longitude);
+            assetDetails.setLat2(latitude2);
+            assetDetails.setLong2(longitude2);
+            assetDetails.setEntryby(user_id);
             assetDetails.setAsset_Id("");
-        }
 
+        }
 
 
         newEntryEntity.setEntryby(CommonPref.getUserDetails(getApplicationContext()).getUserID());
         if(str_img.equalsIgnoreCase("Y")) {
 
-            id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(assetDetails);
+            if (isServer.equals("Yes")){
+                id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(assetDetails_edit);
+            }
+            else {
+                id = new DataBaseHelper(BuildingDetails_Activity.this).InsertAssetEntry_New(assetDetails);
+            }
+
 
             if (id > 0) {
 
@@ -547,34 +589,41 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         edt_remarks.setText(assetDetails_edit.getRemarks());
         if (assetDetails_edit.getBuilding_type().equals("0")){
             chk_judicial.setChecked(true);
+            _var_type_of_building="0";
         }
         else if(assetDetails_edit.getBuilding_type().equals("1")){
             chk_non_judicial.setChecked(true);
+            _var_type_of_building="1";
         }
         if (assetDetails_edit.getBuilding_is().equals("0")){
             chk_residential.setChecked(true);
+            _var_building_is="0";
         }
         else if(assetDetails_edit.getBuilding_is().equals("1")){
             chk_non_residential.setChecked(true);
             _groupid="17";
             _second_grupi_id="0";
+            _var_building_is="1";
         }
 
 
         if (assetDetails_edit.getGazeted_nongazeted().equals("0")){
             chk_gazetted.setChecked(true);
             _groupid="3";
+            var_gazetted_nongazetted="0";
             _second_grupi_id="0";
         }
         else if(assetDetails_edit.getGazeted_nongazeted().equals("1")){
             chk_non_gazetted.setChecked(true);
             _groupid="6";
+            var_gazetted_nongazetted="1";
             _second_grupi_id="0";
         }
 
         else if(assetDetails_edit.getGazeted_nongazeted().equals("2")){
             chk_mixedd.setChecked(true);
             _groupid="6";
+            var_gazetted_nongazetted="2";
             _second_grupi_id="3";
         }
         latitude = assetDetails_edit.getLat1();
@@ -608,7 +657,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 Bitmap bmpImg2 = BitmapFactory.decodeByteArray(imgnew, 0, imgnew.length);
                 img2.setScaleType(ImageView.ScaleType.FIT_XY);
                 img2.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg2, ThumbnailSize, ThumbnailSize));
-
+                str_img="Y";
             }
 
 
@@ -637,7 +686,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         DataBaseHelper placeData = new DataBaseHelper(BuildingDetails_Activity.this);
         NiwasInspectionEntity newEntryEntity=new NiwasInspectionEntity();
 
-      //  assetDetails.setId(assetDetails_edit.getId());
+        //  assetDetails.setId(assetDetails_edit.getId());
 
         assetDetails_edit.setBuilding_name(edt_building_name.getText().toString());
         assetDetails_edit.setBuilding_type(_var_type_of_building);
@@ -708,7 +757,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
-   String name="";
+        String name="";
         for (Item_MasterEntity info: Item_List){
             if(getIntent().hasExtra("KeyId") && info.getItem_ID().equals(assetDetails_edit.getBuilding_type_class())){
                 name= info.getItem_Name();

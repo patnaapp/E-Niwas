@@ -36,6 +36,10 @@ public class HomeActivity extends Activity
 
     TextView tv_username,tv_district,tv_division;
     ArrayList<Item_MasterEntity> Item_List = new ArrayList<Item_MasterEntity>();
+    String divisionname="";
+    String user_id="",div_id="",dist_code="";
+
+    String div_name="",dist_name="",name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,9 +48,22 @@ public class HomeActivity extends Activity
         setContentView(R.layout.activity_main);
         dbHelper=new DataBaseHelper(this);
 
+
+        user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
+        div_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("div_id", "");
+        dist_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_id", "");
+        dist_name = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_name", "");
+        div_name = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("div", "");
+        name = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("u_name", "");
         tv_username = findViewById(R.id.tv_username);
         tv_district = findViewById(R.id.tv_district);
         tv_division = findViewById(R.id.tv_division);
+
+        tv_username.setText(name);
+        // tv_district.setText(userInfo.getDistName().equals("anyType{}") ? "NA" : userInfo.getDistName());
+        tv_district.setText(dist_name);
+        //tv_division.setText(userInfo.getDivisionName().equals("anyType{}") ? "NA" : userInfo.getDivisionName());
+        tv_division.setText(div_name);
 
         try
         {
@@ -71,7 +88,7 @@ public class HomeActivity extends Activity
 
 
 
-        getUserDetail();
+      //  getUserDetail();
     }
 
     private void getUserDetail(){
@@ -81,9 +98,12 @@ public class HomeActivity extends Activity
         userInfo = dbHelper.getUserDetails(username, password);
 
         if(userInfo != null){
-            tv_username.setText(userInfo.getUserID());
-            tv_district.setText(userInfo.getDistName().equals("anyType{}") ? "NA" : userInfo.getDistName());
-            tv_division.setText(userInfo.getDivisionName().equals("anyType{}") ? "NA" : userInfo.getDivisionName());
+          //  tv_username.setText(userInfo.getUserID());
+            tv_username.setText(name);
+           // tv_district.setText(userInfo.getDistName().equals("anyType{}") ? "NA" : userInfo.getDistName());
+            tv_district.setText(dist_name);
+            //tv_division.setText(userInfo.getDivisionName().equals("anyType{}") ? "NA" : userInfo.getDivisionName());
+            tv_division.setText(div_name);
         }
     }
 

@@ -111,6 +111,7 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
         this.Lat2=res1.getProperty("LatitudeImage2").toString();
         this.Long1=res1.getProperty("LongitudeImage1").toString();
         this.Long2=res1.getProperty("LongitudeImage2").toString();
+        this.builtup_area=res1.getProperty("BuilpupArea").toString();
 
     }
 

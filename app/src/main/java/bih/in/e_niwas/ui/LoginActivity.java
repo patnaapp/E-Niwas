@@ -1,5 +1,6 @@
 package bih.in.e_niwas.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,8 +11,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +28,7 @@ import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.UserDetails;
 import bih.in.e_niwas.utility.CommonPref;
 import bih.in.e_niwas.utility.GlobalVariables;
+import bih.in.e_niwas.utility.MarshmallowPermission;
 import bih.in.e_niwas.utility.Utiilties;
 import bih.in.e_niwas.web_services.WebServiceHelper;
 
@@ -47,6 +51,8 @@ public class LoginActivity extends Activity {
     DataBaseHelper localDBHelper;
 
     UserDetails userInfo;
+    TextView app_ver;
+    MarshmallowPermission MARSHMALLOW_PERMISSION;
 
 
     @Override
@@ -107,6 +113,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        readPhoneState();
         //getIMEI();
 
     }
@@ -180,45 +187,61 @@ public class LoginActivity extends Activity {
                 //-----------------------------------------Online-------------------------------------
                 if (Utiilties.isOnline(LoginActivity.this)) {
 
-
+                    if(imei.equalsIgnoreCase(imei)) {
+                        imei = result.getIMEI();
+                        //imei = "862183044263136";
+                        //imei = "359376097764329";
+                        //imei = "866778040112652";
+                    }
                     uid = param[0];
                     pass = param[1];
 
-                    if (result != null && result.isAuthenticated() == true) {
-                        uid=result.getUserID();
-                        pass = param[1];
+                    if (result != null && result.isAuthenticated() == true && result.get_Utype().equals("2")) {
+                        if (imei.equalsIgnoreCase(result.getIMEI())) {
 
-                        try {
+                            // uid=result.getUserID();
+                            uid = param[0];
+                            pass = param[1];
 
-                            GlobalVariables.LoggedUser = result;
-                            GlobalVariables.LoggedUser.setUserID(userName
-                                    .getText().toString().trim().toLowerCase());
+                            try {
 
-                            GlobalVariables.LoggedUser.setPassword(userPass
-                                    .getText().toString().trim());
+                                GlobalVariables.LoggedUser = result;
+                                GlobalVariables.LoggedUser.setUserID(userName
+                                        .getText().toString().trim().toLowerCase());
 
-
-                            CommonPref.setUserDetails(getApplicationContext(),
-                                    GlobalVariables.LoggedUser);
+                                GlobalVariables.LoggedUser.setPassword(userPass
+                                        .getText().toString().trim());
 
 
-                            long c = setLoginStatus(GlobalVariables.LoggedUser);
+                                CommonPref.setUserDetails(getApplicationContext(),
+                                        GlobalVariables.LoggedUser);
 
-                            if (c > 0) {
-                                start();
-                            }
-                            else {
+
+                                long c = setLoginStatus(GlobalVariables.LoggedUser);
+
+                                if (c > 0) {
+                                    start();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
                                         Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            alertDialog.setTitle("डिवाइस पंजीकृत नहीं है");
+                            alertDialog.setMessage("क्षमा करें, आपका डिवाइस पंजीकृत नहीं है.\r\nकृपया अपने व्यवस्थापक से संपर्क करें.");
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    userName.setFocusable(true);
+                                }
+                            });
+                            alertDialog.show();
 
                         }
-                        catch (Exception ex) {
-                            ex.printStackTrace();
-                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
                     }
 
                     // offline -------------------------------------------------------------------------
@@ -267,9 +290,15 @@ public class LoginActivity extends Activity {
         SharedPreferences.Editor editor = SplashActivity.prefs.edit();
         editor.putBoolean("username", true);
         editor.putBoolean("password", true);
-        editor.putString("uid", details.getUserID());
+        editor.putString("uid", uid);
+        editor.putString("div", details.getDivisionName());
+        editor.putString("u_name", details.getName());
+        editor.putString("div_id", details.getDivision());
+        editor.putString("dist_id", details.getDistrictCode());
+        editor.putString("dist_name", details.getDistName());
         editor.putString("pass", pass);
         editor.putString("role", details.getUserrole());
+        editor.putString("u_type", details.get_Utype());
         editor.commit();
         //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("USER_ID", uid).commit();
         //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("uid", uid).commit();
@@ -288,4 +317,77 @@ public class LoginActivity extends Activity {
         finish();
     }
 
+
+    public void readPhoneState() {
+        MARSHMALLOW_PERMISSION = new MarshmallowPermission(LoginActivity.this, android.Manifest.permission.READ_PHONE_STATE);
+        if (MARSHMALLOW_PERMISSION.result == -1 || MARSHMALLOW_PERMISSION.result == 0) {
+            try {
+                tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                //if (tm != null) imei = tm.getDeviceId();
+                if (tm != null) imei = getDeviceIMEI();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                //if (tm != null) imei = tm.getDeviceId();
+                if (tm != null) imei = getDeviceIMEI();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+//        EditText userName = (EditText) findViewById(R.id.UserText);
+//        userName.setText(CommonPref.getUserDetails(getApplicationContext()).get_UserID());
+
+        try {
+            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            TextView tv = (TextView) findViewById(R.id.app_ver);
+            tv.setText("ऐप का वर्जन : " + version + " ( " + imei + " )");
+
+        } catch (PackageManager.NameNotFoundException e) {
+
+        }
+    }
+
+
+
+    public String getDeviceIMEI() {
+        //String deviceUniqueIdentifier = null;
+        MarshmallowPermission permission = new MarshmallowPermission(this, Manifest.permission.READ_PHONE_STATE);
+//        try {
+//            TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+//            if (null != tm) {
+//                imei = tm.getDeviceId();
+//            }
+//            if (null == imei || 0 == imei.length()) {
+//                imei = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            imei = Settings.Secure.getString(
+                    this.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        }
+        else
+        {
+            final TelephonyManager mTelephony = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            if (mTelephony.getDeviceId() != null)
+            {
+                imei = mTelephony.getDeviceId();
+            }
+            else
+            {
+                imei = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
+            }
+        }
+
+
+        return imei;
+    }
 }
