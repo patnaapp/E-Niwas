@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.exp.e_niwas.R;
 
 import bih.in.e_niwas.database.DataBaseHelper;
+import bih.in.e_niwas.entity.DefaultResponse;
 import bih.in.e_niwas.entity.UserDetails;
 import bih.in.e_niwas.utility.CommonPref;
 import bih.in.e_niwas.utility.GlobalVariables;
@@ -454,7 +455,7 @@ public class LoginActivity extends Activity {
     }
 
 
-    private class ChangePassword extends AsyncTask<String, Void, String> {
+    private class ChangePassword extends AsyncTask<String, Void, DefaultResponse> {
 
 
         private final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
@@ -470,15 +471,17 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected String doInBackground(String... param)
+        protected DefaultResponse doInBackground(String... param)
         {
             //    String res = WebServiceHelper.UploadSingleData(data, devicename, app_version,PreferenceManager.getDefaultSharedPreferences(mContext).getString("USERID", ""));
-            String res = WebServiceHelper.ChangePassword(uid,cnf_pass);
-            return res;
+           // String res = WebServiceHelper.ChangePassword(uid,cnf_pass);
+            return WebServiceHelper.ChangePassword(uid,cnf_pass);
+           // return res;
         }
 
         @Override
-        protected void onPostExecute(String result)
+        protected void onPostExecute(DefaultResponse result)
+      //  protected void onPostExecute(String result)
         {
             if (this.dialog.isShowing())
             {
@@ -491,14 +494,15 @@ public class LoginActivity extends Activity {
 //                String[] parts = string.split(",");
 //                String part1 = parts[0]; // 004-
 //                String part2 = parts[1];
-
-                if (result.equals("1"))
+                if (result.getStatus()==true)
                 {
+//                if (result.equals("1"))
+//                {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     // builder.setIcon(R.drawable.logo3);
                     builder.setTitle("Success!!");
                     // Ask the final question
-                    builder.setMessage("Password Uploaded Successfully");
+                    builder.setMessage(result.getMessage());
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -549,12 +553,14 @@ public class LoginActivity extends Activity {
 
                     dialog.show();
 
-                } else if (result.equals("0")) {
+                }
+                else  if (result.getStatus()==false)
+                {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     //builder.setIcon(R.drawable.uploaderror);
                     builder.setTitle("Alert!!");
                     // Ask the final question
-                    builder.setMessage("Record  Not Uploaded ");
+                    builder.setMessage(result.getMessage());
 
                     // Set the alert dialog yes button click listener
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

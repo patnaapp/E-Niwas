@@ -48,7 +48,7 @@
             android:id="@+id/tv_pass"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Password"
+            android:text="New Password"
             android:textStyle="bold" />
         <TextView
             android:layout_weight="0.01"
@@ -81,7 +81,7 @@
             android:id="@+id/tv_cnfpass"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Confirm Password"
+            android:text="New Confirm Password"
             android:textStyle="bold" />
         <TextView
             android:layout_weight="0.01"

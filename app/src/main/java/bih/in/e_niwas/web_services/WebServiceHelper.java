@@ -13,6 +13,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import bih.in.e_niwas.entity.DefaultResponse;
 import bih.in.e_niwas.entity.District;
 import bih.in.e_niwas.entity.FilterOptionEntity;
 import bih.in.e_niwas.entity.Item_MasterEntity;
@@ -495,7 +496,7 @@ public class WebServiceHelper {
                     SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + UPLOADSCHEMEINSPECTIONDETAIL,
                     envelope);
-             res1 = (SoapObject) envelope.getResponse();
+            res1 = (SoapObject) envelope.getResponse();
             //rest = envelope.getResponse().toString();
             if(res1 != null){
                 return new SurfaceInspectionResponse(res1);
@@ -506,7 +507,7 @@ public class WebServiceHelper {
             e.printStackTrace();
             return null;
         }
-            //return null;
+        //return null;
     }
 
     public static String uploadPlantationDate(PlantationDetail data) {
@@ -918,32 +919,38 @@ public class WebServiceHelper {
     }
 
 
-    public static String ChangePassword(String uid, String password)
+    public static DefaultResponse ChangePassword(String uid, String password)
     {
 
         SoapObject request = new SoapObject(SERVICENAMESPACE, ChangePassword);
         request.addProperty("_UserId", uid);
         request.addProperty("_Password", password);
-
+        DefaultResponse userDetails;
+        SoapObject res1;
         try
         {
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
-            envelope.implicitTypes = true;
             envelope.setOutputSoapObject(request);
-
+            envelope.addMapping(SERVICENAMESPACE, DefaultResponse.DefaultResponse_CLASS.getSimpleName(), DefaultResponse.DefaultResponse_CLASS);
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + ChangePassword, envelope);
 
-            rest = envelope.getResponse().toString();
+            res1 = (SoapObject) envelope.getResponse();
+
+            int TotalProperty = res1.getPropertyCount();
+
+            userDetails = new DefaultResponse(res1);
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return "0";
+            return null;
         }
-        return rest;
+        return userDetails;
 
     }
+
+
 }
