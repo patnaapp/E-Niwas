@@ -48,6 +48,7 @@ public class WebServiceHelper {
     public static final String ITEM_MASTER = "getItemMasterList";
     public static final String Upload_Asset = "InsertAssetEntry";
     public static final String Get_Asset = "getASSetMasterDetailsList";
+    public static final String ChangePassword = "ChangePassword";
 
 
 
@@ -568,13 +569,8 @@ public class WebServiceHelper {
     }
 
     public static ArrayList<District> getDistrictList() {
-
-
-
         SoapObject request = new SoapObject(SERVICENAMESPACE,GETDISTRICTLIST);
-
         //request.addProperty("BlockCode", dist_Code);
-
         SoapObject res1;
         try {
 
@@ -919,5 +915,35 @@ public class WebServiceHelper {
 
 
         return pvmArrayList;
+    }
+
+
+    public static String ChangePassword(String uid, String password)
+    {
+
+        SoapObject request = new SoapObject(SERVICENAMESPACE, ChangePassword);
+        request.addProperty("_UserId", uid);
+        request.addProperty("_Password", password);
+
+        try
+        {
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.implicitTypes = true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
+            androidHttpTransport.call(SERVICENAMESPACE + ChangePassword, envelope);
+
+            rest = envelope.getResponse().toString();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "0";
+        }
+        return rest;
+
     }
 }

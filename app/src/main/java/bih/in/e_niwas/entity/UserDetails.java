@@ -34,6 +34,7 @@ public class UserDetails implements KvmSerializable, Serializable {
     private String DivisionName = "";
     private String IMEI = "";
     private String _Utype = "";
+    private String _is_passwordChanged = "";
 
 
 
@@ -63,7 +64,7 @@ public class UserDetails implements KvmSerializable, Serializable {
         this.setIMEI(obj.getProperty("IMEINO").toString());
         this.setMobileNo(obj.getProperty("IMEINO").toString());
         this.set_Utype(obj.getProperty("UType").toString());
-//        this.setName(obj.getProperty("Name").toString());
+        this.set_is_passwordChanged(obj.getProperty("ISLock").toString());
     }
 
     public static Class<UserDetails> getUserClass() {
@@ -485,6 +486,14 @@ public class UserDetails implements KvmSerializable, Serializable {
 
     public void set_Utype(String _Utype) {
         this._Utype = _Utype;
+    }
+
+    public String get_is_passwordChanged() {
+        return _is_passwordChanged;
+    }
+
+    public void set_is_passwordChanged(String _is_passwordChanged) {
+        this._is_passwordChanged = _is_passwordChanged;
     }
 }
 

@@ -66,10 +66,12 @@ public class WorkSiteEditAdapter extends RecyclerView.Adapter<WorkSiteEditAdapte
         final NiwasInspectionEntity info = ThrList.get(position);
         user_id = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext()).getString("uid", "");
 
-
+        dataBaseupload=new DataBaseHelper(activity);
         holder.tv_slno.setText(String.valueOf(position+1));
      //   holder.tv_div_name.setText(info.getDiv_name());
-        holder.tv_div_name.setText("Madhepura");
+        String div_name=dataBaseupload.getNameFor("Item_Master","Item_Id","Item_Name",info.getDiv_code());
+
+        holder.tv_div_name.setText(div_name);
         if (info.getArea_type().equals("0"))
         {
             holder.tv_areaType.setText("Urban");

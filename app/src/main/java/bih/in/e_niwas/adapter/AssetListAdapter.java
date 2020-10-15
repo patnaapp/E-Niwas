@@ -53,7 +53,8 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
         final NiwasInspectionEntity info = ThrList.get(position);
         dataBaseHelper=new DataBaseHelper(activity);
         holder.tv_slno.setText(String.valueOf(position+1));
-        holder.tv_div_name.setText(info.getDiv_name());
+       String div_name=dataBaseHelper.getNameFor("Item_Master","Item_Id","Item_Name",info.getDiv_code());
+        holder.tv_div_name.setText(div_name);
         if (info.getArea_type().equals("0"))
         {
             holder.tv_areaType.setText("Urban");

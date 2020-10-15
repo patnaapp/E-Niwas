@@ -16,9 +16,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +58,9 @@ public class LoginActivity extends Activity {
     UserDetails userInfo;
     TextView app_ver;
     MarshmallowPermission MARSHMALLOW_PERMISSION;
+    private PopupWindow mPopupWindow;
+    String newpass="",cnf_pass="";
+    UserDetails data;
 
 
     @Override
@@ -178,28 +186,81 @@ public class LoginActivity extends Activity {
                     }
                 });
 
-
                 ab.create().getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
                 ab.show();
 
-            } else {
+            }
+            else
+            {
 
                 //-----------------------------------------Online-------------------------------------
                 if (Utiilties.isOnline(LoginActivity.this)) {
 
-                    if(imei.equalsIgnoreCase(imei)) {
-                        imei = result.getIMEI();
-                        //imei = "862183044263136";
-                        //imei = "359376097764329";
-                        //imei = "866778040112652";
-                    }
+//                    if(imei.equalsIgnoreCase(imei))
+//                    {
+//                        imei = result.getIMEI();
+//                        //imei = "862183044263136";
+//                        //imei = "359376097764329";
+//                        //imei = "866778040112652";
+//                    }
                     uid = param[0];
                     pass = param[1];
 
-                    if (result != null && result.isAuthenticated() == true && result.get_Utype().equals("2")) {
-                        if (imei.equalsIgnoreCase(result.getIMEI())) {
+                    if (result != null && result.isAuthenticated() == true && result.get_Utype().equals("2"))
+                    {
+                        data=result;
+                        //if (imei.equalsIgnoreCase(result.getIMEI())) {
 
-                            // uid=result.getUserID();
+                        // uid=result.getUserID();
+                        if (result.get_is_passwordChanged().equals("N"))
+                        {
+                            LayoutInflater inflater = (LayoutInflater) LoginActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                            // Inflate the custom layout/view
+                            View customView = inflater.inflate(R.layout.dialog_details, null);
+
+                            // Initialize a new instance of popup window
+                            mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                            if (Build.VERSION.SDK_INT >= 21)
+                            {
+                                mPopupWindow.setElevation(5.0f);
+                            }
+                            TextView tv_pass = (TextView) customView.findViewById(R.id.tv_pass);
+                            TextView tv_cnfpass = (TextView) customView.findViewById(R.id.tv_cnfpass);
+                            final EditText edt_pass = (EditText) customView.findViewById(R.id.edt_pass);
+                            final EditText edt_cnf_pass = (EditText) customView.findViewById(R.id.edt_cnf_pass);
+                            Button button = (Button) customView.findViewById(R.id.button);
+
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    newpass=edt_pass.getText().toString();
+                                    cnf_pass=edt_cnf_pass.getText().toString();
+                                    if (cnf_pass.length()>=4){
+                                        if (cnf_pass.equals(newpass))
+                                        {
+                                            new ChangePassword().execute();
+                                        }
+                                        else {
+                                            Toast.makeText(LoginActivity.this,"Password doesnot match",Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this,"Password should be of minimum 4 characters",Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            });
+
+                            mPopupWindow.showAtLocation(tv_pass, Gravity.CENTER, 0, 0);
+                            mPopupWindow.setFocusable(true);
+                            mPopupWindow.setOutsideTouchable(false);
+                            mPopupWindow.update();
+                        }
+                        else if (result.get_is_passwordChanged().equals("Y")){
+
+
                             uid = param[0];
                             pass = param[1];
 
@@ -231,19 +292,20 @@ public class LoginActivity extends Activity {
                                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
                                         Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            alertDialog.setTitle("डिवाइस पंजीकृत नहीं है");
-                            alertDialog.setMessage("क्षमा करें, आपका डिवाइस पंजीकृत नहीं है.\r\nकृपया अपने व्यवस्थापक से संपर्क करें.");
-                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    userName.setFocusable(true);
-                                }
-                            });
-                            alertDialog.show();
+//                        } else {
+//                            alertDialog.setTitle("डिवाइस पंजीकृत नहीं है");
+//                            alertDialog.setMessage("क्षमा करें, आपका डिवाइस पंजीकृत नहीं है.\r\nकृपया अपने व्यवस्थापक से संपर्क करें.");
+//                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    userName.setFocusable(true);
+//                                }
+//                            });
+//                            alertDialog.show();
+//
+//                        }
 
                         }
                     }
-
                     // offline -------------------------------------------------------------------------
 
                 } else {
@@ -389,5 +451,133 @@ public class LoginActivity extends Activity {
 
 
         return imei;
+    }
+
+
+    private class ChangePassword extends AsyncTask<String, Void, String> {
+
+
+        private final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        private final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
+
+
+        @Override
+        protected void onPreExecute() {
+
+            this.dialog.setCanceledOnTouchOutside(false);
+            this.dialog.setMessage("UpLoading...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... param)
+        {
+            //    String res = WebServiceHelper.UploadSingleData(data, devicename, app_version,PreferenceManager.getDefaultSharedPreferences(mContext).getString("USERID", ""));
+            String res = WebServiceHelper.ChangePassword(uid,cnf_pass);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            if (this.dialog.isShowing())
+            {
+                this.dialog.dismiss();
+            }
+            Log.d("Responsevalue", "" + result);
+            if (result != null)
+            {
+//                String string = result;
+//                String[] parts = string.split(",");
+//                String part1 = parts[0]; // 004-
+//                String part2 = parts[1];
+
+                if (result.equals("1"))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    // builder.setIcon(R.drawable.logo3);
+                    builder.setTitle("Success!!");
+                    // Ask the final question
+                    builder.setMessage("Password Uploaded Successfully");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            uid = param[0];
+                            pass = param[1];
+
+                            try
+                            {
+                                GlobalVariables.LoggedUser = data;
+                                GlobalVariables.LoggedUser.setUserID(userName.getText().toString().trim().toLowerCase());
+
+                                GlobalVariables.LoggedUser.setPassword(userPass.getText().toString().trim());
+                                CommonPref.setUserDetails(getApplicationContext(),GlobalVariables.LoggedUser);
+
+                                long c = setLoginStatus(GlobalVariables.LoggedUser);
+
+                                if (c > 0)
+                                {
+                                    start();
+                                }
+                                else
+                                    {
+                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.printStackTrace();
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),Toast.LENGTH_SHORT).show();
+                            }
+//                        } else {
+//                            alertDialog.setTitle("डिवाइस पंजीकृत नहीं है");
+//                            alertDialog.setMessage("क्षमा करें, आपका डिवाइस पंजीकृत नहीं है.\r\nकृपया अपने व्यवस्थापक से संपर्क करें.");
+//                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    userName.setFocusable(true);
+//                                }
+//                            });
+//                            alertDialog.show();
+//
+//                        }
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+
+                    dialog.show();
+
+                } else if (result.equals("0")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    //builder.setIcon(R.drawable.uploaderror);
+                    builder.setTitle("Alert!!");
+                    // Ask the final question
+                    builder.setMessage("Record  Not Uploaded ");
+
+                    // Set the alert dialog yes button click listener
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
+
+                else {
+                    Toast.makeText(LoginActivity.this, "Your password is not uploaded Successfully ! ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+
+                Toast.makeText(LoginActivity.this, "Uploading failed...Please Try Later", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 }
