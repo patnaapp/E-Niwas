@@ -100,6 +100,7 @@
                 <LinearLayout
                     android:layout_marginBottom="12dp"
                     android:layout_width="fill_parent"
+                    android:id="@+id/ll_existing_building"
 
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -553,7 +554,10 @@
 
 
                         </LinearLayout>
+                    </LinearLayout>
+                    </LinearLayout>
                         <LinearLayout
+
                             android:weightSum="1"
                             android:layout_width="match_parent"
                             android:layout_height="180dp">
@@ -634,12 +638,12 @@
                                 </LinearLayout>
                             </RelativeLayout>
                         </LinearLayout>
-                    </LinearLayout>
 
 
 
 
-                </LinearLayout>
+
+
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

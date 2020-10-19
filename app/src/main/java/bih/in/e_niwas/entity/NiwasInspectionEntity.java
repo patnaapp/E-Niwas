@@ -66,9 +66,20 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
 
     public NiwasInspectionEntity(SoapObject res1) {
 
-        this.Asset_Id=res1.getProperty("id").toString();
-       this.Div_code=res1.getProperty("Division").toString();
-//        this.Div_name=res1.getProperty("Sub_Execution_DeptID").toString();
+        if (res1.getProperty("id").toString().equalsIgnoreCase("anyType{}")){
+            this.Asset_Id="";
+        }
+        else {
+            this.Asset_Id = res1.getProperty("id").toString();
+        }
+
+        if (res1.getProperty("Division").toString().equalsIgnoreCase("anyType{}")){
+            this.Div_code="";
+        }
+        else {
+            this.Div_code = res1.getProperty("Division").toString();
+        }
+
         this.Sub_Div_code=res1.getProperty("SubDivision").toString();
         this.property_type=res1.getProperty("Land_Type").toString();
         this.area_type=res1.getProperty("AreaType").toString();
@@ -81,37 +92,150 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
         this.ward_id=res1.getProperty("Ward").toString();
         //this.ward_name=res1.getProperty("Ward").toString();
         this.pincode=res1.getProperty("PINCode").toString();
-        this.thana_no=res1.getProperty("ThanaNo").toString();
-        this.kahta_no=res1.getProperty("Khata").toString();
-        this.khesra_no=res1.getProperty("Khesra").toString();
-        this.chauhaddi_north=res1.getProperty("Chauhaddi_N").toString();
-        this.chauhaddi_south=res1.getProperty("Chauhaddi_S").toString();
-        this.chauhaddi_east=res1.getProperty("Chauhaddi_E").toString();
-        this.chauhaddi_west=res1.getProperty("Chauhaddi_W").toString();
-        this.land_area=res1.getProperty("AreaInSqMeter").toString();
-        this.no_of_trees=res1.getProperty("NoOfBigTree").toString();
-        this.tree_details=res1.getProperty("DetailOfTree").toString();
-        this.is_there_building=res1.getProperty("Boundary").toString();
-        this.admin_dept=res1.getProperty("Admin_Dept").toString();
-        this.building_name=res1.getProperty("Building_Name").toString();
-        this.building_type=res1.getProperty("BuildingType").toString();
+        if (res1.getProperty("ThanaNo").toString().equalsIgnoreCase("anyType{}")){
+            this.thana_no="";
+        }
+        else {
+            this.thana_no = res1.getProperty("ThanaNo").toString();
+        }
+
+        if (res1.getProperty("Khata").toString().equalsIgnoreCase("anyType{}")){
+            this.kahta_no="";
+        }
+        else {
+            this.kahta_no = res1.getProperty("Khata").toString();
+        }
+
+        if (res1.getProperty("Khesra").toString().equalsIgnoreCase("anyType{}")){
+            this.khesra_no="";
+        }
+        else {
+            this.khesra_no = res1.getProperty("Khesra").toString();
+        }
+
+        if (res1.getProperty("Chauhaddi_N").toString().equalsIgnoreCase("anyType{}")){
+            this.chauhaddi_north="";
+        }
+        else {
+            this.chauhaddi_north = res1.getProperty("Chauhaddi_N").toString();
+        }
+        if (res1.getProperty("Chauhaddi_S").toString().equalsIgnoreCase("anyType{}")){
+            this.chauhaddi_south="";
+        }
+        else {
+            this.chauhaddi_south = res1.getProperty("Chauhaddi_S").toString();
+        }
+        if (res1.getProperty("Chauhaddi_E").toString().equalsIgnoreCase("anyType{}")){
+            this.chauhaddi_east="";
+        }
+        else {
+            this.chauhaddi_east = res1.getProperty("Chauhaddi_E").toString();
+        }
+
+        if (res1.getProperty("Chauhaddi_W").toString().equalsIgnoreCase("anyType{}")){
+            this.chauhaddi_west="";
+        }
+        else {
+            this.chauhaddi_west = res1.getProperty("Chauhaddi_W").toString();
+        }
+        if (res1.getProperty("AreaInSqMeter").toString().equalsIgnoreCase("anyType{}")){
+            this.land_area="";
+        }
+        else {
+            this.land_area = res1.getProperty("AreaInSqMeter").toString();
+        }
+
+        if (res1.getProperty("NoOfBigTree").toString().equalsIgnoreCase("anyType{}")){
+            this.no_of_trees="";
+        }
+        else {
+            this.no_of_trees = res1.getProperty("NoOfBigTree").toString();
+        }
+
+        if (res1.getProperty("DetailOfTree").toString().equalsIgnoreCase("anyType{}")){
+            this.tree_details="";
+        }
+        else {
+            this.tree_details = res1.getProperty("DetailOfTree").toString();
+        }
+
+        if (res1.getProperty("Boundary").toString().equalsIgnoreCase("anyType{}")){
+            this.is_there_building="";
+        }
+        else {
+            this.is_there_building = res1.getProperty("Boundary").toString();
+        }
+
+        if (res1.getProperty("Admin_Dept").toString().equalsIgnoreCase("anyType{}")){
+            this.admin_dept="";
+        }
+        else {
+            this.admin_dept = res1.getProperty("Admin_Dept").toString();
+        }
+
+        if (res1.getProperty("Building_Name").toString().equalsIgnoreCase("anyType{}")){
+            this.building_name="";
+        }
+        else {
+            this.building_name = res1.getProperty("Building_Name").toString();
+        }
+        if (res1.getProperty("BuildingType").toString().equalsIgnoreCase("anyType{}")){
+            this.building_type="";
+        }
+        else {
+            this.building_type = res1.getProperty("BuildingType").toString();
+        }
+
         this.building_is=res1.getProperty("Building_Is").toString();
         this.gazeted_nongazeted=res1.getProperty("OfficeType").toString();
         this.building_type_class=res1.getProperty("Building_Type").toString();
         this.pool_building=res1.getProperty("Pool").toString();
-        this.plinth_area=res1.getProperty("PlinthArea").toString();
-        //this.builtup_area=res1.getProperty("Sub_Execution_DeptID").toString();
-        this.office_details=res1.getProperty("OfficeDetail").toString();
-        this.year_of_completion=res1.getProperty("YearofCompl").toString();
+
+        if (res1.getProperty("PlinthArea").toString().equalsIgnoreCase("anyType{}")){
+            this.plinth_area="";
+        }
+        else {
+            this.plinth_area = res1.getProperty("PlinthArea").toString();
+        }
+
+        if (res1.getProperty("OfficeDetail").toString().equalsIgnoreCase("anyType{}")){
+            this.office_details="";
+        }
+        else {
+            this.office_details = res1.getProperty("OfficeDetail").toString();
+        }
+
+        if (res1.getProperty("YearofCompl").toString().equalsIgnoreCase("anyType{}")){
+            this.year_of_completion="";
+        }
+        else {
+            this.year_of_completion = res1.getProperty("YearofCompl").toString();
+        }
+
+
         this.building_status=res1.getProperty("Building_Status").toString();
-        this.remarks=res1.getProperty("Remark").toString();
+
+        if (res1.getProperty("Remark").toString().equalsIgnoreCase("anyType{}")){
+            this.remarks="";
+        }
+        else {
+            this.remarks = res1.getProperty("Remark").toString();
+        }
+
         this.image1=res1.getProperty("Image1").toString();
         this.image2=res1.getProperty("Image2").toString();
         this.Lat1=res1.getProperty("LatitudeImage1").toString();
         this.Lat2=res1.getProperty("LatitudeImage2").toString();
         this.Long1=res1.getProperty("LongitudeImage1").toString();
         this.Long2=res1.getProperty("LongitudeImage2").toString();
-        this.builtup_area=res1.getProperty("BuilpupArea").toString();
+
+        if (res1.getProperty("BuilpupArea").toString().equalsIgnoreCase("anyType{}")){
+            this.builtup_area="";
+        }
+        else {
+            this.builtup_area = res1.getProperty("BuilpupArea").toString();
+        }
+
 
     }
 

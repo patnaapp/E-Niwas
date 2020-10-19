@@ -282,6 +282,7 @@ holder.iv_upload.setVisibility(View.GONE);
             }
 
             String res = WebServiceHelper.UploadBasicDetails(data,app_version,user_id);
+
             return res;
 
         }
@@ -293,13 +294,13 @@ holder.iv_upload.setVisibility(View.GONE);
             }
             Log.d("Responsevalue", "" + result);
             if (result != null) {
-                String string = result;
-                String[] parts = string.split("-");
-                String part1 = parts[0]; // 004-
-                String part2 = parts[1];
+//                String string = result;
+//                String[] parts = string.split("-");
+//                String part1 = parts[0]; // 004-
+//                String part2 = parts[1];
 
-                if (part1.equals("1")) {
-                    Toast.makeText(activity, part2, Toast.LENGTH_SHORT).show();
+                if (result.equals("1")) {
+                   // Toast.makeText(activity, part2, Toast.LENGTH_SHORT).show();
 
                     dataBaseupload = new DataBaseHelper(activity);
                     long c = dataBaseupload.deleteRec(rowid);
@@ -312,12 +313,12 @@ holder.iv_upload.setVisibility(View.GONE);
 
 
                 }
-                else if (part1.equals("2")) {
+                else if (result.equals("2")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
                     builder.setTitle("Alert!!");
                     // Ask the final question
-                    builder.setMessage(part2);
+                    builder.setMessage("Not uploaded");
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

@@ -788,7 +788,7 @@
                             android:weightSum="2"
                             android:orientation="horizontal">
                             <LinearLayout
-
+android:id="@+id/ll_isthere_building"
                                 android:layout_marginBottom="12dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

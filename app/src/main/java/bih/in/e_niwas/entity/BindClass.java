@@ -8,7 +8,6 @@ public class BindClass {
 		public static SoapObject sobj;
 
 		
-		
 		public SoapObject getAllData(SoapObject sobj)
 		{
 			this.Name=sobj.getProperty(0).toString();

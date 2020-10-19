@@ -2697,6 +2697,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             {
                 NiwasInspectionEntity basicInfo = new NiwasInspectionEntity();
                 basicInfo.setId((cursor.getString(cursor.getColumnIndex("Id"))));
+                basicInfo.setAsset_Id((cursor.getString(cursor.getColumnIndex("asset_id"))));
                 basicInfo.setDiv_code((cursor.getString(cursor.getColumnIndex("building_div"))));
                 basicInfo.setDiv_name((cursor.getString(cursor.getColumnIndex("Div_name"))));
                 basicInfo.setProperty_type((cursor.getString(cursor.getColumnIndex("property_type"))));
@@ -2759,7 +2760,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             cursor.close();
             sqLiteDatabase.close();
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             // TODO: handle exception
 

@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -68,6 +69,8 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     String _groupid="",_second_grupi_id="";
     String user_id="",isServer="";
     byte[] image1server,image2server;
+    LinearLayout ll_existing_building;
+    String isEdit = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
 
             keyid = getIntent().getExtras().getString("KeyId");
-            String isEdit = "";
+        ;
             isEdit = getIntent().getExtras().getString("isEdit");
             isServer = getIntent().getExtras().getString("isServer");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
@@ -119,6 +122,24 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
 
         assetDetails=(NiwasInspectionEntity)getIntent().getSerializableExtra("data");
+      //  if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+        if (isEdit.equals("Yes")) {
+            if (assetDetails_edit.getProperty_type().equals("0")){
+                ll_existing_building.setVisibility(View.GONE);
+            }
+            else if (assetDetails_edit.getProperty_type().equals("1")){
+                ll_existing_building.setVisibility(View.VISIBLE);
+            }
+        }
+        else  {
+            if (assetDetails.getProperty_type().equals("0")){
+                ll_existing_building.setVisibility(View.GONE);
+            }
+            else if (assetDetails.getProperty_type().equals("1")){
+                ll_existing_building.setVisibility(View.VISIBLE);
+            }
+        }
+
 
         sp_buildingtype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -329,7 +350,10 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         sp_buildingtype=findViewById(R.id.sp_buildingtype);
         sp_poolof_building=findViewById(R.id.sp_poolof_building);
         sp_buildin_status=findViewById(R.id.sp_buildin_status);
+        ll_existing_building=findViewById(R.id.ll_existing_building);
+
         ben_type_status_aaray = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ben_type_buldingstatus);
+
         sp_buildin_status.setAdapter(ben_type_status_aaray);
 
         img1=findViewById(R.id.img1);
@@ -434,47 +458,101 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         View focusView = null;
         boolean validate = true;
 
-        if(buildintype_id.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
+       // if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+        if (isEdit.equals("Yes")) {
+           if (assetDetails_edit.getProperty_type().equals("1")){
+               if(buildintype_id.equalsIgnoreCase(""))
+               {
+                   Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
+                   validate = false;
+               }
 
-        if(_var_type_of_building.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select type of building", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
+               if(_var_type_of_building.equalsIgnoreCase(""))
+               {
+                   Toast.makeText(getApplicationContext(), "Please select type of building", Toast.LENGTH_LONG).show();
+                   validate = false;
+               }
 
-        if(_var_building_is.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select building is", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
+               if(_var_building_is.equalsIgnoreCase(""))
+               {
+                   Toast.makeText(getApplicationContext(), "Please select building is", Toast.LENGTH_LONG).show();
+                   validate = false;
+               }
 
-        if(edt_building_year.getText().toString().length()>0){
-            if (edt_building_year.getText().toString().length()<4){
-                Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
-                validate = false;
+               if(edt_building_year.getText().toString().length()>0){
+                   if (edt_building_year.getText().toString().length()<4){
+                       Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
+                       validate = false;
+                   }
+
+               }
+
+               if(edt_building_name.getText().toString().equalsIgnoreCase("")){
+                   Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
+                   validate = false;
+               }
+
+               if(edt_plinth_area.getText().toString().equalsIgnoreCase("")){
+                   Toast.makeText(getApplicationContext(), "Please enter plinth area", Toast.LENGTH_LONG).show();
+                   validate = false;
+               }
+
+
+
+               if(focusView != null && focusView.requestFocus()) {
+                   getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+               }
             }
+        }
+        else  {
+            if (assetDetails.getProperty_type().equals("1")){
+                if(buildintype_id.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
+                if(_var_type_of_building.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select type of building", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
+
+                if(_var_building_is.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select building is", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
+
+                if(edt_building_year.getText().toString().length()>0){
+                    if (edt_building_year.getText().toString().length()<4){
+                        Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
+                        validate = false;
+                    }
+
+                }
+
+                if(edt_building_name.getText().toString().equalsIgnoreCase("")){
+                    Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
+
+                if(edt_plinth_area.getText().toString().equalsIgnoreCase("")){
+                    Toast.makeText(getApplicationContext(), "Please enter plinth area", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
+
+
+
+                if(focusView != null && focusView.requestFocus()) {
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
         }
 
-        if(edt_building_name.getText().toString().equalsIgnoreCase("")){
-            Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(edt_plinth_area.getText().toString().equalsIgnoreCase("")){
-            Toast.makeText(getApplicationContext(), "Please enter plinth area", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
 
 
 
-        if(focusView != null && focusView.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
         return validate;
 
     }
@@ -578,6 +656,15 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
     public void ShowEditEntryKhesra() {
 
+
+        img1.setEnabled(true);
+        img2.setEnabled(true);
+        if (assetDetails_edit.getProperty_type().equals("0")){
+            ll_existing_building.setVisibility(View.GONE);
+        }
+        else if (assetDetails_edit.getProperty_type().equals("1")){
+            ll_existing_building.setVisibility(View.VISIBLE);
+        }
         btn_save.setText("UPDATE ASSET RECORD");
 //        building_type=dataBaseHelper.getNameFor("Item_Master","Item_Id","Item_Name",assetDetails_edit.getBuilding_type_class());
 //        var_buildingpool=dataBaseHelper.getNameFor("Item_Master","Item_Id","Item_Name",assetDetails_edit.getPool_building());
@@ -649,7 +736,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
                 Bitmap bmpImg = BitmapFactory.decodeByteArray(img, 0, img.length);
                 img1.setScaleType(ImageView.ScaleType.FIT_XY);
                 img1.setImageBitmap(Utiilties.GenerateThumbnail(bmpImg, ThumbnailSize, ThumbnailSize));
-
+                str_img="Y";
             }
 
             if (!imgnew.equals(null))

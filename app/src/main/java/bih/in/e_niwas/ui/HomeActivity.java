@@ -112,12 +112,14 @@ public class HomeActivity extends Activity
         Intent i=new Intent(HomeActivity.this,AssetListActivity.class);
         i.putExtra("user", userInfo);
         startActivity(i);
+
     }
 
     public void on_EditEntry(View view)
     {
         Intent i=new Intent(HomeActivity.this,EditAssetEntry_Activity.class);
         startActivity(i);
+
     }
 
     public void OnClickLogout(View view) {
