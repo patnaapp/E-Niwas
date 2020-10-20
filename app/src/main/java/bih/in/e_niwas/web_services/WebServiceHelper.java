@@ -439,7 +439,8 @@ public class WebServiceHelper {
         for (int i = 0; i < TotalProperty; i++) {
             if (res1.getProperty(i) != null) {
                 Object property = res1.getProperty(i);
-                if (property instanceof SoapObject) {
+                if (property instanceof SoapObject)
+                {
                     SoapObject final_object = (SoapObject) property;
                     PanchayatEntity villageData= new PanchayatEntity(final_object);
                     fieldList.add(villageData);
@@ -451,8 +452,8 @@ public class WebServiceHelper {
         return fieldList;
     }
 
-    public static SurfaceInspectionResponse uploadSurfaceInspectionData(SurfaceSchemeEntity data, SurfaceSchemeEntity dataimg, UserDetails user) {
-
+    public static SurfaceInspectionResponse uploadSurfaceInspectionData(SurfaceSchemeEntity data, SurfaceSchemeEntity dataimg, UserDetails user)
+    {
         SoapObject request = new SoapObject(SERVICENAMESPACE, UPLOADSCHEMEINSPECTIONDETAIL);
 
         request.addProperty("user_type",user.getUserrole());
@@ -467,7 +468,6 @@ public class WebServiceHelper {
         request.addProperty("COMMENT2", data.getComment2());
         request.addProperty("COMMENT3", data.getComment3());
         request.addProperty("COMMENT4", data.getComment4());
-
         request.addProperty("USER_ID",user.getUserID());
         request.addProperty("Work_Competion_In_Presentage", data.getWorkCompletionPer());
         request.addProperty("Observetion_Category", data.getObservationCategory());
@@ -476,7 +476,6 @@ public class WebServiceHelper {
         request.addProperty("Cross_Verification", "");
         request.addProperty("S_W_Version", data.getAppVersion());
         request.addProperty("INSPECTION_PDF", "");
-
         request.addProperty("Inspection_Image1", dataimg.getPhoto1());
         request.addProperty("Inspection_Image2", dataimg.getPhoto2());
         request.addProperty("Inspection_Image3", dataimg.getPhoto3());
@@ -485,32 +484,36 @@ public class WebServiceHelper {
         request.addProperty("longitude", data.getLongitude());
 
         SoapObject res1 = null;
-        try {
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-                    SoapEnvelope.VER11);
+        try
+        {
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.implicitTypes = true;
             envelope.setOutputSoapObject(request);
 
-            HttpTransportSE androidHttpTransport = new HttpTransportSE(
-                    SERVICEURL1);
-            androidHttpTransport.call(SERVICENAMESPACE + UPLOADSCHEMEINSPECTIONDETAIL,
-                    envelope);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
+            androidHttpTransport.call(SERVICENAMESPACE + UPLOADSCHEMEINSPECTIONDETAIL,envelope);
             res1 = (SoapObject) envelope.getResponse();
             //rest = envelope.getResponse().toString();
-            if(res1 != null){
+            if(res1 != null)
+            {
                 return new SurfaceInspectionResponse(res1);
-            }else{
+            }
+            else
+                {
                 return null;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
         //return null;
     }
 
-    public static String uploadPlantationDate(PlantationDetail data) {
+    public static String uploadPlantationDate(PlantationDetail data)
+    {
 
         SoapObject request = new SoapObject(SERVICENAMESPACE, UPLOADPLANTATIONINSPECTIONDETAIL);
 
@@ -547,47 +550,48 @@ public class WebServiceHelper {
         request.addProperty("_gavyan_percentage", data.getGavyan_percentage());
         request.addProperty("_Average_height_Plant", data.getAverage_height_Plant());
 
-        try {
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-                    SoapEnvelope.VER11);
+        try
+        {
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.implicitTypes = true;
             envelope.setOutputSoapObject(request);
 
-            HttpTransportSE androidHttpTransport = new HttpTransportSE(
-                    SERVICEURL1);
-            androidHttpTransport.call(SERVICENAMESPACE + UPLOADPLANTATIONINSPECTIONDETAIL,
-                    envelope);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
+            androidHttpTransport.call(SERVICENAMESPACE + UPLOADPLANTATIONINSPECTIONDETAIL,envelope);
             // res2 = (SoapObject) envelope.getResponse();
             rest = envelope.getResponse().toString();
 
             // rest=res2.toString();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return "0";
         }
         return rest;
     }
 
-    public static ArrayList<District> getDistrictList() {
+    public static ArrayList<District> getDistrictList()
+    {
         SoapObject request = new SoapObject(SERVICENAMESPACE,GETDISTRICTLIST);
         //request.addProperty("BlockCode", dist_Code);
         SoapObject res1;
         try {
 
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-                    SoapEnvelope.VER11);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
 
             envelope.addMapping(SERVICENAMESPACE,District.DISTRICT_CLASS.getSimpleName(), District.DISTRICT_CLASS);
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
-            androidHttpTransport.call(SERVICENAMESPACE + GETDISTRICTLIST,
-                    envelope);
+            androidHttpTransport.call(SERVICENAMESPACE + GETDISTRICTLIST,envelope);
 
             res1 = (SoapObject) envelope.getResponse();
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -595,16 +599,22 @@ public class WebServiceHelper {
 
         ArrayList<District> pvmArrayList = new ArrayList<District>();
 
-        for (int ii = 0; ii < TotalProperty; ii++) {
-            if (res1.getProperty(ii) != null) {
+        for (int ii = 0; ii < TotalProperty; ii++)
+        {
+            if (res1.getProperty(ii) != null)
+            {
                 Object property = res1.getProperty(ii);
-                if (property instanceof SoapObject) {
+                if (property instanceof SoapObject)
+                {
                     SoapObject final_object = (SoapObject) property;
                     District panchayat = new District(final_object);
                     pvmArrayList.add(panchayat);
                 }
-            } else
+            }
+            else{
                 return pvmArrayList;
+            }
+
         }
 
         return pvmArrayList;
@@ -638,7 +648,8 @@ public class WebServiceHelper {
     public static SoapObject getServerData(String methodName, Class bindClass)
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
@@ -648,7 +659,8 @@ public class WebServiceHelper {
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -659,7 +671,8 @@ public class WebServiceHelper {
     public static SoapObject getServerData(String methodName, Class bindClass, String param, String value )
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             request.addProperty(param,value);
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -669,7 +682,9 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -681,7 +696,8 @@ public class WebServiceHelper {
     public static SoapObject getServerData(String methodName, Class bindClass, String param1, String param2, String value1, String value2 )
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             request.addProperty(param1,value1);
             request.addProperty(param2,value2);
@@ -692,7 +708,9 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -702,7 +720,8 @@ public class WebServiceHelper {
     public static SoapObject getServerData(String methodName, Class bindClass, String param1, String param2, String param3, String value1, String value2, String value3 )
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             request.addProperty(param1,value1);
             request.addProperty(param2,value2);
@@ -714,16 +733,20 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
         return res1;
     }
+
     public static SoapObject getServerData(String methodName, Class bindClass, String param1, String param2, String param3, String param4, String value1, String value2, String value3, String value4 )
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             request.addProperty(param1,value1);
             request.addProperty(param2,value2);
@@ -737,7 +760,10 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+
+        {
             e.printStackTrace();
             return null;
         }

@@ -89,7 +89,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
 
             keyid = getIntent().getExtras().getString("KeyId");
-        ;
+            ;
             isEdit = getIntent().getExtras().getString("isEdit");
             isServer = getIntent().getExtras().getString("isServer");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
@@ -126,7 +126,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
 
         assetDetails=(NiwasInspectionEntity)getIntent().getSerializableExtra("data");
-      //  if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+        //  if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
         if (isEdit.equals("Yes")) {
             if (assetDetails_edit.getProperty_type().equals("0")){
                 ll_existing_building.setVisibility(View.GONE);
@@ -481,56 +481,56 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         View focusView = null;
         boolean validate = true;
 
-       // if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+        // if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
         if (isEdit.equals("Yes")) {
-           if (assetDetails_edit.getProperty_type().equals("1"))
+            if (assetDetails_edit.getProperty_type().equals("1"))
             {
-               if(buildintype_id.equalsIgnoreCase(""))
-               {
-                   Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
-                   validate = false;
-               }
+                if(buildintype_id.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select building type", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
-               if(_var_type_of_building.equalsIgnoreCase(""))
-               {
-                   Toast.makeText(getApplicationContext(), "Please select type of building", Toast.LENGTH_LONG).show();
-                   validate = false;
-               }
+                if(_var_type_of_building.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select type of building", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
-               if(_var_building_is.equalsIgnoreCase(""))
-               {
-                   Toast.makeText(getApplicationContext(), "Please select building is", Toast.LENGTH_LONG).show();
-                   validate = false;
-               }
+                if(_var_building_is.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please select building is", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
-               if(edt_building_year.getText().toString().length()>0)
-               {
-                   if (edt_building_year.getText().toString().length()<4)
-                   {
-                       Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
-                       validate = false;
-                   }
+                if(edt_building_year.getText().toString().length()>0)
+                {
+                    if (edt_building_year.getText().toString().length()<4)
+                    {
+                        Toast.makeText(getApplicationContext(), "Please enter correct year", Toast.LENGTH_LONG).show();
+                        validate = false;
+                    }
 
-               }
+                }
 
-               if(edt_building_name.getText().toString().equalsIgnoreCase(""))
-               {
-                   Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
-                   validate = false;
-               }
+                if(edt_building_name.getText().toString().equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter correct building name", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
-               if(edt_plinth_area.getText().toString().equalsIgnoreCase(""))
-               {
-                   Toast.makeText(getApplicationContext(), "Please enter plinth area", Toast.LENGTH_LONG).show();
-                   validate = false;
-               }
+                if(edt_plinth_area.getText().toString().equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter plinth area", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
 
 
 
-               if(focusView != null && focusView.requestFocus())
-               {
-                   getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-               }
+                if(focusView != null && focusView.requestFocus())
+                {
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
             }
         }
         else  {
@@ -823,49 +823,51 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         NiwasInspectionEntity newEntryEntity=new NiwasInspectionEntity();
 
         //  assetDetails.setId(assetDetails_edit.getId());
-    //    if (isEdit.equals("Yes")) {
-            if (assetDetails_edit.getProperty_type().equals("0")) {
-                assetDetails_edit.setBuilding_name("");
-                assetDetails_edit.setBuilding_type("");
-                assetDetails_edit.setBuilding_is("");
-                assetDetails_edit.setGazeted_nongazeted("");
-                assetDetails_edit.setBuilding_type_class("");
-                assetDetails_edit.setPool_building("");
-                assetDetails_edit.setPlinth_area("");
-                assetDetails_edit.setBuiltup_area("");
-                assetDetails_edit.setOffice_details("");
-                assetDetails_edit.setYear_of_completion("");
-                assetDetails_edit.setBuilding_status("");
-                assetDetails_edit.setRemarks("");
-                assetDetails_edit.setImage1(img1String);
-                assetDetails_edit.setImage2(img2String);
-                assetDetails_edit.setLat1(latitude);
-                assetDetails_edit.setLong1(longitude);
-                assetDetails_edit.setLat2(latitude2);
-                assetDetails_edit.setLong2(longitude2);
-                assetDetails_edit.setEntryby(user_id);
-            }
-            else {
-                assetDetails_edit.setBuilding_name(edt_building_name.getText().toString());
-                assetDetails_edit.setBuilding_type(_var_type_of_building);
-                assetDetails_edit.setBuilding_is(_var_building_is);
-                assetDetails_edit.setGazeted_nongazeted(var_gazetted_nongazetted);
-                assetDetails_edit.setBuilding_type_class(buildintype_id);
-                assetDetails_edit.setPool_building(pool_id);
-                assetDetails_edit.setPlinth_area(edt_plinth_area.getText().toString());
-                assetDetails_edit.setBuiltup_area(edt_builtup_area.getText().toString());
-                assetDetails_edit.setOffice_details(edt_ofc_detail.getText().toString());
-                assetDetails_edit.setYear_of_completion(edt_building_year.getText().toString());
-                assetDetails_edit.setBuilding_status(status_id);
-                assetDetails_edit.setRemarks(edt_remarks.getText().toString());
-                assetDetails_edit.setImage1(img1String);
-                assetDetails_edit.setImage2(img2String);
-                assetDetails_edit.setLat1(latitude);
-                assetDetails_edit.setLong1(longitude);
-                assetDetails_edit.setLat2(latitude2);
-                assetDetails_edit.setLong2(longitude2);
-                assetDetails_edit.setEntryby(user_id);
-            }
+        //    if (isEdit.equals("Yes")) {
+        if (assetDetails_edit.getProperty_type().equals("0"))
+        {
+            assetDetails_edit.setBuilding_name("");
+            assetDetails_edit.setBuilding_type("");
+            assetDetails_edit.setBuilding_is("");
+            assetDetails_edit.setGazeted_nongazeted("");
+            assetDetails_edit.setBuilding_type_class("");
+            assetDetails_edit.setPool_building("");
+            assetDetails_edit.setPlinth_area("");
+            assetDetails_edit.setBuiltup_area("");
+            assetDetails_edit.setOffice_details("");
+            assetDetails_edit.setYear_of_completion("");
+            assetDetails_edit.setBuilding_status("");
+            assetDetails_edit.setRemarks("");
+            assetDetails_edit.setImage1(img1String);
+            assetDetails_edit.setImage2(img2String);
+            assetDetails_edit.setLat1(latitude);
+            assetDetails_edit.setLong1(longitude);
+            assetDetails_edit.setLat2(latitude2);
+            assetDetails_edit.setLong2(longitude2);
+            assetDetails_edit.setEntryby(user_id);
+        }
+        else
+        {
+            assetDetails_edit.setBuilding_name(edt_building_name.getText().toString());
+            assetDetails_edit.setBuilding_type(_var_type_of_building);
+            assetDetails_edit.setBuilding_is(_var_building_is);
+            assetDetails_edit.setGazeted_nongazeted(var_gazetted_nongazetted);
+            assetDetails_edit.setBuilding_type_class(buildintype_id);
+            assetDetails_edit.setPool_building(pool_id);
+            assetDetails_edit.setPlinth_area(edt_plinth_area.getText().toString());
+            assetDetails_edit.setBuiltup_area(edt_builtup_area.getText().toString());
+            assetDetails_edit.setOffice_details(edt_ofc_detail.getText().toString());
+            assetDetails_edit.setYear_of_completion(edt_building_year.getText().toString());
+            assetDetails_edit.setBuilding_status(status_id);
+            assetDetails_edit.setRemarks(edt_remarks.getText().toString());
+            assetDetails_edit.setImage1(img1String);
+            assetDetails_edit.setImage2(img2String);
+            assetDetails_edit.setLat1(latitude);
+            assetDetails_edit.setLong1(longitude);
+            assetDetails_edit.setLat2(latitude2);
+            assetDetails_edit.setLong2(longitude2);
+            assetDetails_edit.setEntryby(user_id);
+        }
 //        }
 //        else {
 //            assetDetails_edit.setBuilding_name(edt_building_name.getText().toString());
@@ -903,7 +905,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
 
         }
         else
-            {
+        {
             Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
         }
 
@@ -911,14 +913,16 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
     }
 
 
-    public void loadpoolOfBuildingSpinnerData(){
+    public void loadpoolOfBuildingSpinnerData()
+    {
         Item_List1.clear();
         Item_List1 = dataBaseHelper.getItemList("8","0");
         ArrayList<String> list = new ArrayList<String>();
         list.add("-Select-");
         int index = 0;
         String name="";
-        for (Item_MasterEntity info: Item_List1){
+        for (Item_MasterEntity info: Item_List1)
+        {
             if(getIntent().hasExtra("KeyId") && info.getItem_ID().equals(assetDetails_edit.getPool_building()))
             {
                 name= info.getItem_Name();
