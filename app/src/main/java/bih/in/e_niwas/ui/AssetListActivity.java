@@ -53,6 +53,7 @@ String  user_id="";
     public void onAddNewAsser(View view) {
         Intent i=new Intent(this,NewEntryForm_Activity.class);
         startActivity(i);
+        finish();
     }
 
 

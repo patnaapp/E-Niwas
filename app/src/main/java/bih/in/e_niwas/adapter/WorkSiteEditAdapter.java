@@ -112,7 +112,9 @@ holder.iv_upload.setVisibility(View.GONE);
                 i.putExtra("KeyId",info.getId());
                 i.putExtra("isEdit", "Yes");
                 i.putExtra("isServer", "No");
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 activity.startActivity(i);
+                activity.finish();
 
             }
         });
@@ -162,7 +164,8 @@ holder.iv_upload.setVisibility(View.GONE);
                 builder.setTitle("Data upload");
                 builder.setMessage("Are you sure want to Upload the Record");
 
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(activity);
@@ -173,9 +176,11 @@ holder.iv_upload.setVisibility(View.GONE);
                         ArrayList<NiwasInspectionEntity> dataProgress = dbHelper.getAllNewEntryDetail(singlerowid, user_id);
 
 
-                        if (dataProgress.size() > 0) {
+                        if (dataProgress.size() > 0)
+                        {
 
-                            for (NiwasInspectionEntity data : dataProgress) {
+                            for (NiwasInspectionEntity data : dataProgress)
+                            {
                                 NiwasInspectionEntity assetDetails_editImage=dataBaseHelper.getimage(singlerowid,user_id);
                                 data.setImage1(assetDetails_editImage.getImage1());
                                 data.setImage2(assetDetails_editImage.getImage2());

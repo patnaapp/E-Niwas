@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +30,8 @@ import com.exp.e_niwas.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import bih.in.e_niwas.database.DataBaseHelper;
 import bih.in.e_niwas.entity.Block;
@@ -74,7 +78,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
     byte[] image1server,image2server;
     String isServer="",div_name="",dist_name="";
     LinearLayout ll_isthere_building;
-
+    String isEdit = "";
 
 
     @Override
@@ -115,7 +119,7 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 
 
             keyid = getIntent().getExtras().getString("KeyId");
-            String isEdit = "";
+
             isEdit = getIntent().getExtras().getString("isEdit");
             isServer = getIntent().getExtras().getString("isServer");
             Log.d("kvfrgv", "" + keyid + "" + isEdit);
@@ -331,7 +335,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                 {
                     property_type_id="0";
                     chk_existing_building.setChecked(false);
-                    btn_proceed.setText("Save");
+
+                    if (isEdit.equals("Yes")) {
+                        btn_proceed.setText("Update");
+                    }
+                    else {
+                        btn_proceed.setText("Save");
+                    }
                     ll_isthere_building.setVisibility(View.GONE);
                 }
             }
@@ -344,7 +354,13 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
                     ll_isthere_building.setVisibility(View.VISIBLE);
                     property_type_id="1";
                     chk_open_land.setChecked(false);
-                    btn_proceed.setText("Add Building Details");
+
+                    if (isEdit.equals("Yes")) {
+                        btn_proceed.setText("Update building details");
+                    }
+                    else {
+                        btn_proceed.setText("Add Building Details");
+                    }
                 }
             }
         });
@@ -562,13 +578,19 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         edt_khata=findViewById(R.id.edt_khata);
         edt_khesra=findViewById(R.id.edt_khesra);
         edt_nrth_chauhaddi=findViewById(R.id.edt_nrth_chauhaddi);
+        edt_nrth_chauhaddi.addTextChangedListener(inputTextWatcher1);
         edt_south_chauhaddi=findViewById(R.id.edt_south_chauhaddi);
+        edt_south_chauhaddi.addTextChangedListener(inputTextWatcher2);
         edt_neast_chauhaddi=findViewById(R.id.edt_neast_chauhaddi);
+        edt_neast_chauhaddi.addTextChangedListener(inputTextWatcher3);
         edt_west_chauhaddi=findViewById(R.id.edt_west_chauhaddi);
+        edt_west_chauhaddi.addTextChangedListener(inputTextWatcher4);
         edt_land_area=findViewById(R.id.edt_land_area);
         edt_trees_no=findViewById(R.id.edt_trees_no);
         et_trees_details=findViewById(R.id.et_trees_details);
+        et_trees_details.addTextChangedListener(inputTextWatcher5);
         edt_admin_dept=findViewById(R.id.edt_admin_dept);
+        edt_admin_dept.addTextChangedListener(inputTextWatcher6);
         ll_isthere_building=findViewById(R.id.ll_isthere_building);
     }
 
@@ -968,4 +990,127 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
         }
 
     }
+
+    public void checkForEnglish(EditText etxt) {
+        if (etxt.getText().length() > 0) {
+            String s = etxt.getText().toString();
+            if (isInputInEnglish(s)) {
+                //OK
+            } else {
+                Toast.makeText(this, "Please type in english", Toast.LENGTH_SHORT).show();
+                etxt.setText("");
+            }
+        }
+    }
+    public static boolean isInputInEnglish(String txtVal) {
+
+        String regx = "^[A-Z0-9 ]+$";
+        Pattern pattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(txtVal);
+        return matcher.find();
+    }
+
+    private TextWatcher inputTextWatcher1 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (edt_nrth_chauhaddi.getText().length() >0) {
+                checkForEnglish(edt_nrth_chauhaddi);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher inputTextWatcher2 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (edt_south_chauhaddi.getText().length() >0) {
+                checkForEnglish(edt_south_chauhaddi);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher inputTextWatcher3 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (edt_neast_chauhaddi.getText().length() >0) {
+                checkForEnglish(edt_neast_chauhaddi);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher inputTextWatcher4 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (edt_west_chauhaddi.getText().length() >0) {
+                checkForEnglish(edt_west_chauhaddi);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher inputTextWatcher5 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (et_trees_details.getText().length() >0) {
+                checkForEnglish(et_trees_details);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher inputTextWatcher6 = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (edt_admin_dept.getText().length() >0) {
+                checkForEnglish(edt_admin_dept);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+
 }

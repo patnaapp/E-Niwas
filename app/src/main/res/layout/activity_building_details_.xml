@@ -251,7 +251,7 @@
                                 android:id="@+id/chk_gazetted"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Geazetted" />
+                                android:text="Gazetted" />
 
                             <CheckBox
                                 android:id="@+id/chk_non_gazetted"

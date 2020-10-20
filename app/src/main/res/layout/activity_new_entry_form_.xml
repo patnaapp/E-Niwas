@@ -798,7 +798,7 @@ android:id="@+id/ll_isthere_building"
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Is there any building : [*]"
+                                    android:text="Is there any building :"
                                     android:textColor="@color/color_black"
                                     android:textSize="12sp"/>
 

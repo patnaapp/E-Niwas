@@ -2888,7 +2888,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             c = db.update("AssetNewEntry", values, "Id=?", whereArgs);
 
             db.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return c;
         }

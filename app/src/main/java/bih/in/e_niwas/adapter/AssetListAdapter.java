@@ -114,8 +114,9 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.View
                     i.putExtra("KeyId",info.getAsset_Id());
                     i.putExtra("isEdit", "Yes");
                     i.putExtra("isServer", "Yes");
-
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     activity.startActivity(i);
+                    activity.finish();
                 }
 
 
