@@ -403,7 +403,8 @@ public class WebServiceHelper {
         return fieldList;
     }
 
-    public static ArrayList<VillageListEntity> getVillageListData(String BlockCode) {
+    public static ArrayList<VillageListEntity> getVillageListData(String BlockCode)
+    {
 
         SoapObject res1;
         res1=getServerData(GETVILLAGELIST, VillageListEntity.VillageList_CLASS,"blockCode",BlockCode);
@@ -412,10 +413,13 @@ public class WebServiceHelper {
 
         ArrayList<VillageListEntity> fieldList = new ArrayList<VillageListEntity>();
 
-        for (int i = 0; i < TotalProperty; i++) {
-            if (res1.getProperty(i) != null) {
+        for (int i = 0; i < TotalProperty; i++)
+        {
+            if (res1.getProperty(i) != null)
+            {
                 Object property = res1.getProperty(i);
-                if (property instanceof SoapObject) {
+                if (property instanceof SoapObject)
+                {
                     SoapObject final_object = (SoapObject) property;
                     VillageListEntity villageData= new VillageListEntity(final_object);
                     fieldList.add(villageData);
@@ -427,7 +431,8 @@ public class WebServiceHelper {
         return fieldList;
     }
 
-    public static ArrayList<PanchayatEntity> getPanchayatList(String DistCode, String BlockCode) {
+    public static ArrayList<PanchayatEntity> getPanchayatList(String DistCode, String BlockCode)
+    {
 
         SoapObject res1;
         res1=getServerData(GETPANCHAYATLIST, PanchayatEntity.PanchayatEntity_CLASS,"DistCode", "BlockCode", DistCode, BlockCode);
@@ -436,8 +441,10 @@ public class WebServiceHelper {
 
         ArrayList<PanchayatEntity> fieldList = new ArrayList<PanchayatEntity>();
 
-        for (int i = 0; i < TotalProperty; i++) {
-            if (res1.getProperty(i) != null) {
+        for (int i = 0; i < TotalProperty; i++)
+        {
+            if (res1.getProperty(i) != null)
+            {
                 Object property = res1.getProperty(i);
                 if (property instanceof SoapObject)
                 {
@@ -769,10 +776,13 @@ public class WebServiceHelper {
         }
         return res1;
     }
+
+
     public static SoapObject getServerData(String methodName, Class bindClass, String param1, String param2, String param3, String param4, String param5, String param6, String param7, String param8, String value1, String value2, String value3, String value4, String value5, String value6, String value7, String value8)
     {
         SoapObject res1;
-        try {
+        try
+        {
             SoapObject request = new SoapObject(SERVICENAMESPACE,methodName);
             request.addProperty(param1,value1);
             request.addProperty(param2,value2);
@@ -790,7 +800,9 @@ public class WebServiceHelper {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(SERVICEURL1);
             androidHttpTransport.call(SERVICENAMESPACE + methodName,envelope);
             res1 = (SoapObject) envelope.getResponse();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -820,7 +832,8 @@ public class WebServiceHelper {
                     fieldList.add(block);
                 }
             }
-            else{
+            else
+                {
                 return fieldList;
             }
 
@@ -830,7 +843,8 @@ public class WebServiceHelper {
     }
 
 
-    public static String UploadBasicDetails(NiwasInspectionEntity data, String app_ver,String useid) {
+    public static String UploadBasicDetails(NiwasInspectionEntity data, String app_ver,String useid)
+    {
         try {
             SoapObject request = new SoapObject(SERVICENAMESPACE, Upload_Asset);
             request.addProperty("_Division", data.getDiv_code());

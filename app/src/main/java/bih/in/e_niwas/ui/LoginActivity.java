@@ -416,7 +416,8 @@ public class LoginActivity extends Activity {
 
 
 
-    public String getDeviceIMEI() {
+    public String getDeviceIMEI()
+    {
         //String deviceUniqueIdentifier = null;
         MarshmallowPermission permission = new MarshmallowPermission(this, Manifest.permission.READ_PHONE_STATE);
 //        try {
@@ -433,9 +434,7 @@ public class LoginActivity extends Activity {
 //        }
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
         {
-            imei = Settings.Secure.getString(
-                    this.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
+            imei = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
         }
         else
         {

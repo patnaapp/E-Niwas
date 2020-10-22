@@ -196,10 +196,13 @@ public class HomeActivity extends Activity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             // do something on back.
             // Display alert message when back button has been pressed
+            //moveTaskToBack(true);
             backButtonHandler();
             return true;
         }
@@ -220,6 +223,7 @@ public class HomeActivity extends Activity
             public void onClick(DialogInterface dialog, int which) {
 //                Intent i=new Intent(HomeActivity.this,PreLoginActivity.class);
 //                startActivity(i);
+
                 finish();
 
             }

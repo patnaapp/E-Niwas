@@ -119,26 +119,33 @@ public class NiwasInspectionEntity implements KvmSerializable, Serializable {
         else {
             this.chauhaddi_north = res1.getProperty("Chauhaddi_N").toString();
         }
-        if (res1.getProperty("Chauhaddi_S").toString().equalsIgnoreCase("anyType{}")){
+        if (res1.getProperty("Chauhaddi_S").toString().equalsIgnoreCase("anyType{}"))
+        {
             this.chauhaddi_south="";
         }
-        else {
+        else
+            {
             this.chauhaddi_south = res1.getProperty("Chauhaddi_S").toString();
         }
-        if (res1.getProperty("Chauhaddi_E").toString().equalsIgnoreCase("anyType{}")){
+        if (res1.getProperty("Chauhaddi_E").toString().equalsIgnoreCase("anyType{}"))
+        {
             this.chauhaddi_east="";
         }
-        else {
+        else
+            {
             this.chauhaddi_east = res1.getProperty("Chauhaddi_E").toString();
         }
 
-        if (res1.getProperty("Chauhaddi_W").toString().equalsIgnoreCase("anyType{}")){
+        if (res1.getProperty("Chauhaddi_W").toString().equalsIgnoreCase("anyType{}"))
+        {
             this.chauhaddi_west="";
         }
-        else {
+        else
+            {
             this.chauhaddi_west = res1.getProperty("Chauhaddi_W").toString();
         }
-        if (res1.getProperty("AreaInSqMeter").toString().equalsIgnoreCase("anyType{}")){
+        if (res1.getProperty("AreaInSqMeter").toString().equalsIgnoreCase("anyType{}"))
+        {
             this.land_area="";
         }
         else {

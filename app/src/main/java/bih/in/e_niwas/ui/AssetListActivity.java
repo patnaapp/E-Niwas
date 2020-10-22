@@ -112,13 +112,14 @@ String  user_id="";
 
         @Override
         protected void onPostExecute(ArrayList<NiwasInspectionEntity> result) {
-            if (this.dialog.isShowing()) {
+            if (this.dialog.isShowing())
+            {
                 this.dialog.dismiss();
             }
 
-            if(result!=null) {
+            if(result!=null)
+            {
                 assetList=result;
-
                 populateData();
             }
 

@@ -909,7 +909,6 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             Toast.makeText(getApplicationContext(), "अपडेट नहीं किया गया", Toast.LENGTH_LONG).show();
         }
 
-
     }
 
 
