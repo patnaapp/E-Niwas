@@ -82,16 +82,16 @@ public class HomeActivity extends Activity
         {
         }
         Item_List = dbHelper.getItemList("0","0");
-        if (Item_List.size() <= 0) {
+        if (Item_List.size() <= 0)
+        {
             new Sync_Item_Master().execute();
         }
 
-
-
-      //  getUserDetail();
+       // getUserDetail();
     }
 
-    private void getUserDetail(){
+    private void getUserDetail()
+    {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("uid", "user");
         String password = prefs.getString("pass", "password");

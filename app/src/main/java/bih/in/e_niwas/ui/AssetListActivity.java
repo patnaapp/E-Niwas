@@ -31,13 +31,14 @@ public class AssetListActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     ArrayList<NiwasInspectionEntity> assetList = new ArrayList<>();
     AssetListAdapter labourSearchAdaptor;
-String  user_id="";
+    String  user_id="";
     UserDetails userInfo;
     String assetlistnew="Y";
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
 
@@ -45,12 +46,13 @@ String  user_id="";
         user_id = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
 
         new SyncAssetList().execute();
-       // assetList=dataBaseHelper.getAllNewEntryDetail("0", user_id);
-      //  populateData();
+        // assetList=dataBaseHelper.getAllNewEntryDetail("0", user_id);
+        //  populateData();
 
     }
 
-    public void onAddNewAsser(View view) {
+    public void onAddNewAsser(View view)
+    {
         Intent i=new Intent(this,NewEntryForm_Activity.class);
         startActivity(i);
         finish();
@@ -58,7 +60,8 @@ String  user_id="";
 
 
 
-    public void initialise() {
+    public void initialise()
+    {
         dataBaseHelper = new DataBaseHelper(this);
 
         tv_Norecord = findViewById(R.id.tv_Norecord);
@@ -80,38 +83,45 @@ String  user_id="";
             listView.setLayoutManager(new LinearLayoutManager(this));
             listView.setAdapter(labourSearchAdaptor);
 
-        } else {
+        }
+        else
+        {
             listView.setVisibility(View.GONE);
             tv_Norecord.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         new SyncAssetList().execute();
-      //  assetList=dataBaseHelper.getAllNewEntryDetail("0", userInfo.getUserID());
+        //  assetList=dataBaseHelper.getAllNewEntryDetail("0", userInfo.getUserID());
         //populateData();
     }
 
-    private class SyncAssetList extends AsyncTask<String, Void, ArrayList<NiwasInspectionEntity>> {
+    private class SyncAssetList extends AsyncTask<String, Void, ArrayList<NiwasInspectionEntity>>
+    {
         private final ProgressDialog dialog = new ProgressDialog(AssetListActivity.this);
         int optionType;
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             this.dialog.setCanceledOnTouchOutside(false);
             this.dialog.setMessage("लोड हो रहा है...");
             this.dialog.show();
         }
 
         @Override
-        protected ArrayList<NiwasInspectionEntity> doInBackground(String...arg) {
+        protected ArrayList<NiwasInspectionEntity> doInBackground(String...arg)
+        {
             return WebServiceHelper.GetAssetList(user_id);
         }
 
         @Override
-        protected void onPostExecute(ArrayList<NiwasInspectionEntity> result) {
+        protected void onPostExecute(ArrayList<NiwasInspectionEntity> result)
+        {
             if (this.dialog.isShowing())
             {
                 this.dialog.dismiss();
