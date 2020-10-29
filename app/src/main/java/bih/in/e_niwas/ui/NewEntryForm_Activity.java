@@ -818,13 +818,14 @@ public class NewEntryForm_Activity extends AppCompatActivity implements AdapterV
 //            validate = false;
 //        }
 
-
-        if(edt_pincode.getText().toString().length()<6){
+        if(edt_pincode.getText().toString().length()<6)
+        {
             Toast.makeText(getApplicationContext(), "Please enter correct pincode", Toast.LENGTH_LONG).show();
             validate = false;
         }
 
-        if(edt_land_area.getText().toString().equalsIgnoreCase("")){
+        if(edt_land_area.getText().toString().equalsIgnoreCase(""))
+        {
             Toast.makeText(getApplicationContext(), "Please enter area of land in sq feet", Toast.LENGTH_LONG).show();
             validate = false;
         }

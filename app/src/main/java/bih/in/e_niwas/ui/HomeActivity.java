@@ -87,7 +87,7 @@ public class HomeActivity extends Activity
             new Sync_Item_Master().execute();
         }
 
-       // getUserDetail();
+        // getUserDetail();
     }
 
     private void getUserDetail()
@@ -97,10 +97,11 @@ public class HomeActivity extends Activity
         String password = prefs.getString("pass", "password");
         userInfo = dbHelper.getUserDetails(username, password);
 
-        if(userInfo != null){
-          //  tv_username.setText(userInfo.getUserID());
+        if(userInfo != null)
+        {
+            //  tv_username.setText(userInfo.getUserID());
             tv_username.setText(name);
-           // tv_district.setText(userInfo.getDistName().equals("anyType{}") ? "NA" : userInfo.getDistName());
+            // tv_district.setText(userInfo.getDistName().equals("anyType{}") ? "NA" : userInfo.getDistName());
             tv_district.setText(dist_name);
             //tv_division.setText(userInfo.getDivisionName().equals("anyType{}") ? "NA" : userInfo.getDivisionName());
             tv_division.setText(div_name);
@@ -112,17 +113,16 @@ public class HomeActivity extends Activity
         Intent i=new Intent(HomeActivity.this,AssetListActivity.class);
         i.putExtra("user", userInfo);
         startActivity(i);
-
     }
 
     public void on_EditEntry(View view)
     {
         Intent i=new Intent(HomeActivity.this,EditAssetEntry_Activity.class);
         startActivity(i);
-
     }
 
-    public void OnClickLogout(View view) {
+    public void OnClickLogout(View view)
+    {
         //getUserDetail();
         new AlertDialog.Builder(this)
                 .setTitle("Logout")
@@ -138,7 +138,8 @@ public class HomeActivity extends Activity
                 .show();
     }
 
-    private void confirmLogout(){
+    private void confirmLogout()
+    {
         SplashActivity.prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = SplashActivity.prefs.edit();
         editor.putBoolean("username", false);
@@ -151,45 +152,55 @@ public class HomeActivity extends Activity
         finish();
     }
 
-    private class Sync_Item_Master extends AsyncTask<String, Void, ArrayList<Item_MasterEntity>> {
+    private class Sync_Item_Master extends AsyncTask<String, Void, ArrayList<Item_MasterEntity>>
+    {
 
         private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
 
         private final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(HomeActivity.this).create();
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             this.dialog.setCanceledOnTouchOutside(false);
             this.dialog.setMessage("Loading...");
             this.dialog.show();
         }
 
         @Override
-        protected ArrayList<Item_MasterEntity> doInBackground(String... param) {
+        protected ArrayList<Item_MasterEntity> doInBackground(String... param)
+        {
 
             return WebServiceHelper.getItem_Master();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Item_MasterEntity> result) {
-            if (this.dialog.isShowing()) {
+        protected void onPostExecute(ArrayList<Item_MasterEntity> result)
+        {
+            if (this.dialog.isShowing())
+            {
                 this.dialog.dismiss();
             }
 
-            if (result != null) {
+            if (result != null)
+            {
                 Log.d("Resultgfg", "" + result);
 
                 DataBaseHelper helper = new DataBaseHelper(HomeActivity.this);
 
-
                 long i = helper.setItem_Master(result);
-                if (i > 0) {
+                if (i > 0)
+                {
                     Toast.makeText(HomeActivity.this, "Item Master Loaded", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else
+                {
 
                 }
 
-            } else {
+            }
+            else
+            {
                 Toast.makeText(HomeActivity.this, "Result:null", Toast.LENGTH_SHORT).show();
             }
         }
@@ -211,7 +222,7 @@ public class HomeActivity extends Activity
     }
 
     public void backButtonHandler() {
-      AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
         alertDialog.setTitle("Exit?");
         alertDialog.setMessage("Do you want to exit the app ?");
         alertDialog.setPositiveButton("[NO]", new DialogInterface.OnClickListener() {

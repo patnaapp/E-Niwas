@@ -267,6 +267,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     chk_residential.setChecked(false);
+                    sp_buildingtype.setEnabled(true);
                     _var_building_is="1";
                     loadBuildingTypeSpinnerData("17","0");
                     chk_gazetted.setEnabled(false);
@@ -728,6 +729,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
         }
         else if(assetDetails_edit.getBuilding_is().equals("1")){
             chk_non_residential.setChecked(true);
+
             _groupid="17";
             _second_grupi_id="0";
             _var_building_is="1";
@@ -737,7 +739,7 @@ public class BuildingDetails_Activity extends AppCompatActivity implements Adapt
             chk_gazetted.setChecked(false);
             chk_non_gazetted.setChecked(false);
             chk_mixedd.setChecked(false);
-            sp_buildingtype.setEnabled(false);
+            sp_buildingtype.setEnabled(true);
         }
 
         if (assetDetails_edit.getGazeted_nongazeted().equals("0"))
